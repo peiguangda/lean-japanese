@@ -33,7 +33,8 @@ module.exports = {
   },
   output: {
     path: path.join(basePath, 'dist'),
-    filename: '[name].js',
+      publicPath: "/",
+      filename: '[name].js',
   },
   module: {
     rules: [
@@ -108,13 +109,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html', //Name of file in ./dist/
       template: '../public/index.html', //Name of template in ./src
-      hash: true,
+      hash: true
     }),
     /* new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'manifest'],
     }), */
     new webpack.optimize.CommonsChunkPlugin({
       name: "vendor",
+        publicPath: "/",
       minChunks(module) {
         // this assumes your vendor imports exist in the node_modules directory
         if (
@@ -131,6 +133,7 @@ module.exports = {
     }),  
     new webpack.optimize.CommonsChunkPlugin({
       name: "manifest",
+        publicPath: "/",
       minChunks: Infinity
     }),
     //new webpack.optimize.UglifyJsPlugin({ sourcemap: false }),
