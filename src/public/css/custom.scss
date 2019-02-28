@@ -196,3 +196,9 @@
   text-align: justify;
   width: 100%;
 }
+
+body {
+  height: 100% !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}

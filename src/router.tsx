@@ -6,7 +6,6 @@ import { store } from './store';
 import { App } from './app';
 import { HomePageContainer } from './modules/home/container';
 import { CourseDetailContainter } from "./modules/course/container";
-//import { createBrowserHistory } from 'history';
 
 export const AppRouter: React.StatelessComponent<{}> = () => {
   return (
