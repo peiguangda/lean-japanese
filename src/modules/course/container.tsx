@@ -4,9 +4,9 @@ import { State } from '../../redux/reducers';
 import { CourseDetail } from './components/Page';
 
 
-console.log("asfdadsf");
 const mapStateToProps = (state: State) => ({
-  });
+
+});
   
 const mapDispatchToProps = (dispatch) => ({
 });

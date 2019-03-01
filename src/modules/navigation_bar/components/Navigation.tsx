@@ -1,6 +1,12 @@
 import * as React from "react";
-import { Helmet } from "react-helmet";
+import {Helmet} from "react-helmet";
 import "../../../public/css/custom.css";
+import {Menu, Icon, Input, Dropdown, Button, message} from 'antd';
+import 'antd/dist/antd.css';
+
+const SubMenu = Menu.SubMenu;
+const MenuItemGroup = Menu.ItemGroup;
+const Search = Input.Search;
 
 export interface Props {
 }
@@ -17,45 +23,60 @@ export class NavigationBar extends React.Component<Props, State, {}> {
         // Call api get list data
     }
 
-    public render() {
-        return (
-            <div className="row">
-                <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <a className="navbar-brand" href="#">Navbar</a>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
+    public handleClick = (e) => {
+        console.log('click ', e);
+        this.setState({
+            current: e.key,
+        });
+    }
 
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav mr-auto">
-                        <li className="nav-item active">
-                            <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">Link</a>
-                        </li>
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Dropdown
-                            </a>
-                            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a className="dropdown-item" href="#">Action</a>
-                                <a className="dropdown-item" href="#">Another action</a>
-                                <div className="dropdown-divider"></div>
-                                <a className="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link disabled" href="#">Disabled</a>
-                        </li>
-                    </ul>
-                    <form className="form-inline my-2 my-lg-0">
-                        <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-                </div>
-                </nav>
-            </div>
+    private handleMenuClick(e) {
+        message.info('Click on menu item.');
+        console.log('click', e);
+    }
+
+    public render() {
+        const menu = (
+            <Menu onClick={this.handleMenuClick}>
+                <Menu.Item key="1"><Icon type="user"/>Personal Information</Menu.Item>
+                <Menu.Item key="2"><Icon type="user"/>Logout</Menu.Item>
+            </Menu>
+        );
+        return (
+            <Menu
+                onClick={this.handleClick}
+                selectedKeys={[]}
+                mode="horizontal"
+            >
+                <Menu.Item key="mail" className="home_navigation">
+                    <Icon type="home"/>Easy Japanese
+                </Menu.Item>
+                <Menu.Item key="search" className="search_navigation">
+                    <Search
+                        placeholder="input course name"
+                        onSearch={value => console.log(value)}
+                        style={{width: 200}}
+                    />
+                </Menu.Item>
+                <SubMenu className="setting_navigation"
+                         title={<span className="submenu-title-wrapper"><Icon type="setting"/>Setting</span>}>
+                    <MenuItemGroup title="Setting 1">
+                        <Menu.Item key="setting:1">Option 1</Menu.Item>
+                        <Menu.Item key="setting:2">Option 2</Menu.Item>
+                    </MenuItemGroup>
+                    <MenuItemGroup title="Setting 2">
+                        <Menu.Item key="setting:3">Option 3</Menu.Item>
+                        <Menu.Item key="setting:4">Option 4</Menu.Item>
+                    </MenuItemGroup>
+                </SubMenu>
+                <Menu.Item key="alipay">
+                    <Dropdown overlay={menu}>
+                        <Button style={{marginLeft: 8}}>
+                            Quang Dai <Icon type="team"/>
+                        </Button>
+                    </Dropdown>
+                </Menu.Item>
+            </Menu>
         );
     }
 }
