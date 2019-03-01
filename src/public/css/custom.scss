@@ -82,7 +82,7 @@
 
 .OMC {
   width: 100%;
-  height: 120px;
+  height: 300px;
 }
 
 .FOC {
@@ -201,4 +201,16 @@ body {
   height: 100% !important;
   width: 100% !important;
   overflow: hidden !important;
+}
+
+.home_navigation {
+  padding-left: 3%!important;
+}
+
+.search_navigation {
+  padding-left: 8%!important;
+}
+
+.setting_navigation {
+  padding-left: 42%!important;
 }

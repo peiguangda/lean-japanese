@@ -20,6 +20,7 @@
     "@types/request": "^2.47.0",
     "@types/request-promise": "^4.1.41",
     "@types/toastr": "^2.1.35",
+    "antd": "^3.13.6",
     "babel-jest": "^23.0.1",
     "babel-polyfill": "^6.26.0",
     "chai": "^4.2.0",
