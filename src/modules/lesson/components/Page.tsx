@@ -3,7 +3,7 @@ import {Helmet} from "react-helmet";
 import "../../../public/css/custom.scss";
 import {NavigationBar} from "../../navigation_bar/components/Navigation";
 import {Modal, Button, Icon, Input} from 'antd';
-import {ListLessonContainter} from './lesson/container';
+import {ListExerciseContainter} from './exercise/container';
 
 const {TextArea} = Input;
 
@@ -15,7 +15,7 @@ export interface State {
     title: Array<string>
 }
 
-export class CourseDetail extends React.Component<Props, State, {}> {
+export class LessonDetail extends React.Component<Props, State, {}> {
     constructor(props) {
         super(props);
         this.state = {
@@ -62,22 +62,22 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                         <div className="col-md-6 mt-4">
                             <div className="row">
                                 <div className="col">
-                                    <p>Khóa học tiếng nhật N3</p>
-                                    <p>Khóa học tiếng nhật N3</p>
-                                    <p>Khóa học tiếng nhật N3</p>
+                                    <p>Lesson 1</p>
+                                    <p>Lesson 1</p>
+                                    <p>Lesson 1</p>
                                 </div>
                                 <div className="col">
                                     <Button type="primary" onClick={this.showModal}>
                                         <Icon type="plus"/>
-                                        Add a lesson
+                                        Add a exercise
                                     </Button>
                                     <Modal
-                                        title="Add a lesson"
+                                        title="Add a exercise"
                                         visible={this.state.visible}
                                         onOk={this.handleOk}
                                         onCancel={this.handleCancel}
                                     >
-                                        <Input placeholder="Lesson name"/>
+                                        <Input placeholder="Exercise name"/>
                                         <TextArea placeholder="Description" rows={4}/>
                                     </Modal>
                                 </div>
@@ -85,7 +85,7 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                         </div>
                     </div>
                     <div className="row">
-                        <ListLessonContainter/>
+                        <ListExerciseContainter/>
                     </div>
                 </div>
             </div>

@@ -29,10 +29,8 @@ export class HomePage extends React.Component<Props, State, {}> {
               <div className="col-md-3">
                   <div className="LYB">Danh mục khoá học</div>
                   <div className="KYB">
-                      <CategoryCourse/>
-                      <CategoryCourse/>
-                      <CategoryCourse/>
-                      <CategoryCourse/>
+                      <CategoryCourse category_name="Tất cả khoá học" icon="desktop"/>
+                      <CategoryCourse category_name="Khóa học tiếng nhật" icon="read"/>
                   </div>
               </div>
 

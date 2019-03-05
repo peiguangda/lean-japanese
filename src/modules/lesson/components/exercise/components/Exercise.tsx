@@ -10,7 +10,7 @@ export interface State {
     title: string
 }
 
-export class Lesson extends React.Component<Props, State, {}> {
+export class Exercise extends React.Component<Props, State, {}> {
     constructor(props) {
         super(props);
     }
@@ -21,7 +21,7 @@ export class Lesson extends React.Component<Props, State, {}> {
                 <Card style={{width: 1000}}>
                     <div className="row">
                         <div className="col-md-8">
-                            <Link to="/lesson/1"><p>{this.props.children}</p></Link>
+                            <Link to="/"><p>{this.props.children}</p></Link>
                         </div>
                         <div className="col-md-4">
                             <Popover placement="bottomRight" title={"title"} content={"content"} trigger="click">
