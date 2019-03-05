@@ -1,7 +1,11 @@
 import * as React from "react";
 import "../../../public/css/custom.css";
+import {Icon} from "antd";
+import {Link} from "react-router-dom";
 
 export interface Props {
+    category_name: String;
+    icon: String;
 }
 
 export interface State {
@@ -17,13 +21,12 @@ export class CategoryCourse extends React.Component<Props, State, {}> {
     }
 
     public render() {
+        let {category_name, icon} = this.props;
         return (
             <div>
                 <div className="JBD category_course_item_main_panel">
-                    <img className="IBD category_course_item_avatar" src="resources/images/allcourse.png" />
-                    <div className="KBD category_course_item_name">Tất cả
-                        khoá học
-                    </div>
+                    <Icon type={`${icon}`}/>
+                    <Link className="KBD category_course_item_name" to="/">{category_name}</Link>
                 </div>
             </div>
         );

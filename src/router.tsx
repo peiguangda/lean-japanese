@@ -1,23 +1,22 @@
 import * as React from 'react';
-import { browserHistory, IndexRoute } from 'react-router';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from './store';
-import { App } from './app';
-import { HomePageContainer } from './modules/home/container';
-import { CourseDetailContainter } from "./modules/course/container";
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {Provider} from 'react-redux';
+import {store} from './store';
+import {App} from './app';
+import {HomePageContainer} from './modules/home/container';
+import {CourseDetailContainter} from "./modules/course/container";
+import {LessonDetailContainter} from "./modules/lesson/container";
 
 export const AppRouter: React.StatelessComponent<{}> = () => {
-  return (
-    <Provider store={store}>
-        <Router>
-            <App>
+    return (
+        <Provider store={store}>
+            <BrowserRouter>
                 <Switch>
                     <Route exact path="/" component={HomePageContainer}/>
                     <Route exact path="/course/:id" component={CourseDetailContainter}/>
+                    <Route exact path="/lesson/:id" component={LessonDetailContainter}/>
                 </Switch>
-            </App>
-        </Router>
-    </Provider>
-  );
-}
+            </BrowserRouter>
+        </Provider>
+    );
+};
