@@ -1,5 +1,4 @@
 import * as React from "react";
-import "../../../public/css/custom.css";
 import {Icon} from "antd";
 import {Link} from "react-router-dom";
 
@@ -24,7 +23,7 @@ export class CategoryCourse extends React.Component<Props, State, {}> {
         let {category_name, icon} = this.props;
         return (
             <div>
-                <div className="JBD category_course_item_main_panel">
+                <div className="category_course_item_main_panel">
                     <Icon type={`${icon}`}/>
                     <Link className="KBD category_course_item_name" to="/">{category_name}</Link>
                 </div>

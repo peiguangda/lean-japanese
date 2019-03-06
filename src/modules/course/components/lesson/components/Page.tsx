@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Helmet} from "react-helmet";
-import "../../../../../public/css/custom.scss";
 import {Modal, Button} from 'antd';
 import {Lesson} from './Lesson';
 
@@ -29,7 +28,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
 
     public render() {
         return (
-            <div className="row container offset-2 mt-5">
+            <div className="row offset-1">
                 {this.showListLesson()}
             </div>
         );
