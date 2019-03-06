@@ -14,7 +14,7 @@ export class Loader extends React.Component<Props, State, {}> {
 
     public render() {
         return (
-            <div className="main-loading">
+            <div className="main-loading" id="main-loading">
                 <div className="body-loading">
                 <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                 </div>
