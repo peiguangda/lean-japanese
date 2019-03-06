@@ -4,6 +4,7 @@ import { GatewayProvider } from 'react-gateway';
 import { State } from './redux/reducers';
 import 'toastr/build/toastr.min.css';
 import 'core-js';
+import './public/css/custom.scss';
 
 export interface Props {
 }

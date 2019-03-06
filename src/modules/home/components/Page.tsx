@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
-import "../../../public/css/custom.css";
 import { NavigationBar } from "../../navigation_bar/components/Navigation";
 import { CategoryCourse } from "./CategoryCourse";
 import { Course } from "./Course";
+import { Loader } from "../../loader/components/loader";
 
 export interface Props {
 }
@@ -22,13 +22,14 @@ export class HomePage extends React.Component<Props, State, {}> {
 
   public render() {
     return (
-      <div>
+      <div className="container">
+        {/* <Loader/> */}
         <Helmet title={"Easy Japanese"} />
           <NavigationBar/>
           <div className="row">
               <div className="col-md-3">
-                  <div className="LYB">Danh mục khoá học</div>
-                  <div className="KYB">
+                  <div className="">Danh mục khoá học</div>
+                  <div className="">
                       <CategoryCourse category_name="Tất cả khoá học" icon="desktop"/>
                       <CategoryCourse category_name="Khóa học tiếng nhật" icon="read"/>
                   </div>

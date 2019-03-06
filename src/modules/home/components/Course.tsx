@@ -1,5 +1,4 @@
 import * as React from "react";
-import "../../../public/css/custom.css";
 import {Card} from 'antd';
 import {Link} from "react-router-dom";
 

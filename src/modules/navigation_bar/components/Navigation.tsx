@@ -1,8 +1,8 @@
 import * as React from "react";
 import {Helmet} from "react-helmet";
-import "../../../public/css/custom.css";
 import {Link} from "react-router-dom";
 import {Menu, Icon, Input, Dropdown, Button, message} from 'antd';
+import "../../../public/css/custom.scss";
 import 'antd/dist/antd.css';
 
 const Search = Input.Search;

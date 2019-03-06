@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Helmet} from "react-helmet";
-import "../../../public/css/custom.scss";
 import {NavigationBar} from "../../navigation_bar/components/Navigation";
 import {Modal, Button, Icon, Input} from 'antd';
 import {ListExerciseContainter} from './exercise/container';
@@ -50,11 +49,11 @@ export class LessonDetail extends React.Component<Props, State, {}> {
 
     public render() {
         return (
-            <div className="">
-                <Helmet title={"Course"}/>
+            <div className="container">
+                <Helmet title={"Lesson"}/>
                 <NavigationBar/>
                 <div>
-                    <div className="row container">
+                    <div className="row">
                         <div className="col-md-6">
                             <img className="OMC avatarCourse"
                                  src="https://storage.googleapis.com/kslearning/images/722984834-1544915140774-47089101_564216997360595_2408262560290701312_n.jpg"/>
@@ -84,7 +83,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                             </div>
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="">
                         <ListExerciseContainter/>
                     </div>
                 </div>
