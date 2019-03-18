@@ -21,6 +21,7 @@ export class Course extends React.Component<Props, State, {}> {
 
     public render() {
         return (
+            <Link to="/course/1">
             <Card
                 hoverable
                 style={{width: 240}}
@@ -30,8 +31,8 @@ export class Course extends React.Component<Props, State, {}> {
                     title="Europe Street beat"
                     description="www.instagram.com"
                 />
-                <Link to="/course/1">Chi tiết</Link>
             </Card>
+            </Link>
         );
     }
 }

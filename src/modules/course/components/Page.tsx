@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Helmet} from "react-helmet";
 import {NavigationBar} from "../../navigation_bar/components/Navigation";
-import {Modal, Button, Icon, Input} from 'antd';
+import {Modal, Button, Icon, Input, Upload, message} from 'antd';
 import {ListLessonContainter} from './lesson/container';
 
 const {TextArea} = Input;
