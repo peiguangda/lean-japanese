@@ -32,7 +32,5 @@ export const courseReducer = (state: CourseEntity = null, action) => {
       return { ...state, ...payload, responseError };
   }
 
-  console.log(1);
-  console.log(state);
   return state;
 };

@@ -4,7 +4,7 @@ import { State } from '../../../../redux/reducers';
 import { ListCourse } from './components/Page';
 import { fetchCourseAction } from './reducer';
 const mapStateToProps = (state: State) => ({
-    course: state.course
+    courses: state.course
 });
   
 const mapDispatchToProps = (dispatch) => ({
