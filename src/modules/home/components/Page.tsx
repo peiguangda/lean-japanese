@@ -2,9 +2,9 @@ import * as React from "react";
 import {Helmet} from "react-helmet";
 import {NavigationBar} from "../../navigation_bar/components/Navigation";
 import {CategoryCourse} from "./CategoryCourse";
-import {Course} from "./Course";
 import {Loader} from "../../loader/components/loader";
-import * as ReactDOM from 'react-dom';
+import * as ReactDOM from "react-dom";
+import {CourseContainer} from "./courses/container";
 
 export interface Props {
 }
@@ -45,11 +45,7 @@ export class HomePage extends React.Component<Props, State, {}> {
                     </div>
 
                     <div className="col-md-9">
-                        <div className="row">
-                            <Course/>
-                            <Course/>
-                            <Course/>
-                        </div>
+                        <CourseContainer/>
                     </div>
                 </div>
             </div>
