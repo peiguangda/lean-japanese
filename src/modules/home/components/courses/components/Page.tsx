@@ -1,9 +1,12 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { Course } from "./Course"
+import {Course} from "./Course"
+import {CourseEntity} from "../types";
+import {values} from "lodash";
 
 export interface Props {
     fetchCourses(parameters): void
+
+    courses: CourseEntity[];
 }
 
 export interface State {
@@ -14,17 +17,24 @@ export class ListCourse extends React.Component<Props, State, {}> {
         super(props);
     }
 
-    public componentDidMount() {
+    public componentWillMount() {
         this.props.fetchCourses({});
     }
 
+    public showListCourse() {
+        let result = [];
+        values(this.props.courses).map((value, index) => {
+            result.push(<Course course={value} key={index}/>);
+        });
+        return result;
+    }
+
     public render() {
-        console.log(this.props);
+        let {courses} = this.props;
+        console.log(values(courses));
         return (
             <div className="row">
-                <Course/>
-                <Course/>
-                <Course/>
+                {this.showListCourse()}
             </div>
         );
     }

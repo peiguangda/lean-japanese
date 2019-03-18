@@ -2,4 +2,3 @@ node_modules
 tsc
 dist
 .idea/
-package-lock.json
