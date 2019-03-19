@@ -2,11 +2,20 @@ import * as React from "react";
 import {Helmet} from "react-helmet";
 import {NavigationBar} from "../../navigation_bar/components/Navigation";
 import {Modal, Button, Icon, Input, Upload, message} from 'antd';
-import {ListLessonContainter} from './lesson/container';
+import {ListLessonContainter} from "./lesson/container";
+import {CourseEntity} from "../types";
+import { ApiEntity } from '../../../common/types/index';
+import {Loader} from "../../loader/components/loader";
 
 const {TextArea} = Input;
 
 export interface Props {
+    fetchCourse(parameters): void
+    course: CourseEntity;
+    match: any;
+    params: any;
+    api: ApiEntity;
+    loading: number;
 }
 
 export interface State {
@@ -43,16 +52,21 @@ export class CourseDetail extends React.Component<Props, State, {}> {
         this.state.title.push("LOL")
     }
 
-    public componentDidMount() {
-        // Call api get list data
+    public componentWillMount() {
+        // get prams form url
+        const { match: { params } } = this.props;
+        // get coure detail
+        this.props.fetchCourse({id: params.id});
     }
 
     public render() {
+        let {course, api} = this.props;
         return (
             <div className="container">
                 <Helmet title={"Course"}/>
                 <NavigationBar/>
                 <div>
+                    {api.loadings > 0 ? <Loader/> : ""}
                     <div className="row">
                         <div className="col-md-6">
                             <img className="OMC avatarCourse"
@@ -61,9 +75,9 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                         <div className="col-md-6 mt-4">
                             <div className="row">
                                 <div className="col">
-                                    <p>Khóa học tiếng nhật N3</p>
-                                    <p>Khóa học tiếng nhật N3</p>
-                                    <p>Khóa học tiếng nhật N3</p>
+                                    <p>{course.name}</p>
+                                    <p>Code: {course.code}</p>
+                                    <p>{course.short_description}</p>
                                 </div>
                                 <div className="col">
                                     <Button type="primary" onClick={this.showModal}>

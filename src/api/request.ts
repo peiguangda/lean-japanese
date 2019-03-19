@@ -83,16 +83,37 @@ export const getTexts = function (parameters = {}) {
 }
 
 /**
- * Get jobs
+ * Get courses
  * @method
- * @name getJobs
+ * @name getCourses
  * @param {object} parameters - method options and parameters
  */
 export const getCourses = function (parameters = {}) {
     let path = '/api/courses';
     let queryParameters = {}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'rCzk2L-SBsfCoXmx8szq';  //sau se get tu localstorage
+    let authen_token = 'tEhgsKwZVzhRwYh4jvLd';  //sau se get tu localstorage
+    return request(
+        'GET',
+        getDomain(parameters) + path,
+        pickBy(queryParameters, identity),
+        form,
+        getConfig(parameters),
+        authen_token
+    );
+};
+
+/**
+ * Get course detail
+ * @method
+ * @name showCourse
+ * @param {object} parameters - method options and parameters
+ */
+export const showCourse = function (parameters: {id: number}) {
+    let path = '/api/courses/' + parameters.id;
+    let queryParameters = {}; //page=? or parameter sau path
+    let form = {};            //body
+    let authen_token = 'tEhgsKwZVzhRwYh4jvLd';  //sau se get tu localstorage
     return request(
         'GET',
         getDomain(parameters) + path,
