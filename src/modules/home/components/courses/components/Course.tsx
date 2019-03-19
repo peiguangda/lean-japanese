@@ -23,7 +23,6 @@ export class Course extends React.Component<Props, State, {}> {
 
     public render() {
         let {course} = this.props;
-        console.log(course);
         return (
             <Link to={course == null ? '/' : `/course/${course.id}`}>
                 <Card
