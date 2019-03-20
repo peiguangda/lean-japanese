@@ -4,7 +4,7 @@ import {State} from '../../redux/reducers';
 import {CourseDetail} from './components/Page';
 
 const mapStateToProps = (state: State) => ({
-    api: state.api
+    api: state.api,
 });
 
 const mapDispatchToProps = (dispatch) => ({});

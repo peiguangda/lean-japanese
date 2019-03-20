@@ -38,10 +38,10 @@ export const request = (method, url, queryParameters, form, config, authen_token
         mergedConfig = assign(defaultConfig, config);
     } else {
         mergedConfig = assign({
-            body: form
+            form
         }, defaultConfig, config);
     }
-    console.log("merged config",mergedConfig);
+    console.log("merged config", mergedConfig);
     return mergedConfig;
 }
 
@@ -91,7 +91,7 @@ export const getCourses = function (parameters = {}) {
     let path = '/api/courses';
     let queryParameters = {}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'tEhgsKwZVzhRwYh4jvLd';  //sau se get tu localstorage
+    let authen_token = 'rCzk2L-SBsfCoXmx8szq';  //sau se get tu localstorage
     return request(
         'GET',
         getDomain(parameters) + path,
@@ -108,15 +108,37 @@ export const getCourses = function (parameters = {}) {
  * @name showCourse
  * @param {object} parameters - method options and parameters
  */
-export const showCourse = function (parameters: {id: number}) {
+export const showCourse = function (parameters: { id: number }) {
     let path = '/api/courses/' + parameters.id;
     let queryParameters = {}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'tEhgsKwZVzhRwYh4jvLd';  //sau se get tu localstorage
+    let authen_token = 'rCzk2L-SBsfCoXmx8szq';  //sau se get tu localstorage
     return request(
         'GET',
         getDomain(parameters) + path,
         pickBy(queryParameters, identity),
+        form,
+        getConfig(parameters),
+        authen_token
+    );
+};
+
+/**
+ * Post create lesson
+ * @method
+ * @name createLesson
+ * @param {object} parameters - method options and parameters
+ */
+export const createLesson = function (parameters) {
+    let path = '/api/courses/' + parameters.course_id + '/topics/';
+    let queryParameters = {}; //page=? or parameter sau path
+    let form = {...parameters};            //body
+    console.log(form);
+    let authen_token = 'rCzk2L-SBsfCoXmx8szq';  //sau se get tu localstorage
+    return request(
+        'POST',
+        getDomain(parameters) + path,
+        pickBy(queryParameters, identity),  //phan trang cac kieu
         form,
         getConfig(parameters),
         authen_token

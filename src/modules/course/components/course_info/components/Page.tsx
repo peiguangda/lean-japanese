@@ -3,26 +3,32 @@ import {Helmet} from "react-helmet";
 import {CourseEntity} from "../types";
 import {ApiEntity} from "../../../../../common/types";
 import {Fragment} from "react";
-import {Modal, Button, Icon, Input, Upload, message} from "antd";
+import {Modal, Button, Icon, Input, Upload, message, Select} from "antd";
 import {storage, firebase} from "../../../../../firebase";
+import {LessonEntity} from "../../lesson/types";
+import DatePicker from "react-datepicker";
+import "../../../../../../node_modules/react-datepicker/dist/react-datepicker-cssmodules.min.css";
+import "../../../../../../node_modules/react-datepicker/dist/react-datepicker.css";
+import "../../../../../../node_modules/react-datepicker/dist/react-datepicker.min.css";
 
-const {TextArea} = Input;
+const Option = Select.Option;
 
 export interface Props {
     fetchCourse(parameters): void
 
+    createLesson(parameters): void
+
     course: CourseEntity;
     api: ApiEntity;
     loading: number;
-    location: any;
 }
 
 export interface State {
     visible: boolean;
-    imageUrl: string;
     loading: boolean;
-    lessonName: string;
-    description: string;
+    lesson: LessonEntity;
+    start_time: any;
+    end_time: any;
 }
 
 export class CourseInfo extends React.Component<Props, State, {}> {
@@ -30,10 +36,35 @@ export class CourseInfo extends React.Component<Props, State, {}> {
         super(props);
         this.state = {
             visible: false,
-            imageUrl: "",
             loading: false,
-            lessonName: "",
-            description: ""
+            start_time: (new Date()).getDate(),
+            end_time: new Date(),
+            lesson: new class implements LessonEntity {
+                actionType: string;
+                avatar: string;
+                childrent_type: number;
+                course_id: number;
+                description: string;
+                duration: number;
+                end_time: number;
+                level: number;
+                name: string;
+                order_index: number;
+                parent_id: number;
+                pass: number;
+                password: string;
+                question_number: number;
+                score_scale: number;
+                short_description: string;
+                sort_id: number;
+                start_time: number;
+                status: number;
+                tag: string;
+                time_practice: number;
+                total_card_num: number;
+                user_id: number;
+                user_name: string;
+            }
         }
     }
 
@@ -55,12 +86,18 @@ export class CourseInfo extends React.Component<Props, State, {}> {
     }
 
     public handleOk = (e) => {
-        console.log("e",e);
+        let {lesson} = this.state;
+        const {children} = this.props;
+        lesson.childrent_type = 1;
+        lesson.status = 1;
         this.setState({
             visible: false,
         });
-        //them lesson vua dc them vao day
-        console.log("state", this.state);
+        console.log("children", children["id"]);
+        this.props.createLesson({
+            topic: lesson,
+            course_id: children["id"]
+        });
     }
 
     public beforeUpload(file) {
@@ -99,10 +136,13 @@ export class CourseInfo extends React.Component<Props, State, {}> {
                 message.error("Have error in uploading");
             }, () => {
                 uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-                    this.getBase64(info.file.originFileObj, downloadURL => this.setState({
-                        imageUrl: downloadURL,
-                        loading: false,
-                    }));
+                    this.getBase64(info.file.originFileObj, downloadURL => this.setState(prevState => ({
+                        lesson: {
+                            ...prevState.lesson,
+                            avatar: downloadURL
+                        },
+                        loading: false
+                    })));
                 });
             });
             this.setState({loading: true});
@@ -111,32 +151,84 @@ export class CourseInfo extends React.Component<Props, State, {}> {
     }
 
     public emitNameEmpty = () => {
-        this.setState({ lessonName: '' });
+        this.setState(prevState => ({
+            lesson: {
+                ...prevState.lesson,
+                name: ''
+            }
+        }));
     }
 
     public emitDescriptEmpty = () => {
-        this.setState({ description: '' });
+        this.setState(prevState => ({
+            lesson: {
+                ...prevState.lesson,
+                description: ''
+            }
+        }));
     }
 
     public onChangeNameLesson = (e) => {
-        this.setState({ lessonName: e.target.value });
+        let {value} = e.target;
+        this.setState(prevState => ({
+            lesson: {
+                ...prevState.lesson,
+                name: value
+            }
+        }));
     }
 
     public onChangeDescription = (e) => {
-        this.setState({ description: e.target.value });
+        let {value} = e.target;
+        this.setState(prevState => ({
+            lesson: {
+                ...prevState.lesson,
+                description: value
+            }
+        }));
+    }
+
+    public handleSelectChange = value => {
+        console.log(`selected ${value}`);
+        this.setState(prevState => ({
+            lesson: {
+                ...prevState.lesson,
+                status: value
+            }
+        }));
+    }
+
+    public handleChangeStartTime = date => {
+        console.log(`selected ${date}`);
+        this.setState(prevState => ({
+            lesson: {
+                ...prevState.lesson,
+                start_time: date
+            }
+        }));
+    }
+
+    public handleChangeEndTime = date => {
+        console.log(`selected ${date}`);
+        this.setState(prevState => ({
+            lesson: {
+                ...prevState.lesson,
+                end_time: date
+            }
+        }));
     }
 
     public showButtonAddLesson() {
-        let {loading, lessonName, description} = this.state;
-        const suffixLesson = lessonName ? <Icon type="close-circle" onClick={this.emitNameEmpty} /> : null;
-        const suffixName = lessonName ? <Icon type="close-circle" onClick={this.emitDescriptEmpty} /> : null;
+        let {loading, lesson: {name, description, start_time, end_time}} = this.state;
+        const suffixLesson = name ? <Icon type="close-circle" onClick={this.emitNameEmpty}/> : null;
+        const suffixName = description ? <Icon type="close-circle" onClick={this.emitDescriptEmpty}/> : null;
         const uploadButton = (
             <div>
                 <Icon type={loading ? "loading" : "plus"}/>
                 <div className="ant-upload-text">Upload</div>
             </div>
         );
-        const imageUrl = this.state.imageUrl;
+        const {lesson: {avatar}} = this.state;
         return <Fragment>
             <Button type="primary" onClick={this.showModal}>
                 <Icon type="plus"/>
@@ -149,23 +241,39 @@ export class CourseInfo extends React.Component<Props, State, {}> {
                 onCancel={this.handleCancel}
             >
                 <Input.Group>
-                    <Input 
+                    <Input
                         placeholder="Lesson name"
-                        prefix={<Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />} //set icon prefix the input
+                        prefix={<Icon type="edit" style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
                         suffix={suffixLesson}  //set icon if having text in box
-                        value={lessonName}
+                        value={name}
                         onChange={this.onChangeNameLesson}
                     />
-                    <Input 
-                        placeholder="Description" 
+                    <Input
+                        placeholder="Description"
                         type="textarea"
                         size="large"
                         value={description}
                         onChange={this.onChangeDescription}
-                        prefix={<Icon type="form" style={{ color: 'rgba(0,0,0,.25)' }} />} //set icon prefix the input
+                        prefix={<Icon type="form" style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
                         suffix={suffixName}  //set icon if having text in box
                     />
                 </Input.Group>
+                <Select defaultValue="lucy" style={{width: 120}} onChange={this.handleSelectChange}>
+                    <Option value="public">Public</Option>
+                    <Option value="private">Private</Option>
+                    <Option value="deleted">Deleted</Option>
+                    <Option value="open">Open</Option>
+                </Select>
+                <DatePicker
+                    selected={start_time}
+                    onChange={this.handleChangeStartTime}
+                    placeholderText="Start time"
+                />
+                <DatePicker
+                    selected={end_time}
+                    onChange={this.handleChangeEndTime}
+                    placeholderText="End time"
+                />
                 <Upload
                     name="avatar"
                     listType="picture-card"
@@ -174,7 +282,7 @@ export class CourseInfo extends React.Component<Props, State, {}> {
                     beforeUpload={this.beforeUpload}
                     onChange={this.handleChange}
                 >
-                    {imageUrl ? <img src={imageUrl} alt="avatar"/> : uploadButton}
+                    {avatar ? <img src={avatar} alt="avatar"/> : uploadButton}
                 </Upload>
             </Modal>
         </Fragment>
