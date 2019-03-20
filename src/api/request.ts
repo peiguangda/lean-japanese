@@ -41,8 +41,7 @@ export const request = (method, url, queryParameters, form, config, authen_token
             body: form
         }, defaultConfig, config);
     }
-    console.log("merged config");
-    console.log(mergedConfig);
+    console.log("merged config",mergedConfig);
     return mergedConfig;
 }
 
