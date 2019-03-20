@@ -19,9 +19,10 @@ export interface Props {
 
 export interface State {
     visible: boolean;
-    title: Array<string>;
     imageUrl: string;
     loading: boolean;
+    lessonName: string;
+    description: string;
 }
 
 export class CourseInfo extends React.Component<Props, State, {}> {
@@ -29,9 +30,10 @@ export class CourseInfo extends React.Component<Props, State, {}> {
         super(props);
         this.state = {
             visible: false,
-            title: [],
             imageUrl: "",
-            loading: false
+            loading: false,
+            lessonName: "",
+            description: ""
         }
     }
 
@@ -53,12 +55,12 @@ export class CourseInfo extends React.Component<Props, State, {}> {
     }
 
     public handleOk = (e) => {
-        console.log(e);
+        console.log("e",e);
         this.setState({
             visible: false,
         });
         //them lesson vua dc them vao day
-        this.state.title.push("LOL")
+        console.log("state", this.state);
     }
 
     public beforeUpload(file) {
@@ -74,18 +76,15 @@ export class CourseInfo extends React.Component<Props, State, {}> {
     }
 
     public getBase64(img, callback) {
-        console.log("img", img);
         const reader = new FileReader();
         reader.addEventListener("load", () => callback(reader.result));
         reader.readAsDataURL(img);
     }
 
     public handleChange = (info) => {
-        console.log(info);
         if (info.file.status === "uploading") {
-            console.log(storage);
-            const uploadTask = storage.ref(`images/${info.file.name}`).put(info.file.name);
-            uploadTask.on('state_changed', function (snapshot) {
+            const uploadTask = storage.ref(`images/${info.file.name}`).put(info.file.originFileObj);
+            uploadTask.on('state_changed', snapshot => {
                 var progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
                 console.log('Upload is ' + progress + '% done');
                 switch (uploadTask.snapshot.state) {
@@ -96,27 +95,41 @@ export class CourseInfo extends React.Component<Props, State, {}> {
                         console.log('Upload is running');
                         break;
                 }
-            }, function (error) {
-                console.log('error');
-            }, function () {
-                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-                    console.log('File available at', downloadURL);
+            }, error => {
+                message.error("Have error in uploading");
+            }, () => {
+                uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
+                    this.getBase64(info.file.originFileObj, downloadURL => this.setState({
+                        imageUrl: downloadURL,
+                        loading: false,
+                    }));
                 });
             });
             this.setState({loading: true});
             return;
         }
-        if (info.file.status === "done") {
-            // Get this url from response in real world.
-            this.getBase64(info.file.originFileObj, imageUrl => this.setState({
-                imageUrl,
-                loading: false,
-            }));
-        }
+    }
+
+    public emitNameEmpty = () => {
+        this.setState({ lessonName: '' });
+    }
+
+    public emitDescriptEmpty = () => {
+        this.setState({ description: '' });
+    }
+
+    public onChangeNameLesson = (e) => {
+        this.setState({ lessonName: e.target.value });
+    }
+
+    public onChangeDescription = (e) => {
+        this.setState({ description: e.target.value });
     }
 
     public showButtonAddLesson() {
-        let {loading} = this.state;
+        let {loading, lessonName, description} = this.state;
+        const suffixLesson = lessonName ? <Icon type="close-circle" onClick={this.emitNameEmpty} /> : null;
+        const suffixName = lessonName ? <Icon type="close-circle" onClick={this.emitDescriptEmpty} /> : null;
         const uploadButton = (
             <div>
                 <Icon type={loading ? "loading" : "plus"}/>
@@ -135,14 +148,29 @@ export class CourseInfo extends React.Component<Props, State, {}> {
                 onOk={this.handleOk}
                 onCancel={this.handleCancel}
             >
-                <Input placeholder="Lesson name"/>
-                <TextArea placeholder="Description" rows={4}/>
+                <Input.Group>
+                    <Input 
+                        placeholder="Lesson name"
+                        prefix={<Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />} //set icon prefix the input
+                        suffix={suffixLesson}  //set icon if having text in box
+                        value={lessonName}
+                        onChange={this.onChangeNameLesson}
+                    />
+                    <Input 
+                        placeholder="Description" 
+                        type="textarea"
+                        size="large"
+                        value={description}
+                        onChange={this.onChangeDescription}
+                        prefix={<Icon type="form" style={{ color: 'rgba(0,0,0,.25)' }} />} //set icon prefix the input
+                        suffix={suffixName}  //set icon if having text in box
+                    />
+                </Input.Group>
                 <Upload
                     name="avatar"
                     listType="picture-card"
                     className="avatar-uploader"
                     showUploadList={false}
-                    action="https://api.cloudinary.com/v1_1/easy-japanese-154d1/upload"
                     beforeUpload={this.beforeUpload}
                     onChange={this.handleChange}
                 >

@@ -91,7 +91,7 @@ export const getCourses = function (parameters = {}) {
     let path = '/api/courses';
     let queryParameters = {}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'rCzk2L-SBsfCoXmx8szq';  //sau se get tu localstorage
+    let authen_token = 'tEhgsKwZVzhRwYh4jvLd';  //sau se get tu localstorage
     return request(
         'GET',
         getDomain(parameters) + path,
@@ -112,7 +112,7 @@ export const showCourse = function (parameters: {id: number}) {
     let path = '/api/courses/' + parameters.id;
     let queryParameters = {}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'rCzk2L-SBsfCoXmx8szq';  //sau se get tu localstorage
+    let authen_token = 'tEhgsKwZVzhRwYh4jvLd';  //sau se get tu localstorage
     return request(
         'GET',
         getDomain(parameters) + path,
