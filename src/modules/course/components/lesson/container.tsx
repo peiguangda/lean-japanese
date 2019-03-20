@@ -5,7 +5,6 @@ import { ListLesson } from './components/Page';
 
 
 const mapStateToProps = (state: State) => ({
-
 });
 
 const mapDispatchToProps = (dispatch) => ({
