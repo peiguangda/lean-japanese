@@ -27,7 +27,6 @@ export class ListCourse extends React.Component<Props, State, {}> {
     public showListCourse() {
         let {courses} = this.props;
         return values(courses).map((value, index) => {
-            console.log("index",index);
             return <Course course={value} key={index}/>
         });
     }

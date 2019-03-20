@@ -1,6 +1,6 @@
 import { CourseEntity } from "./types";
-import * as request from "../../api/request";
-import { requestAxios } from "../../redux/api";
+import * as request from "../../../../api/request";
+import { requestAxios } from "../../../../redux/api";
 
 export const FETCH_COURSE = "course/FETCH_COURSE";
 export const FETCH_COURSE_ERROR = "course/FETCH_COURSE_ERROR";
