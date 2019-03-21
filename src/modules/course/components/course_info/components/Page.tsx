@@ -93,7 +93,6 @@ export class CourseInfo extends React.Component<Props, State, {}> {
         this.setState({
             visible: false,
         });
-        console.log("children", children["id"]);
         this.props.createLesson({
             topic: lesson,
             course_id: children["id"]
@@ -294,14 +293,15 @@ export class CourseInfo extends React.Component<Props, State, {}> {
             <div className="row">
                 <div className="col-md-6">
                     <img className="OMC avatarCourse"
-                         src="https://storage.googleapis.com/kslearning/images/722984834-1544915140774-47089101_564216997360595_2408262560290701312_n.jpg"/>
+                         alt={course ? course.name : ""}
+                         src={course ? course.avatar : ""}/>
                 </div>
                 <div className="col-md-6 mt-4">
                     <div className="row">
                         <div className="col">
-                            <p>{course.name}</p>
-                            <p>Code: {course.code}</p>
-                            <p>{course.short_description}</p>
+                            <p>{course ? course.name : "Không có dữ liệu để hiện thị"}</p>
+                            <p>Code: {course ? course.code : "Không có dữ liệu để hiện thị"}</p>
+                            <p>{course ? course.short_description : "Không có dữ liệu để hiện thị"}</p>
                         </div>
                         <div className="col">
                             {this.showButtonAddLesson()}

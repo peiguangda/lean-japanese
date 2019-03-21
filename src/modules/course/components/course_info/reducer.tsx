@@ -25,9 +25,9 @@ export const fetchCourseAction = parameters => dispatch => {
 export const courseReducer = (state: CourseEntity = null, action) => {
   const { type, payload = {}, responseError = {} } = action;
   state = { ...state, actionType: action.type };
-  switch (action.type) {
+  switch (type) {
     case FETCH_COURSE:
-      return { ...state, ...payload, responseError };
+      return { ...state, ...payload };
     case FETCH_COURSE_ERROR:
       return { ...state, ...payload, responseError };
   }

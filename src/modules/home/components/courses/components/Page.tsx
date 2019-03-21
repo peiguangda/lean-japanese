@@ -1,12 +1,12 @@
 import * as React from "react";
 import {Course} from "./Course"
 import {CourseEntity} from "../types";
-import {values} from "lodash";
-import {ApiEntity} from "../../../../../common/types/index";
+import {ApiEntity} from "../../../../../common/types";
 import {Loader} from "../../../../loader/components/loader";
 
 export interface Props {
     fetchCourses(parameters): void
+
     courses: CourseEntity[];
     api: ApiEntity;
     loadings: number;
@@ -26,13 +26,14 @@ export class ListCourse extends React.Component<Props, State, {}> {
 
     public showListCourse() {
         let {courses} = this.props;
-        return values(courses).map((value, index) => {
-            return <Course course={value} key={index}/>
-        });
+        if (courses && courses.length)
+            return courses.map((value, index) => {
+                return <Course course={value} key={index}/>
+            });
     }
 
     public render() {
-        let {courses, api} = this.props;
+        let {api} = this.props;
         return (
             <div className="row">
                 {api.loadings > 0 ? <Loader/> : this.showListCourse()}

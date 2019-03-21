@@ -2,3 +2,5 @@ node_modules
 tsc
 dist
 .idea/
+src/public/css/custom.css
+src/public/css/custom.css.map

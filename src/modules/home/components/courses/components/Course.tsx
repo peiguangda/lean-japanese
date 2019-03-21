@@ -2,6 +2,7 @@ import * as React from "react";
 import {Card} from 'antd';
 import {Link} from "react-router-dom";
 import {CourseEntity} from "../types";
+import "../../../../../public/css/custom.scss";
 
 const {Meta} = Card;
 
@@ -23,16 +24,17 @@ export class Course extends React.Component<Props, State, {}> {
 
     public render() {
         let {course} = this.props;
+        console.log("course",typeof course);
         return (
-            <Link to={course == null ? '/' : `/course/${course.id}`}>
+            <Link className="col-md-4 col-lg-4" to={course ? `/course/${course.id}` : '/'}>
                 <Card
+                    className="course_list"
                     hoverable
-                    style={{width: 240}}
-                    cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>}
+                    cover={<img alt={course ? course.name : ""} src={course ? course.avatar : ""}/>}
                 >
                     <Meta
-                        title={course == null ? "" : course.name}
-                        description={course == null ? "" : course.description}
+                        title={course ? course.name : ""}
+                        description={course ? course.description : ""}
                     />
                 </Card>
             </Link>

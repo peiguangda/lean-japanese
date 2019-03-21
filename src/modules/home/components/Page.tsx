@@ -5,6 +5,7 @@ import {CategoryCourse} from "./CategoryCourse";
 import {Loader} from "../../loader/components/loader";
 import * as ReactDOM from "react-dom";
 import {CourseContainer} from "./courses/container";
+import {Fragment} from "react";
 
 export interface Props {
 }
@@ -31,25 +32,24 @@ export class HomePage extends React.Component<Props, State, {}> {
 
     public render() {
         return (
-            <div className="container">
-                {/*<Loader/>*/}
-                <Helmet title={"Easy Japanese"}/>
+            <Fragment>
                 <NavigationBar/>
-                <div className="row">
-                    <div className="col-md-3">
-                        <div className="">Danh mục khoá học</div>
-                        <div className="">
-                            <CategoryCourse category_name="Tất cả khoá học" icon="desktop"/>
-                            <CategoryCourse category_name="Khóa học tiếng nhật" icon="read"/>
+                <div className="container">
+                    <Helmet title={"Easy Japanese"}/>
+                    <div className="row home_layout">
+                        <div className="col-md-3 category_box">
+                            <div className="category_index">Danh mục khoá học</div>
+                            <div className="category_item">
+                                <CategoryCourse category_name="Tất cả khoá học" icon="desktop"/>
+                                <CategoryCourse category_name="Khóa học tiếng nhật" icon="read"/>
+                            </div>
+                        </div>
+                        <div className="col-md-9">
+                            <CourseContainer/>
                         </div>
                     </div>
-
-                    <div className="col-md-9">
-                        <CourseContainer/>
-                    </div>
                 </div>
-            </div>
-
+            </Fragment>
         );
     }
 }
