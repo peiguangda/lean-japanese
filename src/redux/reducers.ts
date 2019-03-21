@@ -11,7 +11,7 @@ import {lessonReducer} from "../modules/course/components/lesson/reducer";
 export interface State {
     api: ApiEntity;
     form: any;
-    listCourse: CourseEntity;
+    listCourse: CourseEntity[];
     course: CourseEntity;
     lesson: LessonEntity
 };

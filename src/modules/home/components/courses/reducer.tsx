@@ -10,7 +10,7 @@ export const fetchListCourseAction = parameters => dispatch => {
     .then(response => {
       dispatch({
         type: FETCH_COURSE,
-        payload: response
+        payload: response.data
       });
     })
     .catch(error => {
@@ -22,12 +22,12 @@ export const fetchListCourseAction = parameters => dispatch => {
     });
 };
 
-export const listCourseReducer = (state: CourseEntity = null, action) => {
+export const listCourseReducer = (state: CourseEntity[], action) => {
   const { type, payload = {}, responseError = {} } = action;
-  state = { ...state, actionType: action.type };
-  switch (action.type) {
+  state = { ...state };
+  switch (type) {
     case FETCH_COURSE:
-      return { ...state, ...payload, responseError };
+      return payload;
     case FETCH_COURSE_ERROR:
       return { ...state, ...payload, responseError };
   }

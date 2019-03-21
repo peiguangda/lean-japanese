@@ -5,6 +5,7 @@ import {ListLessonContainter} from "./lesson/container";
 import {ApiEntity} from '../../../common/types/index';
 import {Loader} from "../../loader/components/loader";
 import {CourseInfoContainter} from "./course_info/container";
+import {Fragment} from "react";
 
 export interface Props {
     api: ApiEntity;
@@ -26,17 +27,19 @@ export class CourseDetail extends React.Component<Props, State, {}> {
         let {api} = this.props;
         let {match: {params}} = this.props;
         return (
-            <div className="container">
-                <Helmet title={"Course"}/>
+            <Fragment>
                 <NavigationBar/>
-                <div>
-                    {api.loadings > 0 ? <Loader/> : ""}
-                    <CourseInfoContainter children={params}/>
-                    <div className="">
-                        <ListLessonContainter/>
+                <div className="container">
+                    <Helmet title={"Course"}/>
+                    <div className="home_layout">
+                        {api.loadings > 0 ? <Loader/> : ""}
+                        <CourseInfoContainter children={params}/>
+                        <div className="">
+                            <ListLessonContainter/>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </Fragment>
         );
     }
 }

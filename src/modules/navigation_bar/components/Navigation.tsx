@@ -46,13 +46,14 @@ export class NavigationBar extends React.Component<Props, State, {}> {
                 onClick={this.handleClick}
                 selectedKeys={[]}
                 mode="horizontal"
+                className="menu-header"
             >
                 <Menu.Item key="mail" className="home_navigation">
-                    <Link to="/"><Icon type="home"/>Easy Japanese</Link>
+                    <Link className="logo-header" to="/"><Icon type="home"/>Easy Japanese</Link>
                 </Menu.Item>
                 <Menu.Item key="search" className="search_navigation">
                     <Search
-                        placeholder="input course name"
+                        placeholder="Input course name"
                         onSearch={value => console.log(value)}
                         style={{width: 200}}
                     />

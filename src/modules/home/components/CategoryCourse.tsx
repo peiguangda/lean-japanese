@@ -24,8 +24,8 @@ export class CategoryCourse extends React.Component<Props, State, {}> {
         return (
             <div>
                 <div className="category_course_item_main_panel">
-                    <Icon type={`${icon}`}/>
-                    <Link className="KBD category_course_item_name" to="/">{category_name}</Link>
+                    <Icon className="category_course_icon" type={`${icon}`}/>
+                    <Link className="category_course_name" to="/">{category_name}</Link>
                 </div>
             </div>
         );
