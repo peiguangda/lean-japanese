@@ -91,7 +91,7 @@ export const getCourses = function (parameters = {}) {
     let path = '/api/courses';
     let queryParameters = {}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'Kc46vNzbusbYiaNNqUwe';  //sau se get tu localstorage
     return request(
         'GET',
         getDomain(parameters) + path,
@@ -112,7 +112,28 @@ export const showCourse = function (parameters: { id: number }) {
     let path = '/api/courses/' + parameters.id;
     let queryParameters = {}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'Kc46vNzbusbYiaNNqUwe';  //sau se get tu localstorage
+    return request(
+        'GET',
+        getDomain(parameters) + path,
+        pickBy(queryParameters, identity),
+        form,
+        getConfig(parameters),
+        authen_token
+    );
+};
+
+/**
+ * Get lessons
+ * @method
+ * @name getLessons
+ * @param {object} parameters - method options and parameters
+ */
+export const getLessons = function (parameters: {course_id: number}) {
+    let path = '/api/courses/' + parameters.course_id + '/topics';
+    let queryParameters = {}; //page=? or parameter sau path
+    let form = {};            //body
+    let authen_token = 'Kc46vNzbusbYiaNNqUwe';  //sau se get tu localstorage
     return request(
         'GET',
         getDomain(parameters) + path,
@@ -134,9 +155,31 @@ export const createLesson = function (parameters) {
     let queryParameters = {}; //page=? or parameter sau path
     let form = {...parameters};            //body
     console.log(form);
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'Kc46vNzbusbYiaNNqUwe';  //sau se get tu localstorage
     return request(
         'POST',
+        getDomain(parameters) + path,
+        pickBy(queryParameters, identity),  //phan trang cac kieu
+        form,
+        getConfig(parameters),
+        authen_token
+    );
+};
+
+/**
+ * Delete delete lesson
+ * @method
+ * @name deleteLesson
+ * @param {object} parameters - method options and parameters
+ */
+export const deleteLesson = function (parameters) {
+    let path = '/api/courses/' + parameters.course_id + '/topics/' + parameters.id;
+    let queryParameters = {}; //page=? or parameter sau path
+    let form = {};            //body
+    console.log(form);
+    let authen_token = 'Kc46vNzbusbYiaNNqUwe';  //sau se get tu localstorage
+    return request(
+        'DELETE',
         getDomain(parameters) + path,
         pickBy(queryParameters, identity),  //phan trang cac kieu
         form,

@@ -6,14 +6,15 @@ import {reducer as reduxFormReducer} from 'redux-form';
 import {listCourseReducer} from '../modules/home/components/courses/reducer';
 import {courseReducer} from '../modules/course/components/course_info/reducer';
 import {LessonEntity} from "../modules/course/components/lesson/types";
-import {lessonReducer} from "../modules/course/components/lesson/reducer";
+import {listLessonReducer, lessonReducer} from '../modules/course/components/lesson/reducer';
 
 export interface State {
     api: ApiEntity;
     form: any;
     listCourse: CourseEntity[];
     course: CourseEntity;
-    lesson: LessonEntity
+    listLesson: LessonEntity[];
+    lesson: LessonEntity;
 };
 
 export const state = combineReducers<State>({
@@ -21,5 +22,6 @@ export const state = combineReducers<State>({
     form: reduxFormReducer,
     listCourse: listCourseReducer,
     course: courseReducer,
+    listLesson: listLessonReducer,
     lesson: lessonReducer
 });

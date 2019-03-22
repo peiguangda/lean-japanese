@@ -14,9 +14,9 @@ import "../../../../../../node_modules/react-datepicker/dist/react-datepicker.mi
 const Option = Select.Option;
 
 export interface Props {
-    fetchCourse(parameters): void
-
-    createLesson(parameters): void
+    fetchCourse(parameters): void;
+    fetchLessons(parameters): void;
+    createLesson(parameters): Promise<any>;
 
     course: CourseEntity;
     api: ApiEntity;
@@ -40,6 +40,7 @@ export class CourseInfo extends React.Component<Props, State, {}> {
             start_time: (new Date()).getDate(),
             end_time: new Date(),
             lesson: new class implements LessonEntity {
+                id: string;
                 actionType: string;
                 avatar: string;
                 childrent_type: number;
@@ -96,6 +97,11 @@ export class CourseInfo extends React.Component<Props, State, {}> {
         this.props.createLesson({
             topic: lesson,
             course_id: children["id"]
+        }).then(response => {
+            console.log(response);
+            if(response.status == "success" ){
+                this.props.fetchLessons({course_id: children["id"]})
+            }
         });
     }
 
@@ -229,7 +235,7 @@ export class CourseInfo extends React.Component<Props, State, {}> {
         );
         const {lesson: {avatar}} = this.state;
         return <Fragment>
-            <Button type="primary" onClick={this.showModal}>
+            <Button type="primary" className="add_item_button" onClick={this.showModal}>
                 <Icon type="plus"/>
                 Add a lesson
             </Button>
@@ -257,7 +263,7 @@ export class CourseInfo extends React.Component<Props, State, {}> {
                         suffix={suffixName}  //set icon if having text in box
                     />
                 </Input.Group>
-                <Select defaultValue="lucy" style={{width: 120}} onChange={this.handleSelectChange}>
+                <Select defaultValue="status" style={{width: 120}} onChange={this.handleSelectChange}>
                     <Option value="public">Public</Option>
                     <Option value="private">Private</Option>
                     <Option value="deleted">Deleted</Option>
@@ -290,7 +296,7 @@ export class CourseInfo extends React.Component<Props, State, {}> {
     public render() {
         let {course, api} = this.props;
         return (
-            <div className="row">
+            <div className="row course_info_layout">
                 <div className="col-md-6">
                     <img className="OMC avatarCourse"
                          alt={course ? course.name : ""}
