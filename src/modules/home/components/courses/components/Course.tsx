@@ -24,7 +24,6 @@ export class Course extends React.Component<Props, State, {}> {
 
     public render() {
         let {course} = this.props;
-        console.log("course",typeof course);
         return (
             <Link className="col-md-4 col-lg-4" to={course ? `/course/${course.id}` : '/'}>
                 <Card
