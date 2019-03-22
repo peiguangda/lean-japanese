@@ -35,7 +35,7 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                         {api.loadings > 0 ? <Loader/> : ""}
                         <CourseInfoContainter children={params}/>
                         <div className="">
-                            <ListLessonContainter/>
+                            <ListLessonContainter children={params}/>
                         </div>
                     </div>
                 </div>

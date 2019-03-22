@@ -1,5 +1,6 @@
 export interface LessonEntity {
     actionType?: string;
+    id: string;
     user_id: number,
     course_id: number,
     parent_id: number,
