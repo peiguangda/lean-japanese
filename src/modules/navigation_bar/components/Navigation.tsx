@@ -23,7 +23,6 @@ export class NavigationBar extends React.Component<Props, State, {}> {
     }
 
     public handleClick = (e) => {
-        console.log('click ', e);
         this.setState({
             current: e.key,
         });
@@ -31,7 +30,6 @@ export class NavigationBar extends React.Component<Props, State, {}> {
 
     private handleMenuClick(e) {
         message.info('Click on menu item.');
-        console.log('click', e);
     }
 
     public render() {

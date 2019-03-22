@@ -45,6 +45,24 @@ export const deleteLessonAction = parameters => dispatch => {
     });
 };
 
+export const editLessonAction = parameters => dispatch => {
+    return dispatch(requestAxios(request.editLesson(parameters)))
+        .then(response => {
+            dispatch({
+                type: DELETE_LESSON,
+                payload: response
+            });
+            return response;
+        })
+        .catch(error => {
+            dispatch({
+                type: DELETE_LESSON_ERROR,
+                payload: {},
+                responseError: error
+            });
+        });
+};
+
 export const fetchListLessonAction = parameters => dispatch => {
   dispatch(requestAxios(request.getLessons(parameters)))
     .then(response => {
@@ -79,6 +97,7 @@ export const lessonReducer = (state: LessonEntity = null, action) => {
   state = { ...state };
   switch (action.type) {
     case CREATE_LESSON:
+      console.log("vao xong");
       return {...state, ...payload};
     case CREATE_LESSON_ERROR:
       return { ...state, ...payload, responseError };

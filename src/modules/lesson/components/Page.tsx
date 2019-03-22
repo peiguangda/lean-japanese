@@ -37,7 +37,6 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     }
 
     public handleOk = (e) => {
-        console.log(e);
         this.setState({
             visible: false,
         });

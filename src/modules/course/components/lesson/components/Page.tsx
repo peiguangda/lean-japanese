@@ -9,6 +9,7 @@ import {Loader} from "../../../../loader/components/loader";
 export interface Props {
     fetchLessons(parameters): void
     deleteLesson(parameters): Promise<any>;
+    editLesson(parameters): Promise<any>;
     lessons: LessonEntity[];
     api: ApiEntity;
 }
@@ -27,10 +28,8 @@ export class ListLesson extends React.Component<Props, State, {}> {
     }
 
     public _deleteLesson = params =>{
-        console.log("params", params);
         this.props.deleteLesson({course_id: params.course_id, id: params.lessonId})
         .then(response => {
-            console.log("response",response);
             if(response.status == "success")
             {
                 message.success('Successful!');
@@ -39,11 +38,28 @@ export class ListLesson extends React.Component<Props, State, {}> {
         })
     }
 
+    public _editLesson = params =>{
+        this.props.editLesson(params)
+            .then(response => {
+                if(response.status == "success")
+                {
+                    message.success('Successful!');
+                    this.props.fetchLessons({course_id: params.course_id});
+                }
+            })
+    }
+
     private showListLesson = () => {
         let {lessons} = this.props;
         if (lessons && lessons.length)
             return lessons.map((item, index) => {
-                return <Lesson lesson={item} key={index} deleteLesson={this._deleteLesson} course_id={this.props.children["id"]}/>;
+                return <Lesson
+                    lesson={item}
+                    deleteLesson={this._deleteLesson}
+                    fetchLesson={this.props.fetchLessons}
+                    course_id={this.props.children["id"]}
+                    editLesson={this._editLesson}
+                />;
             });
     }
 
