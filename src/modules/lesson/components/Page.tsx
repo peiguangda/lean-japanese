@@ -2,29 +2,25 @@ import * as React from "react";
 import {Helmet} from "react-helmet";
 import {NavigationBar} from "../../navigation_bar/components/Navigation";
 import {Modal, Button, Icon, Input} from 'antd';
-import {ListExerciseContainter} from './exercise/container';
 import {Fragment} from "react";
 import {LessonEntity} from "../../../common/types/lesson";
-import {LessonModal} from "../../modal/lesson/components/LessonModal";
 import {Loader} from "../../loader/components/loader";
-import {CourseInfoContainter} from "../../course/components/course_info/container";
-import {ListLessonContainter} from "../../course/components/lesson/container";
 import {ApiEntity} from "../../../common/types";
+import {ListExerciseContainter} from "./exercise/container";
 
 const {TextArea} = Input;
 
 export interface Props {
-    match: any;
-
     fetchLesson(parameters): void;
 
+    match: any;
+    params: any;
     lesson: LessonEntity;
     api: ApiEntity;
 }
 
 export interface State {
     visible: boolean;
-    title: Array<string>
 }
 
 export class LessonDetail extends React.Component<Props, State, {}> {
@@ -32,7 +28,6 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         super(props);
         this.state = {
             visible: false,
-            title: []
         }
     }
 
@@ -56,15 +51,11 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         this.setState({
             visible: false,
         });
-        this.state.title.push("LOL")
-    }
-
-    public componentDidMount() {
-        // Call api get list data
     }
 
     public render() {
         let {lesson, api} = this.props;
+        let {match: {params}} = this.props;
         return (
             <Fragment>
                 <NavigationBar/>
@@ -96,7 +87,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                 </div>
                             </div>
                             <div className="">
-                                <ListExerciseContainter/>
+                                <ListExerciseContainter children={params}/>
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { State } from '../../reducers/reducers';
-import { LessonDetail } from './components/Page';
+import {LessonDetail} from "./components/Page";
 import {fetchLessonAction} from "../../reducers/lesson";
 
 

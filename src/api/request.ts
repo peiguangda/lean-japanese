@@ -227,6 +227,111 @@ export const showLesson = function (parameters) {
         authen_token
     );
 };
+
+/**
+ * Get Exercises
+ * @method
+ * @name getExercises
+ * @param {object} parameters - method options and parameters
+ */
+export const getExercises = function (parameters) {
+    let path = '/api/cards/';
+    let queryParameters = {topic_id: parameters.topic_id}; //page=? or parameter sau path
+    let form = {};            //body
+    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    return request(
+        'GET',
+        getDomain(parameters) + path,
+        pickBy(queryParameters, identity),
+        form,
+        getConfig(parameters),
+        authen_token
+    );
+};
+
+/**
+ * Post create exercise
+ * @method
+ * @name createExercise
+ * @param {object} parameters - method options and parameters
+ */
+export const createExercise = function (parameters) {
+    let path = '/api/cards/';
+    let queryParameters = {course_id: parameters.course_id}; //page=? or parameter sau path
+    let form = {topic: parameters};            //body
+    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    return request(
+        'POST',
+        getDomain(parameters) + path,
+        pickBy(queryParameters, identity),  //phan trang cac kieu
+        form,
+        getConfig(parameters),
+        authen_token
+    );
+};
+
+/**
+ * Delete delete exercise
+ * @method
+ * @name deleteExercise
+ * @param {object} parameters - method options and parameters
+ */
+export const deleteExercise = function (parameters) {
+    let path = '/api/cards/' + parameters.id;
+    let queryParameters = {}; //page=? or parameter sau path
+    let form = {};            //body
+    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    return request(
+        'DELETE',
+        getDomain(parameters) + path,
+        pickBy(queryParameters, identity),  //phan trang cac kieu
+        form,
+        getConfig(parameters),
+        authen_token
+    );
+};
+
+/**
+ * Edit edit exercise
+ * @method
+ * @name editExercise
+ * @param {object} parameters - method options and parameters
+ */
+export const editExercise = function (parameters) {
+    let path = '/api/cards/' + parameters.id;
+    let queryParameters = {course_id: parameters.course_id}; //page=? or parameter sau path
+    let form = {topic: parameters}            //body
+    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    return request(
+        'PUT',
+        getDomain(parameters) + path,
+        pickBy(queryParameters, identity),  //phan trang cac kieu
+        form,
+        getConfig(parameters),
+        authen_token
+    );
+};
+
+/**
+ * Get exercise detail
+ * @method
+ * @name showExercise
+ * @param {object} parameters - method options and parameters
+ */
+export const showExercise = function (parameters) {
+    let path = '/api/cards/' + parameters.id;
+    let queryParameters = {}; //page=? or parameter sau path
+    let form = {};            //body
+    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    return request(
+        'GET',
+        getDomain(parameters) + path,
+        pickBy(queryParameters, identity),
+        form,
+        getConfig(parameters),
+        authen_token
+    );
+};
 // /**
 //  * Get process
 //  * @method

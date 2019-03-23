@@ -30,7 +30,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
     public _deleteLesson = params =>{
         this.props.deleteLesson({course_id: params.course_id, id: params.lessonId})
         .then(response => {
-            if(response.status == "success")
+            if(response && response.status == "success")
             {
                 message.success('Successful!');
                 this.props.fetchLessons({course_id: params.course_id});
@@ -41,7 +41,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
     public _editLesson = params =>{
         this.props.editLesson(params)
             .then(response => {
-                if(response.status == "success")
+                if(response && response.status == "success")
                 {
                     message.success('Successful!');
                     this.props.fetchLessons({course_id: params.course_id});

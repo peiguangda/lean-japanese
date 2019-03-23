@@ -1,32 +1,81 @@
 import * as React from "react";
-import {Button, Card, Popover} from 'antd';
+import {Button, Card, message, Popconfirm} from 'antd';
 import {Link} from "react-router-dom";
+import {ExerciseEntity} from "../../../../../common/types/exercise";
 
 
 export interface Props {
+    exercise: ExerciseEntity;
+
+    // fetchListExercise(parameters): void
+    deleteExercise(parameters): void;
+
+    // editExercise(parameters): Promise<any>;
 }
 
 export interface State {
-    title: string
+    visible: boolean
 }
 
 export class Exercise extends React.Component<Props, State, {}> {
     constructor(props) {
         super(props);
+        this.state = {
+            visible: false
+        }
+    }
+
+    public onClickEdit = () => {
+        this.setState({
+            visible: true
+        })
+    }
+
+    //
+    // public _editExercise = params =>{
+    //     this.props.editExercise(params)
+    //         .then(response => {
+    //             if(response && response.status == "success")
+    //             {
+    //                 message.success('Successful!');
+    //                 this.props.fetchListExercise({topic_id: params.topic_id});
+    //             }
+    //         })
+    // }
+
+    public confirm(params) {
+        this.props.deleteExercise(params);
+    }
+
+    public cancel(e) {
+        message.error('Click on No');
     }
 
     public render() {
+        let {exercise} = this.props;
         return (
             <Card style={{width: 1000}}>
                 <div className="row">
                     <div className="col-md-8">
-                        <Link to="/"><p>{this.props.children}</p></Link>
+                        <Link to={exercise ? `exercises/${exercise.id}` : "/"}><p>{exercise.code}</p></Link>
                     </div>
                     <div className="col-md-4">
-                        <Popover placement="bottomRight" title={"title"} content={"content"} trigger="click">
-                            <Button type="primary" icon="plus-circle"></Button>
-                        </Popover>
-                        <Button type="default" icon="close"></Button>
+                        <Button
+                            type="primary"
+                            className="small_button"
+                            icon="edit"
+                            onClick={() => this.onClickEdit()}
+                        />
+
+                        <Popconfirm
+                            title="Are you sure delete this question?"
+                            onConfirm={() => this.confirm({exercise: exercise})}
+                            onCancel={this.cancel}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button type="primary" className="small_button" icon="close"/>
+                        </Popconfirm>
                     </div>
                 </div>
             </Card>

@@ -75,7 +75,7 @@ export class CourseInfo extends React.Component<Props, State, {}> {
     public _createLesson = params => {
         this.props.createLesson(params)
             .then(response => {
-                if (response.status == "success") {
+                if (response && response.status == "success") {
                     message.success('Successful!');
                     this.props.fetchLessons({course_id: params.course_id});
                     //reset lesson state
