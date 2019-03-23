@@ -51,7 +51,7 @@ export class NavigationBar extends React.Component<Props, State, {}> {
                 </Menu.Item>
                 <Menu.Item key="search" className="search_navigation">
                     <Search
-                        placeholder="Input course name"
+                        placeholder="Nhập khóa học"
                         onSearch={value => console.log(value)}
                         style={{width: 200}}
                     />

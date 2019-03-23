@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { State } from '../../../../redux/reducers';
+import { State } from '../../../../reducers/reducers';
 import { ListCourse } from './components/Page';
-import { fetchListCourseAction } from './reducer';
+import { fetchListCourseAction } from '../../../../reducers/list_course';
 import { ApiEntity } from "../../../../common/types/index";
 
 const mapStateToProps = (state: State) => ({

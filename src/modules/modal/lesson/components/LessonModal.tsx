@@ -65,7 +65,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
     componentWillReceiveProps(nextProps) {
         let {lesson, visible} = nextProps;
         lesson.course_id = nextProps.course_id;
-        console.log("next", nextProps);
+        // console.log("next", nextProps);
         this.setState({
             lesson: lesson,
             visible: visible

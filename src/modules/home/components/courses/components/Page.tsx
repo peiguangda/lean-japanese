@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Course} from "./Course"
-import {CourseEntity} from "../types";
+import {CourseEntity} from "../../../../../common/types/course";
 import {ApiEntity} from "../../../../../common/types";
 import {Loader} from "../../../../loader/components/loader";
 

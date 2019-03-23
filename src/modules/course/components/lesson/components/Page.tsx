@@ -1,8 +1,8 @@
 import * as React from "react";
 import {Helmet} from "react-helmet";
-import {Modal, Button, message} from 'antd';
+import {message} from 'antd';
 import {Lesson} from './Lesson';
-import {LessonEntity} from "../types";
+import {LessonEntity} from "../../../../../common/types/lesson";
 import {ApiEntity} from "../../../../../common/types";
 import {Loader} from "../../../../loader/components/loader";
 

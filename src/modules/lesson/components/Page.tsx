@@ -4,10 +4,22 @@ import {NavigationBar} from "../../navigation_bar/components/Navigation";
 import {Modal, Button, Icon, Input} from 'antd';
 import {ListExerciseContainter} from './exercise/container';
 import {Fragment} from "react";
+import {LessonEntity} from "../../../common/types/lesson";
+import {LessonModal} from "../../modal/lesson/components/LessonModal";
+import {Loader} from "../../loader/components/loader";
+import {CourseInfoContainter} from "../../course/components/course_info/container";
+import {ListLessonContainter} from "../../course/components/lesson/container";
+import {ApiEntity} from "../../../common/types";
 
 const {TextArea} = Input;
 
 export interface Props {
+    match: any;
+
+    fetchLesson(parameters): void;
+
+    lesson: LessonEntity;
+    api: ApiEntity;
 }
 
 export interface State {
@@ -22,6 +34,10 @@ export class LessonDetail extends React.Component<Props, State, {}> {
             visible: false,
             title: []
         }
+    }
+
+    componentWillMount() {
+        this.props.fetchLesson({id: this.props.match.params.id});
     }
 
     public showModal = () => {
@@ -48,44 +64,40 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     }
 
     public render() {
+        let {lesson, api} = this.props;
         return (
             <Fragment>
                 <NavigationBar/>
                 <div className="container">
                     <Helmet title={"Lesson"}/>
-                    <div>
-                        <div className="row home_layout">
+                    <div className="home_layout">
+                        {api.loadings > 0 ? <Loader/> : ""}
+                        <div className="row course_info_layout">
                             <div className="col-md-6">
                                 <img className="OMC avatarCourse"
-                                     src="https://storage.googleapis.com/kslearning/images/722984834-1544915140774-47089101_564216997360595_2408262560290701312_n.jpg"/>
+                                     alt={lesson ? lesson.name : ""}
+                                     src={lesson ? lesson.avatar : ""}/>
                             </div>
                             <div className="col-md-6 mt-4">
                                 <div className="row">
                                     <div className="col">
-                                        <p>Lesson 1</p>
-                                        <p>Lesson 1</p>
-                                        <p>Lesson 1</p>
+                                        <p>{lesson ? lesson.name : "Không có dữ liệu để hiện thị"}</p>
+                                        <p>Level: {lesson ? lesson.level : "Không có dữ liệu để hiện thị"}</p>
+                                        <p>{lesson ? lesson.short_description : "Không có dữ liệu để hiện thị"}</p>
                                     </div>
                                     <div className="col">
-                                        <Button type="primary" onClick={this.showModal}>
-                                            <Icon type="plus"/>
-                                            Add a exercise
+                                        <Button type="primary" className="add_item_button" icon="plus">
+                                            Tạo câu hỏi
                                         </Button>
-                                        <Modal
-                                            title="Add a exercise"
-                                            visible={this.state.visible}
-                                            onOk={this.handleOk}
-                                            onCancel={this.handleCancel}
-                                        >
-                                            <Input placeholder="Exercise name"/>
-                                            <TextArea placeholder="Description" rows={4}/>
-                                        </Modal>
+                                        <Button className="add_item_button">
+                                            <Icon type="upload"/>Tạo từ file
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="">
-                            <ListExerciseContainter/>
+                            <div className="">
+                                <ListExerciseContainter/>
+                            </div>
                         </div>
                     </div>
                 </div>
