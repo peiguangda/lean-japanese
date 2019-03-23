@@ -1,12 +1,9 @@
 import * as React from "react";
 import {Helmet} from "react-helmet";
-import {CourseEntity} from "../types";
+import {CourseEntity} from "../../../../../common/types/course";
 import {ApiEntity} from "../../../../../common/types";
-import {Fragment} from "react";
-import {Modal, Button, Icon, Input, Upload, message, Select} from "antd";
-import {storage, firebase} from "../../../../../firebase";
-import {LessonEntity} from "../../lesson/types";
-import DatePicker from "react-datepicker";
+import {Button, message} from "antd";
+import {LessonEntity} from "../../../../../common/types/lesson";
 import "../../../../../../node_modules/react-datepicker/dist/react-datepicker-cssmodules.min.css";
 import "../../../../../../node_modules/react-datepicker/dist/react-datepicker.css";
 import "../../../../../../node_modules/react-datepicker/dist/react-datepicker.min.css";

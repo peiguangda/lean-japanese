@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Helmet} from "react-helmet";
-import {Modal, Button} from 'antd';
 import {Exercise} from './Exercise';
 
 export interface Props {
@@ -16,6 +15,10 @@ export class ListExercise extends React.Component<Props, State, {}> {
         this.state = {
             title: ["Exercise 1", "Exercise 2", "Exercise 3","Exercise 4","Exercise 5","Exercise 6","Exercise 7","Exercise 8"]
         }
+    }
+
+    componentWillMount() {
+        console.log("loading exercise data.....");
     }
 
     private showListExercise = () => {

@@ -129,9 +129,9 @@ export const showCourse = function (parameters: { id: number }) {
  * @name getLessons
  * @param {object} parameters - method options and parameters
  */
-export const getLessons = function (parameters: {course_id: number}) {
-    let path = '/api/courses/' + parameters.course_id + '/topics';
-    let queryParameters = {}; //page=? or parameter sau path
+export const getLessons = function (parameters) {
+    let path = '/api/topics/';
+    let queryParameters = {course_id: parameters.course_id}; //page=? or parameter sau path
     let form = {};            //body
     let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
     return request(
@@ -151,8 +151,8 @@ export const getLessons = function (parameters: {course_id: number}) {
  * @param {object} parameters - method options and parameters
  */
 export const createLesson = function (parameters) {
-    let path = '/api/courses/' + parameters.course_id + '/topics/';
-    let queryParameters = {}; //page=? or parameter sau path
+    let path = '/api/topics/';
+    let queryParameters = {course_id: parameters.course_id}; //page=? or parameter sau path
     let form = {topic: parameters};            //body
     let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
     return request(
@@ -172,8 +172,8 @@ export const createLesson = function (parameters) {
  * @param {object} parameters - method options and parameters
  */
 export const deleteLesson = function (parameters) {
-    let path = '/api/courses/' + parameters.course_id + '/topics/' + parameters.id;
-    let queryParameters = {}; //page=? or parameter sau path
+    let path = '/api/topics/' + parameters.id;
+    let queryParameters = {course_id: parameters.course_id}; //page=? or parameter sau path
     let form = {};            //body
     let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
     return request(
@@ -193,14 +193,35 @@ export const deleteLesson = function (parameters) {
  * @param {object} parameters - method options and parameters
  */
 export const editLesson = function (parameters) {
-    let path = '/api/courses/' + parameters.course_id + '/topics/' + parameters.id;
-    let queryParameters = {}; //page=? or parameter sau path
+    let path = '/api/topics/' + parameters.id;
+    let queryParameters = {course_id: parameters.course_id}; //page=? or parameter sau path
     let form = {topic: parameters}            //body
     let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
     return request(
         'PUT',
         getDomain(parameters) + path,
         pickBy(queryParameters, identity),  //phan trang cac kieu
+        form,
+        getConfig(parameters),
+        authen_token
+    );
+};
+
+/**
+ * Get lesson detail
+ * @method
+ * @name showLesson
+ * @param {object} parameters - method options and parameters
+ */
+export const showLesson = function (parameters) {
+    let path = '/api/topics/' + parameters.id;
+    let queryParameters = {}; //page=? or parameter sau path
+    let form = {};            //body
+    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    return request(
+        'GET',
+        getDomain(parameters) + path,
+        pickBy(queryParameters, identity),
         form,
         getConfig(parameters),
         authen_token

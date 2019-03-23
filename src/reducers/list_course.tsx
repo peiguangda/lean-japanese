@@ -1,16 +1,16 @@
-import { CourseEntity } from "./types";
-import * as request from "../../../../api/request";
-import { requestAxios } from "../../../../redux/api";
+import { CourseEntity } from "../common/types/course";
+import * as request from "../api/request";
+import { requestAxios } from "../redux/api";
 
 export const FETCH_COURSE = "course/FETCH_COURSE";
 export const FETCH_COURSE_ERROR = "course/FETCH_COURSE_ERROR";
 
-export const fetchCourseAction = parameters => dispatch => {
-  dispatch(requestAxios(request.showCourse(parameters)))
+export const fetchListCourseAction = parameters => dispatch => {
+  dispatch(requestAxios(request.getCourses(parameters)))
     .then(response => {
       dispatch({
         type: FETCH_COURSE,
-        payload: response
+        payload: response.data
       });
     })
     .catch(error => {
@@ -22,15 +22,14 @@ export const fetchCourseAction = parameters => dispatch => {
     });
 };
 
-export const courseReducer = (state: CourseEntity = null, action) => {
+export const listCourseReducer = (state: CourseEntity[], action) => {
   const { type, payload = {}, responseError = {} } = action;
-  state = { ...state, actionType: action.type };
+  state = { ...state };
   switch (type) {
     case FETCH_COURSE:
-      return { ...state, ...payload };
+      return payload;
     case FETCH_COURSE_ERROR:
       return { ...state, ...payload, responseError };
   }
-
   return state;
 };

@@ -1,6 +1,6 @@
 import { Store, createStore, compose, applyMiddleware, combineReducers } from 'redux';
 import reduxThunk from 'redux-thunk';
-import { state, State } from './redux/reducers';
+import { state, State } from './reducers/reducers';
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' 
 

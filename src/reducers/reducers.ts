@@ -1,12 +1,12 @@
 import {combineReducers} from 'redux';
-import {ApiEntity} from '../common/types';
-import {apiReducer} from './api';
-import {CourseEntity} from '../modules/course/components/course_info/types';
+import {ApiEntity} from '../common/types/index';
+import {apiReducer} from '../redux/api';
+import {CourseEntity} from '../common/types/course';
 import {reducer as reduxFormReducer} from 'redux-form';
-import {listCourseReducer} from '../modules/home/components/courses/reducer';
-import {courseReducer} from '../modules/course/components/course_info/reducer';
-import {LessonEntity} from "../modules/course/components/lesson/types";
-import {listLessonReducer, lessonReducer} from '../modules/course/components/lesson/reducer';
+import {listCourseReducer} from './list_course';
+import {courseReducer} from './course';
+import {LessonEntity} from "../common/types/lesson";
+import {listLessonReducer, lessonReducer} from './lesson';
 
 export interface State {
     api: ApiEntity;

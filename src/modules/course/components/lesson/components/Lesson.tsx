@@ -2,7 +2,7 @@ import * as React from "react";
 import {Button, Card, Popover} from 'antd';
 import {Link} from "react-router-dom";
 import {Popconfirm, message, Icon} from 'antd';
-import {LessonEntity} from "../types";
+import {LessonEntity} from "../../../../../common/types/lesson";
 import {LessonModal} from "../../../../modal/lesson/components/LessonModal";
 
 export interface Props {

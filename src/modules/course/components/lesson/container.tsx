@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { State } from '../../../../redux/reducers';
+import { State } from '../../../../reducers/reducers';
 import { ListLesson } from './components/Page';
-import { fetchListLessonAction, deleteLessonAction, editLessonAction } from './reducer';
+import { fetchListLessonAction, deleteLessonAction, editLessonAction } from '../../../../reducers/lesson';
 
 const mapStateToProps = (state: State) => ({
     lessons: state.listLesson,

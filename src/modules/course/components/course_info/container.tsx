@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { State } from '../../../../redux/reducers';
+import { State } from '../../../../reducers/reducers';
 import { CourseInfo } from './components/Page';
-import {fetchCourseAction} from "./reducer";
-import {createLessonAction} from "../lesson/reducer";
-import { fetchListLessonAction } from '../lesson/reducer';
+import {fetchCourseAction} from "../../../../reducers/course";
+import {createLessonAction} from "../../../../reducers/lesson";
+import { fetchListLessonAction } from '../../../../reducers/lesson';
 
 const mapStateToProps = (state: State) => ({
     course: state.course,
