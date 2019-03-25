@@ -78,15 +78,21 @@ export class CourseInfo extends React.Component<Props, State, {}> {
                 if (response && response.status == "success") {
                     message.success('Successful!');
                     this.props.fetchLessons({course_id: params.course_id});
-                    //reset lesson state
-                    this.setState({
-                        visible: false,
-                    });
                 }
             })
     }
 
     public onClickCreate = () => {
+        this._showModal();
+    }
+
+    public _closeModal = () => {
+        this.setState({
+            visible: false
+        })
+    }
+
+    public _showModal = () => {
         this.setState({
             visible: true
         })
@@ -110,7 +116,7 @@ export class CourseInfo extends React.Component<Props, State, {}> {
                             <p>{course ? course.short_description : "Không có dữ liệu để hiện thị"}</p>
                         </div>
                         <div className="col">
-                            <Button type="primary" className="add_item_button" icon="plus" onClick={this.onClickCreate}>
+                            <Button type="primary" className="item_button" icon="plus" onClick={this.onClickCreate}>
                                 Add a lesson
                             </Button>
                             <LessonModal
@@ -120,6 +126,8 @@ export class CourseInfo extends React.Component<Props, State, {}> {
                                 title={"Create a lesson"}
                                 visible={visible}
                                 course_id={course.id}
+                                closeModal={this._closeModal}
+                                showModal={this._showModal}
                             />
                         </div>
                     </div>
