@@ -103,6 +103,7 @@ module.exports = {
     historyApiFallback: true,
     port: 8080,
     noInfo: true,
+    host: '127.0.0.1',
   },
   plugins: [
     //Generate index.html in /dist => https://github.com/ampedandwired/html-webpack-plugin
@@ -130,7 +131,7 @@ module.exports = {
         }
         return module.context && module.context.indexOf("node_modules") !== -1;
       }
-    }),  
+    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: "manifest",
         publicPath: "/",
