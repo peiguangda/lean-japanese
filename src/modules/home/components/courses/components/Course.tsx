@@ -33,7 +33,7 @@ export class Course extends React.Component<Props, State, {}> {
                 >
                     <Meta
                         title={course ? course.name : ""}
-                        description={course ? course.description : ""}
+                        description={course ? course.short_description : ""}
                     />
                 </Card>
             </Link>

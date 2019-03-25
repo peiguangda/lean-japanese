@@ -7,8 +7,7 @@ import {LessonEntity} from "../../../common/types/lesson";
 import {Loader} from "../../loader/components/loader";
 import {ApiEntity} from "../../../common/types";
 import {ListExerciseContainter} from "./exercise/container";
-
-const {TextArea} = Input;
+import {ExerciseModal} from "../../modal/exercise/components/ExerciseModal";
 
 export interface Props {
     fetchLesson(parameters): void;
@@ -41,10 +40,14 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         });
     }
 
-    public handleCancel = (e) => {
+    public closeModal = () => {
         this.setState({
-            visible: false,
+            visible: false
         });
+    }
+
+    public handleCancel = (e) => {
+        this.closeModal();
     }
 
     public handleOk = (e) => {
@@ -53,9 +56,15 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         });
     }
 
+    private handleClickCreateQuestion = () => {
+        console.log("ahihi");
+        this.showModal();
+    }
+
     public render() {
         let {lesson, api} = this.props;
         let {match: {params}} = this.props;
+        let {visible} = this.state;
         return (
             <Fragment>
                 <NavigationBar/>
@@ -77,7 +86,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                         <p>{lesson ? lesson.short_description : "Không có dữ liệu để hiện thị"}</p>
                                     </div>
                                     <div className="col">
-                                        <Button type="primary" className="add_item_button" icon="plus">
+                                        <Button type="primary" className="add_item_button" icon="plus" onClick={this.handleClickCreateQuestion}>
                                             Tạo câu hỏi
                                         </Button>
                                         <Button className="item_button">
@@ -85,6 +94,12 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                         </Button>
                                     </div>
                                 </div>
+                                <ExerciseModal
+                                    closeModal={this.closeModal}
+                                    showModal={this.showModal}
+                                    visible={visible}
+                                    title={"Tạo câu hỏi"}
+                                />
                             </div>
                             <div className="">
                                 <ListExerciseContainter children={params}/>
