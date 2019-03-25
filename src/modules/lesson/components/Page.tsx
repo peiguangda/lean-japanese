@@ -80,7 +80,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                         <Button type="primary" className="add_item_button" icon="plus">
                                             Tạo câu hỏi
                                         </Button>
-                                        <Button className="add_item_button">
+                                        <Button className="item_button">
                                             <Icon type="upload"/>Tạo từ file
                                         </Button>
                                     </div>

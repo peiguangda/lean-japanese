@@ -39,6 +39,18 @@ export class Lesson extends React.Component<Props, State, {}> {
         })
     }
 
+    public _closeModal = () => {
+        this.setState({
+            visible: false
+        })
+    }
+
+    public _showModal = () => {
+        this.setState({
+            visible: true
+        })
+    }
+
     public render() {
         let {lesson} = this.props;
         let {visible} = this.state;
@@ -66,6 +78,8 @@ export class Lesson extends React.Component<Props, State, {}> {
                             title={"Edit a lesson"}
                             visible={visible}
                             course_id={lesson.course_id}
+                            closeModal={this._closeModal}
+                            showModal={this._showModal}
                         />
                         <Popconfirm
                             title="Are you sure delete this lesson?"

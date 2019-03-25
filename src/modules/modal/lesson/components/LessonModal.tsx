@@ -14,6 +14,8 @@ const Option = Select.Option;
 export interface Props {
     fetchLessons(parameters): void;
     handleLesson(parameters): void;
+    closeModal(): void;
+    showModal(): void;
     lesson: LessonEntity;
     title: string;
     visible: boolean;
@@ -21,7 +23,6 @@ export interface Props {
 }
 
 export interface State {
-    visible: boolean;
     loading: boolean;
     lesson: LessonEntity;
 }
@@ -30,7 +31,6 @@ export class LessonModal extends React.Component<Props, State, {}> {
     constructor(props) {
         super(props);
         this.state = {
-            visible: false,
             loading: false,
             lesson: new class implements LessonEntity {
                 id: string;
@@ -63,36 +63,28 @@ export class LessonModal extends React.Component<Props, State, {}> {
     }
 
     componentWillReceiveProps(nextProps) {
-        let {lesson, visible} = nextProps;
+        let {lesson} = nextProps;
         lesson.course_id = nextProps.course_id;
         // console.log("next", nextProps);
         this.setState({
             lesson: lesson,
-            visible: visible
         })
     }
 
     public showModal = () => {
-        this.setState({
-            visible: true
-        });
+        this.props.showModal();
     }
 
     public handleCancel = (e) => {
-        this.setState({
-            visible: false,
-        });
+        this.props.closeModal();
     }
 
     public handleOk = (e) => {
         let {lesson} = this.state;
-        const {children} = this.props;
-        lesson.childrent_type = 1;
-        lesson.status = 1;
-        this.setState({
-            visible: false,
-        });
+        let {childrent_type, status} = lesson;
+        if (!childrent_type) lesson.childrent_type = 1;
         this.props.handleLesson(lesson);
+        this.props.closeModal();
     }
 
     public beforeUpload(file) {
@@ -137,7 +129,8 @@ export class LessonModal extends React.Component<Props, State, {}> {
                             avatar: downloadURL
                         },
                         loading: false
-                    })));
+                    }))
+                );
                 });
             });
             this.setState({loading: true});
@@ -210,8 +203,29 @@ export class LessonModal extends React.Component<Props, State, {}> {
         }));
     }
 
+    public setDetaultStatusValue = () => {
+        this.setState(prevState => ({
+            lesson: {
+                ...prevState.lesson,
+                status: 1
+            }
+        }));
+    }
+
+    public getStatus = status => {
+        console.log("status", status);
+        if(!status){
+            this.setDetaultStatusValue();
+            return "Public";
+        }
+        if(status == 1) return "Public";
+        if(status == 2) return "Private";
+        if(status == 3) return "Deleted";
+        if(status == 4) return "Open";
+    }
+
     public render() {
-        let {loading, lesson: {name, description, start_time, end_time, avatar}} = this.state;
+        let {loading, lesson: {name, description, start_time, end_time, avatar, status}} = this.state;
         const suffixLesson = name ? <Icon type="close-circle" onClick={this.emitNameEmpty}/> : null;
         const suffixName = description ? <Icon type="close-circle" onClick={this.emitDescriptEmpty}/> : null;
         const uploadButton = (
@@ -224,7 +238,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
             <Fragment>
                 <Modal
                     title={this.props.title}
-                    visible={this.state.visible}
+                    visible={this.props.visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                 >
@@ -246,11 +260,15 @@ export class LessonModal extends React.Component<Props, State, {}> {
                             suffix={suffixName}  //set icon if having text in box
                         />
                     </Input.Group>
-                    <Select defaultValue="status" style={{width: 120}} onChange={this.handleSelectChange}>
-                        <Option value="public">Public</Option>
-                        <Option value="private">Private</Option>
-                        <Option value="deleted">Deleted</Option>
-                        <Option value="open">Open</Option>
+                    <Select 
+                        style={{width: 120}} 
+                        onChange={this.handleSelectChange}
+                        value={this.getStatus(status)}
+                    >
+                            <Option value="1">Public</Option>
+                            <Option value="2">Private</Option>
+                            <Option value="3">Deleted</Option>
+                            <Option value="4">Open</Option>
                     </Select>
                     <DatePicker
                         selected={start_time}

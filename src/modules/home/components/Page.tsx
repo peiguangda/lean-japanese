@@ -19,15 +19,6 @@ export class HomePage extends React.Component<Props, State, {}> {
     }
 
     public componentDidMount() {
-        let element = document.getElementById('loader');
-        if (element) {
-            // fade out
-            ReactDOM.render(<Loader/>, element);
-            setTimeout(() => {
-                element = document.getElementById('main-loading');
-                element.parentNode.removeChild(element);
-            }, 2000)
-        }
     }
 
     public render() {
