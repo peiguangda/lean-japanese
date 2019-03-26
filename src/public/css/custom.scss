@@ -180,7 +180,7 @@
 }
 
 .inline-grid {
-  display: grid;
+  display: grid !important;
 }
 
 .setting-title {
@@ -192,6 +192,8 @@
 
 .question-content {
   padding: 1%;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
 }
 
 .input-question {
@@ -216,4 +218,8 @@
   margin-bottom: 0;
   font-family: sans-serif;
   color: #332c2c;
+}
+
+.ant-layout-sider {
+  background-color: white !important;
 }

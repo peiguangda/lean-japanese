@@ -1,43 +1,34 @@
 import * as React from "react";
-import {Helmet} from "react-helmet";
 import {Fragment} from "react";
-import {Modal, Layout, Card, Button, Icon, Checkbox, Input} from "antd";
+import {Modal, Layout, Popover, Button, Icon, Input, Card} from "antd";
 import {ExerciseEntity} from "../../../../common/types/exercise";
+import {QuestionTypeSetting} from "../../setting/components/QuestionTypeSetting";
+import {ListAnswer} from "./ListAnswer";
+import {ListQuestion} from "./ListQuestion";
+import {Answer} from "./Answer";
 
 const {
     Sider, Content,
 } = Layout;
 
-const CheckboxGroup = Checkbox.Group;
-
-const quetionOptions = ['Chọn đáp án', 'Điền từ', 'Lật mặt', 'Phát âm'];
-const defaultCheckedList = ['Chọn đáp án', 'Lật mặt'];
-
 export interface Props {
-    // fetchLessons(parameters): void;
-    // handleLesson(parameters): void;
     closeModal(): void;
-
     showModal(): void;
-
-    // exercise: ExerciseEntity;
     title: string;
     visible: boolean;
-    // course_id: number;
 }
 
 export interface State {
     loading: boolean;
     exercise: ExerciseEntity;
-    checkedList: Array<string>;
-    indeterminate: boolean;
-    checkAll: boolean;
+    isShowSetting: boolean;
 }
 
 export class ExerciseModal extends React.Component<Props, State, {}> {
     constructor(props) {
         super(props);
         this.state = {
+            isShowSetting: false,
             loading: false,
             exercise: new class implements ExerciseEntity {
                 id: string;
@@ -60,9 +51,6 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
                 back_sound: string;
                 back_hint: string;
             },
-            checkedList: defaultCheckedList,
-            indeterminate: true,
-            checkAll: false,
         }
     }
 
@@ -80,23 +68,27 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
         this.props.closeModal();
     }
 
-    onChange = (checkedList) => {
-        this.setState({
-            checkedList,
-            indeterminate: !!checkedList.length && (checkedList.length < quetionOptions.length),
-            checkAll: checkedList.length === quetionOptions.length,
-        });
+    public handleAddInputRow = (e) => {
+        console.log("e", e);
     }
 
-    onCheckAllChange = (e) => {
+    public onchangeSetting = () => {
+        let {isShowSetting} = this.state;
+        console.log(isShowSetting);
         this.setState({
-            checkedList: e.target.checked ? quetionOptions : [],
-            indeterminate: false,
-            checkAll: e.target.checked,
-        });
+            isShowSetting: !isShowSetting
+        })
     }
 
     public render() {
+        const content = <div className="col">
+            <Button className="row w-100" type="dashed" onClick={this.handleAddInputRow}>Dashed</Button>
+            <Button className="row w-100" type="dashed">Dashed</Button>
+            <Button className="row w-100" type="dashed">Dashed</Button>
+        </div>
+        const suffixQuestion = <Popover content={content} title="Mở rộng" trigger="hover"><Icon
+            type="ordered-list"/></Popover>
+
         return (
             <Fragment>
                 <Modal
@@ -112,55 +104,71 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
                                 <div className="nav_question">
                                     <Card title="Tất cả các câu hỏi">
                                         <div className="question_items">
-                                            <p>Câu hỏi 1</p>
-                                            <p>Câu hỏi 2</p>
-                                            <p>Câu hỏi 3</p>
+                                            <ListQuestion/>
                                             <div className="row">
                                                 <Button className="col-md-2" type="dashed" icon="plus"></Button>
                                                 <Button className="col-md-10" type="ghost" icon="import">Thêm từ thư
                                                     viện</Button>
                                             </div>
-                                            <Button className="row" type="default" icon="setting"></Button>
+                                            <Button className="row" type="default" icon="setting" onClick={this.onchangeSetting}>Cài đặt</Button>
                                         </div>
                                     </Card>
                                     <div className="question_items">
-                                        <div>
-                                            <p className="setting-title mt-2">Cài đặt tất cả câu hỏi</p>
-                                            <Checkbox
-                                                indeterminate={this.state.indeterminate}
-                                                onChange={this.onCheckAllChange}
-                                                checked={this.state.checkAll}
-                                            >
-                                                Check all
-                                            </Checkbox>
-                                        </div>
-                                        <br/>
-                                        <CheckboxGroup className="inline-grid" options={quetionOptions}
-                                                       value={this.state.checkedList}
-                                                       onChange={this.onChange}/>
+                                        <p className="setting-title mt-2">Cài đặt tất cả câu hỏi</p>
+                                        <QuestionTypeSetting
+                                            visible={this.state.isShowSetting}
+                                        />
                                     </div>
                                 </div>
                             </Sider>
                             <Content>
                                 <div className="row question-content">
-                                    <div className="col-md-6">
-                                        <div>
+                                    <div className="col-md-5 ml-2">
+                                        <div className="row">
                                             <p className="title-custom">Câu hỏi</p>
-                                            <Input className="input-question"/>
+                                            <Input
+                                                className="input-question"
+                                                suffix={suffixQuestion}
+                                                size="large"
+                                            />
                                         </div>
-                                        <div>
+                                        <div className="row">
                                             <p className="title-custom">Url sound</p>
-                                            <Input className="input-question"/>
+                                            <Input
+                                                className="input-question"
+                                                size="large"
+                                            />
+                                        </div>
+                                        <div className="row mt-5">
+                                            <div className="col-md-6">
+                                                <p className="setting-title">Cài đặt câu hỏi</p>
+                                                <QuestionTypeSetting
+                                                    visible={this.state.isShowSetting}
+                                                />
+                                            </div>
+                                            <div className="col-md-6">
+                                                <p className="setting-title">Other Setting</p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
+                                    <div className="col-md-5">
                                         <div>
                                             <p className="title-custom">Đáp án đúng</p>
-                                            <Input className="input-question"/>
+                                            <Input
+                                                className="input-question"
+                                                suffix={suffixQuestion}
+                                                size="large"
+                                            />
                                         </div>
                                         <div>
                                             <p className="title-custom">Url sound</p>
-                                            <Input className="input-question"/>
+                                            <Input
+                                                className="input-question"
+                                                size="large"
+                                            />
+                                        </div>
+                                        <div>
+                                            <ListAnswer/>
                                         </div>
                                     </div>
                                 </div>
@@ -169,7 +177,6 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
                     </Layout>
                 </Modal>
             </Fragment>
-
         );
     }
 }
