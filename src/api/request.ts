@@ -91,7 +91,7 @@ export const getCourses = function (parameters = {}) {
     let path = '/api/courses';
     let queryParameters = {}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'cqx-spbLQh3g4wXUzJhB';  //sau se get tu localstorage
     return request(
         'GET',
         getDomain(parameters) + path,
@@ -112,7 +112,7 @@ export const showCourse = function (parameters: { id: number }) {
     let path = '/api/courses/' + parameters.id;
     let queryParameters = {}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'cqx-spbLQh3g4wXUzJhB';  //sau se get tu localstorage
     return request(
         'GET',
         getDomain(parameters) + path,
@@ -133,7 +133,7 @@ export const getLessons = function (parameters) {
     let path = '/api/topics/';
     let queryParameters = {course_id: parameters.course_id}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'cqx-spbLQh3g4wXUzJhB';  //sau se get tu localstorage
     return request(
         'GET',
         getDomain(parameters) + path,
@@ -154,7 +154,7 @@ export const createLesson = function (parameters) {
     let path = '/api/topics/';
     let queryParameters = {course_id: parameters.course_id}; //page=? or parameter sau path
     let form = {topic: parameters};            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'cqx-spbLQh3g4wXUzJhB';  //sau se get tu localstorage
     return request(
         'POST',
         getDomain(parameters) + path,
@@ -175,7 +175,7 @@ export const deleteLesson = function (parameters) {
     let path = '/api/topics/' + parameters.id;
     let queryParameters = {course_id: parameters.course_id}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'cqx-spbLQh3g4wXUzJhB';  //sau se get tu localstorage
     return request(
         'DELETE',
         getDomain(parameters) + path,
@@ -196,7 +196,7 @@ export const editLesson = function (parameters) {
     let path = '/api/topics/' + parameters.id;
     let queryParameters = {course_id: parameters.course_id}; //page=? or parameter sau path
     let form = {topic: parameters}            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'cqx-spbLQh3g4wXUzJhB';  //sau se get tu localstorage
     return request(
         'PUT',
         getDomain(parameters) + path,
@@ -217,7 +217,7 @@ export const showLesson = function (parameters) {
     let path = '/api/topics/' + parameters.id;
     let queryParameters = {}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'cqx-spbLQh3g4wXUzJhB';  //sau se get tu localstorage
     return request(
         'GET',
         getDomain(parameters) + path,
@@ -238,7 +238,7 @@ export const getExercises = function (parameters) {
     let path = '/api/cards/';
     let queryParameters = {topic_id: parameters.topic_id}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'cqx-spbLQh3g4wXUzJhB';  //sau se get tu localstorage
     return request(
         'GET',
         getDomain(parameters) + path,
@@ -259,7 +259,7 @@ export const createExercise = function (parameters) {
     let path = '/api/cards/';
     let queryParameters = {course_id: parameters.course_id}; //page=? or parameter sau path
     let form = {topic: parameters};            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'cqx-spbLQh3g4wXUzJhB';  //sau se get tu localstorage
     return request(
         'POST',
         getDomain(parameters) + path,
@@ -280,7 +280,7 @@ export const deleteExercise = function (parameters) {
     let path = '/api/cards/' + parameters.id;
     let queryParameters = {}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'cqx-spbLQh3g4wXUzJhB';  //sau se get tu localstorage
     return request(
         'DELETE',
         getDomain(parameters) + path,
@@ -301,7 +301,7 @@ export const editExercise = function (parameters) {
     let path = '/api/cards/' + parameters.id;
     let queryParameters = {course_id: parameters.course_id}; //page=? or parameter sau path
     let form = {topic: parameters}            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'cqx-spbLQh3g4wXUzJhB';  //sau se get tu localstorage
     return request(
         'PUT',
         getDomain(parameters) + path,
@@ -322,7 +322,7 @@ export const showExercise = function (parameters) {
     let path = '/api/cards/' + parameters.id;
     let queryParameters = {}; //page=? or parameter sau path
     let form = {};            //body
-    let authen_token = 'mhU1MY19DyRxrs_ifsZp';  //sau se get tu localstorage
+    let authen_token = 'cqx-spbLQh3g4wXUzJhB';  //sau se get tu localstorage
     return request(
         'GET',
         getDomain(parameters) + path,

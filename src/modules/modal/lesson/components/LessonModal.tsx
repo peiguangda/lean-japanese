@@ -213,7 +213,6 @@ export class LessonModal extends React.Component<Props, State, {}> {
     }
 
     public getStatus = status => {
-        console.log("status", status);
         if(!status){
             this.setDetaultStatusValue();
             return "Public";
