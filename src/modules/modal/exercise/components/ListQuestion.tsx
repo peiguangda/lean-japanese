@@ -3,6 +3,9 @@ import {Fragment} from "react";
 import {Question} from "./Question";
 
 export interface Props {
+    removeQuestion(): void;
+
+    numberQuestion: number;
 }
 
 export interface State {
@@ -14,7 +17,12 @@ export class ListQuestion extends React.Component<Props, State, {}> {
     }
 
     public showListQuestion = () => {
-        return <Question/>
+        let {numberQuestion} = this.props;
+        let result = [];
+        if (numberQuestion)
+            for (var i = 0; i < numberQuestion; i++)
+                result.push(<Question removeQuestion={this.props.removeQuestion} num={i + 1}/>);
+        return result;
     }
 
     public render() {

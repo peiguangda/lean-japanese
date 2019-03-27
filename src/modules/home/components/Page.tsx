@@ -6,6 +6,7 @@ import {Loader} from "../../loader/components/loader";
 import * as ReactDOM from "react-dom";
 import {CourseContainer} from "./courses/container";
 import {Fragment} from "react";
+import {BackTop} from "antd";
 
 export interface Props {
 }
@@ -40,6 +41,7 @@ export class HomePage extends React.Component<Props, State, {}> {
                         </div>
                     </div>
                 </div>
+                <BackTop/>
             </Fragment>
         );
     }
