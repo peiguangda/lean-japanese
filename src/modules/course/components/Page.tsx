@@ -6,6 +6,7 @@ import {ApiEntity} from '../../../common/types/index';
 import {Loader} from "../../loader/components/loader";
 import {CourseInfoContainter} from "./course_info/container";
 import {Fragment} from "react";
+import {BackTop} from "antd";
 
 export interface Props {
     api: ApiEntity;
@@ -39,6 +40,7 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                         </div>
                     </div>
                 </div>
+                <BackTop/>
             </Fragment>
         );
     }

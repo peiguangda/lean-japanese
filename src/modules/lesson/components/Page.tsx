@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Helmet} from "react-helmet";
 import {NavigationBar} from "../../navigation_bar/components/Navigation";
-import {Modal, Button, Icon, Input} from 'antd';
+import {Modal, Button, Icon, Input, BackTop} from 'antd';
 import {Fragment} from "react";
 import {LessonEntity} from "../../../common/types/lesson";
 import {Loader} from "../../loader/components/loader";
@@ -86,7 +86,8 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                         <p>{lesson ? lesson.short_description : "Không có dữ liệu để hiện thị"}</p>
                                     </div>
                                     <div className="col">
-                                        <Button type="primary" className="add_item_button" icon="plus" onClick={this.handleClickCreateQuestion}>
+                                        <Button type="primary" className="add_item_button" icon="plus"
+                                                onClick={this.handleClickCreateQuestion}>
                                             Tạo câu hỏi
                                         </Button>
                                         <Button className="item_button">
@@ -106,6 +107,9 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div>
+                    <BackTop/>
                 </div>
             </Fragment>
         );
