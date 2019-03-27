@@ -9,6 +9,8 @@ import {ApiEntity} from "../../../common/types";
 import {ListExerciseContainter} from "./exercise/container";
 import {ExerciseModal} from "../../modal/exercise/components/ExerciseModal";
 
+const {TextArea} = Input;
+
 export interface Props {
     fetchLesson(parameters): void;
 

@@ -9,6 +9,8 @@ import {LessonEntity} from "../common/types/lesson";
 import {listLessonReducer, lessonReducer} from './lesson';
 import {ExerciseEntity} from "../common/types/exercise";
 import {listExerciseReducer} from "./exercise";
+import {userReducer} from "./user";
+import {UserEntity} from "../common/types/user";
 
 export interface State {
     api: ApiEntity;
@@ -18,6 +20,7 @@ export interface State {
     listLesson: LessonEntity[];
     lesson: LessonEntity;
     listExercise: ExerciseEntity[];
+    user: UserEntity;
 };
 
 export const state = combineReducers<State>({
@@ -27,5 +30,6 @@ export const state = combineReducers<State>({
     course: courseReducer,
     listLesson: listLessonReducer,
     lesson: lessonReducer,
-    listExercise: listExerciseReducer
+    listExercise: listExerciseReducer,
+    user: userReducer,
 });

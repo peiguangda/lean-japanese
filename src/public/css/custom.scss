@@ -125,6 +125,7 @@
   font-size: .875rem !important;
   transition: all .3s ease-in-out !important;
   font-weight: 500 !important;
+  margin-top: 5px;
 }
 
 .ant-btn-primary {
@@ -139,6 +140,14 @@
   font-size: .875rem !important;
   transition: all .3s ease-in-out !important;
   font-weight: 500 !important;
+}
+
+.title {
+  text-align: center;
+}
+
+.input_body{
+  margin-top: 5px;
 }
 
 .small_button {

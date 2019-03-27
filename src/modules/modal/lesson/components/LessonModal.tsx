@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import "../../../../../node_modules/react-datepicker/dist/react-datepicker-cssmodules.min.css";
 import "../../../../../node_modules/react-datepicker/dist/react-datepicker.css";
 import "../../../../../node_modules/react-datepicker/dist/react-datepicker.min.css";
+import "../../../../public/css/custom.scss";
 
 const Option = Select.Option;
 
@@ -236,6 +237,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
         return (
             <Fragment>
                 <Modal
+                    className={"title"}
                     title={this.props.title}
                     visible={this.props.visible}
                     onOk={this.handleOk}
@@ -250,6 +252,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                             onChange={this.onChangeNameLesson}
                         />
                         <Input
+                            className={"input_body"}
                             placeholder="Description"
                             type="textarea"
                             size="large"
@@ -259,8 +262,8 @@ export class LessonModal extends React.Component<Props, State, {}> {
                             suffix={suffixName}  //set icon if having text in box
                         />
                     </Input.Group>
-                    <Select 
-                        style={{width: 120}} 
+                    <Select
+                        style={{width: 120}}
                         onChange={this.handleSelectChange}
                         value={this.getStatus(status)}
                     >
