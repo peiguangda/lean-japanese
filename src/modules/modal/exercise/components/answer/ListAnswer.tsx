@@ -6,6 +6,7 @@ import {ExerciseEntity} from "../../../../../common/types/exercise";
 export interface Props {
     addAnswer(): void;
     deleteAnswer(): void;
+    onChangeExercise(parameters): void;
     number: number;
     exercise: ExerciseEntity;
 }
@@ -31,6 +32,7 @@ export class ListAnswer extends React.Component<Props, State, {}> {
                                 title={"Đáp án sai"}
                                 type={"added_answer"}
                                 exercise={exercise}
+                                onChangeExercise={this.props.onChangeExercise}
                             />)
             }
         return result;

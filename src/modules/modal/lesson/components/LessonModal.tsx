@@ -290,7 +290,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                         beforeUpload={this.beforeUpload}
                         onChange={this.handleChange}
                     >
-                        {avatar ? <img src={avatar} alt="avatar"/> : uploadButton}
+                        {avatar ? <img src={avatar} className="image-fix-size" alt="avatar"/> : uploadButton}
                     </Upload>
                 </Modal>
             </Fragment>

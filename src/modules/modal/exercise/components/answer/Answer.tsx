@@ -10,6 +10,7 @@ export interface Props {
     addAnswer(): void;
 
     deleteAnswer(): void;
+    onChangeExercise(parameters): void;
     title: string;
     type: string;
     correct: boolean;
@@ -45,6 +46,7 @@ export class Answer extends React.Component<Props, State, {}> {
                         correct={correct}
                         changeAnswerStatus={this.changeAnswerStatus}
                         exercise={exercise}
+                        onChangeExercise={this.props.onChangeExercise}
                     />
                 </div>
             </Fragment>

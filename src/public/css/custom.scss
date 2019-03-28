@@ -269,3 +269,8 @@
 .in_correct {
   border: 1px solid red;
 }
+
+.image-fix-size {
+  object-fit: contain;
+  width: inherit;
+}
