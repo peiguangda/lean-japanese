@@ -57,7 +57,6 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     }
 
     private handleClickCreateQuestion = () => {
-        console.log("ahihi");
         this.showModal();
     }
 

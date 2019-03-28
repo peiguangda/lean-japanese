@@ -3,8 +3,8 @@ import {Fragment} from "react";
 import {Modal, Layout, Popover, Button, Icon, Input, Card} from "antd";
 import {ExerciseEntity} from "../../../../common/types/exercise";
 import {QuestionTypeSetting} from "../../setting/components/QuestionTypeSetting";
-import {ListAnswer} from "./ListAnswer";
-import {ListQuestion} from "./ListQuestion";
+import {ListAnswer} from "./answer/ListAnswer";
+import {ListQuestion} from "./question/ListQuestion";
 import {QuestionContent} from "./QuestionContent";
 
 const {
@@ -110,6 +110,10 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
             })
     }
 
+    public changeAnswerStatus = () => {
+
+    }
+
     public render() {
         let {numberQuestion, isShowSetting, numberAnswer, exercise} = this.state;
         return (
@@ -122,6 +126,7 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
                     onCancel={this.handleCancel}
                 >
                     <Layout>
+                        {/*----------------question bar--------------------*/}
                         <Sider>
                             <div className="nav_question">
                                 <Card title="Tất cả các câu hỏi">
@@ -148,6 +153,7 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
                                 </div>
                             </div>
                         </Sider>
+                        {/*----------------question content--------------------*/}
                         <QuestionContent
                             onchangeSetting={this.onchangeSetting}
                             addAnswer={this.addAnswer}

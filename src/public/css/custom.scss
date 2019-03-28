@@ -206,7 +206,7 @@
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #ced4da;
+  border: 0 !important;
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -217,7 +217,7 @@
   margin-top: 2%;
   margin-bottom: 0;
   font-family: sans-serif;
-  color: #332c2c;
+  color: gray;
 }
 
 .ant-layout-sider {
@@ -226,4 +226,37 @@
 
 .ant-layout-content {
   background-color: white !important;
+}
+
+.create-ex-fix-btn {
+  border: 0 !important;
+}
+
+.border-create-question {
+  border: 1px solid #ced4da;
+  box-shadow: 0 0 15px 0 rgba(0,0,0,0.05);
+  transition: all ease-in-out 0.3s;
+  border-radius: 5px;
+}
+
+.button-close {
+  float: right !important;
+  background-color: white !important;
+  border-radius: 40px !important;
+  position: absolute !important;
+  top: 25% !important;
+  right: 0 !important;
+  height: 20px !important;
+  width: 20px !important;
+  padding: 0px 0px 1px 0px !important;
+  margin: 0 !important;
+  color: #c54848 !important;
+}
+
+.resize_none_text_area{
+  resize: none;
+}
+
+.in_correct {
+  border: 1px solid red;
 }
