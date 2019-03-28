@@ -61,7 +61,7 @@ export class Lesson extends React.Component<Props, State, {}> {
                         <Link to={lesson ? `/lesson/${lesson.id}` : '/'}><p>{lesson ? lesson.name : ""}</p></Link>
                         <div className="row">
                             <p className="col-md-10">{lesson.short_description}</p>
-                            <Icon type="eye" className="viewer className=" col-md-2/>2
+                            <Icon type="eye" className="viewer" />2
                         </div>
                     </div>
                     <div className="col-md-4">
