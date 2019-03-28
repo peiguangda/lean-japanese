@@ -3,7 +3,8 @@ import {Fragment} from "react";
 import {Layout, Popover, Button, Icon, Input, Card, Checkbox} from "antd";
 import {ExerciseEntity} from "../../../../common/types/exercise";
 import {QuestionTypeSetting} from "../../setting/components/QuestionTypeSetting";
-import {ListAnswer} from "./ListAnswer";
+import {ListAnswer} from "./answer/ListAnswer";
+import {ButtonCustom} from "./common/ButtonCustom";
 
 const {
     Content,
@@ -31,24 +32,28 @@ export class QuestionContent extends React.Component<Props, State, {}> {
         this.state = {
             exercise: new class implements ExerciseEntity {
                 id: string;
-                user_id: number;
+                user_id: number;  //người tạo card
                 course_id: number;
                 topic_id: number;
                 order_index: number;
                 difficulty_level: number;
-                has_child: number;
-                parent_id: number;
+                has_child: number; //có con ko(áp dụng câu hỏi đoạn văn)
+                parent_id: number;  //topic id
                 status: number;
                 code: string;
-                shuffle_anser: number;
-                front_text: string;
-                front_image: string;
-                front_sound: string;
-                front_hint: string;
-                back_text: string;
-                back_image: string;
-                back_sound: string;
-                back_hint: string;
+                shuffle_anser: number; //settting đáp án có đảo hay ko
+                front_text: string;     //cau hoi
+                front_image: string;     //ảnh câu hỏi
+                front_sound: string;      //âm thanh câu hỏi
+                front_hint: string;      //gợi ý cho câu hỏi
+                back_text: string;      //đáp án
+                back_image: string;     //ảnh đáp án
+                back_sound: string;     //âm thành đáp án
+                back_hint: string;      //gợi ý đáp án
+                // danh sách đáp án dạng multichoices,
+                // danh sách đáp án dạng câu hỏi nhiều đáp án đúng,
+                // nếu hasChild khác null thì có list các child con,
+                // setting dạng câu hỏi : chọn đáp án, điền từ, lật mặt, phát âm
             },
         }
     }
@@ -73,44 +78,51 @@ export class QuestionContent extends React.Component<Props, State, {}> {
         console.log(`checked = ${e.target.checked}`);
     }
 
-    public render() {
-        const contentAnswer = <div className="col">
-            <Button className="row w-100" type="dashed" onClick={this.addAnswer}>Thêm đáp án</Button>
-            <Button className="row w-100" type="dashed">Thêm ảnh</Button>
-            <Button className="row w-100" type="dashed">Thêm âm thanh</Button>
-            <Button className="row w-100" type="dashed">Thêm giải thích</Button>
-            <Button className="row w-100" type="dashed">Set đáp án sai</Button>
-        </div>
-        const contentQuestion = <div className="col">
-            <Button className="row w-100" type="dashed">Thêm ảnh</Button>
-            <Button className="row w-100" type="dashed">Thêm âm thanh</Button>
-            <Button className="row w-100" type="dashed">Thêm giải thích</Button>
-        </div>
-        const suffixQuestion = <Popover content={contentQuestion} title="Mở rộng" trigger="hover"><Icon
-            type="ordered-list"/></Popover>
-        const suffixAnswer = <Popover content={contentAnswer} title="Mở rộng" trigger="hover"><Icon
-            type="ordered-list"/></Popover>
+    public changeAnswerStatus = () => {
+        console.log("thay doi trang thai answer");
+    }
 
+    public onChangeExercise = (exercise) => {
+        console.log("bbbbbbb",exercise);
+        console.log("cccccccc",this.state.exercise);
+        this.setState({
+            exercise: exercise
+        })
+    }
+
+    public render() {
+        let {exercise} = this.state;
         return (
             <Fragment>
                 <Content>
                     <div className="row question-content">
+                        {/*----------------question--------------------*/}
                         <div className="col-md-5 ml-2">
                             <div className="row">
-                                <p className="title-custom">Câu hỏi</p>
-                                <Input
-                                    className="input-question"
-                                    suffix={suffixQuestion}
-                                    size="large"
+                                <ButtonCustom
+                                    removeAnswer={null}
+                                    addAnswer={null}
+                                    title={"Câu hỏi"}
+                                    type={"question"}
+                                    correct={true}
+                                    changeAnswerStatus={this.changeAnswerStatus}
+                                    exercise={exercise}
+                                    onChangeExercise={this.onChangeExercise}
                                 />
                             </div>
                             <div className="row">
-                                <p className="title-custom">Url sound</p>
-                                <Input
-                                    className="input-question"
-                                    size="large"
+                                <ButtonCustom
+                                    removeAnswer={null}
+                                    addAnswer={null}
+                                    title={"Url sound"}
+                                    type={"sound_url"}
+                                    correct={true}
+                                    changeAnswerStatus={this.changeAnswerStatus}
+                                    exercise={exercise}
+                                    onChangeExercise={this.onChangeExercise}
                                 />
                             </div>
+                            {/*setting*/}
                             <div className="row mt-5">
                                 <div className="col-md-6">
                                     <p className="setting-title">Cài đặt câu hỏi</p>
@@ -124,30 +136,40 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                                 </div>
                             </div>
                         </div>
+
+                        {/*----------------answer--------------------*/}
                         <div className="col-md-6">
                             <div className="row">
                                 <div className="col-md-10">
-                                    <p className="title-custom">Đáp án đúng</p>
-                                    <Input
-                                        className="input-question"
-                                        suffix={suffixAnswer}
-                                        size="large"
-                                    />
-                                </div>
-                                <div className="col-md-10">
-                                    <p className="title-custom">Url sound</p>
-                                    <Input
-                                        className="input-question"
-                                        size="large"
-                                    />
-                                </div>
-                                <div className="col-md-10">
-                                    <ListAnswer
-                                        number={this.props.numberAnswer}
+                                    <ButtonCustom
+                                        removeAnswer={null}
                                         addAnswer={this.addAnswer}
-                                        deleteAnswer={this.deleteAnswer}
+                                        title={"Đáp án đúng"}
+                                        type={"answer"}
+                                        correct={true}
+                                        changeAnswerStatus={this.changeAnswerStatus}
+                                        exercise={exercise}
+                                        onChangeExercise={this.onChangeExercise}
                                     />
                                 </div>
+                                <div className="col-md-10">
+                                    <ButtonCustom
+                                        removeAnswer={null}
+                                        addAnswer={null}
+                                        title={"Url sound"}
+                                        type={"sound_url"}
+                                        correct={true}
+                                        changeAnswerStatus={this.changeAnswerStatus}
+                                        exercise={exercise}
+                                        onChangeExercise={this.onChangeExercise}
+                                    />
+                                </div>
+                                <ListAnswer
+                                    number={this.props.numberAnswer}
+                                    addAnswer={this.addAnswer}
+                                    deleteAnswer={this.deleteAnswer}
+                                    exercise={exercise}
+                                />
                             </div>
                         </div>
                     </div>
