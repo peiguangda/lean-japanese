@@ -76,6 +76,12 @@ export class QuestionContent extends React.Component<Props, State, {}> {
 
     public onChange = (e) => {
         console.log(`checked = ${e.target.checked}`);
+        this.setState(prevState => ({
+            exercise: {
+                ...prevState.exercise,
+                shuffle_anser: e.target.checked
+            }
+        }))
     }
 
     public changeAnswerStatus = () => {
@@ -83,8 +89,8 @@ export class QuestionContent extends React.Component<Props, State, {}> {
     }
 
     public onChangeExercise = (exercise) => {
-        console.log("bbbbbbb",exercise);
-        console.log("cccccccc",this.state.exercise);
+        console.log("bbbbbbb", exercise);
+        console.log("cccccccc", this.state.exercise);
         this.setState({
             exercise: exercise
         })
@@ -132,7 +138,10 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                                 </div>
                                 <div className="col-md-6">
                                     <p className="setting-title">Cài đặt khác</p>
-                                    <Checkbox onChange={() => this.onChange}>Đảo đáp án</Checkbox>
+                                    <Checkbox
+                                        onChange={this.onChange.bind(this)}
+                                    >Đảo đáp án
+                                    </Checkbox>
                                 </div>
                             </div>
                         </div>
@@ -169,6 +178,7 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                                     addAnswer={this.addAnswer}
                                     deleteAnswer={this.deleteAnswer}
                                     exercise={exercise}
+                                    onChangeExercise={this.onChangeExercise}
                                 />
                             </div>
                         </div>
