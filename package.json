@@ -25,6 +25,8 @@
     "babel-polyfill": "^6.26.0",
     "chai": "^4.2.0",
     "core-js": "^2.6.2",
+    "draft-js": "^0.10.5",
+    "draftjs-to-html": "^0.8.4",
     "firebase": "^5.9.0",
     "jest": "^23.0.1",
     "lc-form-validation": "^1.0.0",

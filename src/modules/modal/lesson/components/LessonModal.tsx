@@ -5,18 +5,29 @@ import {Modal, Button, Icon, Input, Upload, message, Select} from "antd";
 import {storage, firebase} from "../../../../firebase";
 import {LessonEntity} from '../../../../common/types/lesson';
 import DatePicker from "react-datepicker";
-import "../../../../../node_modules/react-datepicker/dist/react-datepicker-cssmodules.min.css";
-import "../../../../../node_modules/react-datepicker/dist/react-datepicker.css";
-import "../../../../../node_modules/react-datepicker/dist/react-datepicker.min.css";
+import "../../../../public/css/react-datepicker.min";
+import "../../../../public/css/react-datepicker.css";
+import "../../../../public/css/react-datepicker.min.css";
+import "../../../../public/css/react-datepicker-cssmodules.min.css";
+import "../../../../public/css/react-datepicker";
+import "../../../../public/css/react-datepicker-cssmodules.css";
 import "../../../../public/css/custom.scss";
+import {EditorState, convertToRaw} from 'draft-js';
+import {Editor} from 'react-draft-wysiwyg';
+import '../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import draftToHtml from 'draftjs-to-html';
 
 const Option = Select.Option;
 
 export interface Props {
     fetchLessons(parameters): void;
+
     handleLesson(parameters): void;
+
     closeModal(): void;
+
     showModal(): void;
+
     lesson: LessonEntity;
     title: string;
     visible: boolean;
@@ -26,6 +37,7 @@ export interface Props {
 export interface State {
     loading: boolean;
     lesson: LessonEntity;
+    editorState: any
 }
 
 export class LessonModal extends React.Component<Props, State, {}> {
@@ -33,6 +45,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
         super(props);
         this.state = {
             loading: false,
+            editorState: EditorState.createEmpty(),
             lesson: new class implements LessonEntity {
                 id: string;
                 actionType: string;
@@ -66,11 +79,23 @@ export class LessonModal extends React.Component<Props, State, {}> {
     componentWillReceiveProps(nextProps) {
         let {lesson} = nextProps;
         lesson.course_id = nextProps.course_id;
-        // console.log("next", nextProps);
         this.setState({
             lesson: lesson,
         })
     }
+
+    onEditorStateChange: Function = (editorState) => {
+        let descript = draftToHtml(convertToRaw(editorState.getCurrentContent()))
+        this.setState({
+            editorState,
+        });
+        this.setState(prevState => ({
+            lesson: {
+                ...prevState.lesson,
+                description: descript
+            }
+        }));
+    };
 
     public showModal = () => {
         this.props.showModal();
@@ -125,13 +150,13 @@ export class LessonModal extends React.Component<Props, State, {}> {
             }, () => {
                 uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
                     this.getBase64(info.file.originFileObj, downloadURL => this.setState(prevState => ({
-                        lesson: {
-                            ...prevState.lesson,
-                            avatar: downloadURL
-                        },
-                        loading: false
-                    }))
-                );
+                            lesson: {
+                                ...prevState.lesson,
+                                avatar: downloadURL
+                            },
+                            loading: false
+                        }))
+                    );
                 });
             });
             this.setState({loading: true});
@@ -167,12 +192,12 @@ export class LessonModal extends React.Component<Props, State, {}> {
         }));
     }
 
-    public onChangeDescription = (e) => {
+    public onChangeShortDescription = (e) => {
         let {value} = e.target;
         this.setState(prevState => ({
             lesson: {
                 ...prevState.lesson,
-                description: value
+                short_description: value
             }
         }));
     }
@@ -214,20 +239,21 @@ export class LessonModal extends React.Component<Props, State, {}> {
     }
 
     public getStatus = status => {
-        if(!status){
+        if (!status) {
             this.setDetaultStatusValue();
             return "Public";
         }
-        if(status == 1) return "Public";
-        if(status == 2) return "Private";
-        if(status == 3) return "Deleted";
-        if(status == 4) return "Open";
+        if (status == 1) return "Public";
+        if (status == 2) return "Private";
+        if (status == 3) return "Deleted";
+        if (status == 4) return "Open";
     }
 
     public render() {
-        let {loading, lesson: {name, description, start_time, end_time, avatar, status}} = this.state;
+        const {editorState} = this.state;
+        let {loading, lesson: {name, short_description, description, start_time, end_time, avatar, status}} = this.state;
         const suffixLesson = name ? <Icon type="close-circle" onClick={this.emitNameEmpty}/> : null;
-        const suffixName = description ? <Icon type="close-circle" onClick={this.emitDescriptEmpty}/> : null;
+        const suffixName = short_description ? <Icon type="close-circle" onClick={this.emitDescriptEmpty}/> : null;
         const uploadButton = (
             <div>
                 <Icon type={loading ? "loading" : "plus"}/>
@@ -237,7 +263,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
         return (
             <Fragment>
                 <Modal
-                    className={"title"}
+                    className={"title modal-create-lesson"}
                     title={this.props.title}
                     visible={this.props.visible}
                     onOk={this.handleOk}
@@ -252,12 +278,12 @@ export class LessonModal extends React.Component<Props, State, {}> {
                             onChange={this.onChangeNameLesson}
                         />
                         <Input
-                            className={"input_body"}
-                            placeholder="Description"
+                            className={"input_body border-create-question"}
+                            placeholder="Short description"
                             type="textarea"
                             size="large"
-                            value={description}
-                            onChange={this.onChangeDescription}
+                            value={short_description}
+                            onChange={this.onChangeShortDescription}
                             prefix={<Icon type="form" style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
                             suffix={suffixName}  //set icon if having text in box
                         />
@@ -267,10 +293,10 @@ export class LessonModal extends React.Component<Props, State, {}> {
                         onChange={this.handleSelectChange}
                         value={this.getStatus(status)}
                     >
-                            <Option value="1">Public</Option>
-                            <Option value="2">Private</Option>
-                            <Option value="3">Deleted</Option>
-                            <Option value="4">Open</Option>
+                        <Option value="1">Public</Option>
+                        <Option value="2">Private</Option>
+                        <Option value="3">Deleted</Option>
+                        <Option value="4">Open</Option>
                     </Select>
                     <DatePicker
                         selected={start_time}
@@ -292,6 +318,12 @@ export class LessonModal extends React.Component<Props, State, {}> {
                     >
                         {avatar ? <img src={avatar} className="image-fix-size" alt="avatar"/> : uploadButton}
                     </Upload>
+                    <Editor
+                        editorState={editorState}
+                        wrapperClassName="demo-wrapper"
+                        editorClassName="demo-editor"
+                        onEditorStateChange={this.onEditorStateChange}
+                    />
                 </Modal>
             </Fragment>
 
