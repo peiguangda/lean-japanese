@@ -1,40 +1,33 @@
 import * as React from "react";
 import {Fragment} from "react";
-import {Modal, Button, Icon, Input, Form, message, Checkbox} from "antd";
+import {Button, Checkbox, Form, Icon, Input, message, Modal} from "antd";
 import {WrappedFormUtils} from 'antd/lib/form/Form';
 import "../../../../public/css/login_form.scss"
 import {ApiEntity} from "../../../../common/types";
 
 export interface Props {
+    visible: boolean;
+    api: ApiEntity;
+
     closeModal(): void;
 
     showModal(): void;
 
     login(parameters): Promise<any>;
-
-    visible: boolean;
-    api: ApiEntity;
 }
 
 export interface State {
 }
 
 export class LoginModal extends React.Component<Props & { form: WrappedFormUtils }, State, {}> {
-    constructor(props, form) {
-        super(props);
-        super(form);
-    }
-
     public handleCancel = (e) => {
         this.props.closeModal();
         console.log("Cancel");
 
     }
-
     public handleOk = () => {
         console.log("Ok");
     }
-
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -47,6 +40,11 @@ export class LoginModal extends React.Component<Props & { form: WrappedFormUtils
                 })
             }
         });
+    }
+
+    constructor(props, form) {
+        super(props);
+        super(form);
     }
 
     public render() {

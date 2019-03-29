@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { State } from '../../../../reducers/reducers';
-import { CourseInfo } from './components/Page';
+import {connect} from 'react-redux';
+import {State} from '../../../../reducers/reducers';
+import {CourseInfo} from './components/Page';
 import {fetchCourseAction} from "../../../../reducers/course";
-import {createLessonAction} from "../../../../reducers/lesson";
-import { fetchListLessonAction } from '../../../../reducers/lesson';
+import {createLessonAction, fetchListLessonAction} from "../../../../reducers/lesson";
+import {RouteComponentProps} from "react-router";
 
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => ({
     course: state.course,
     api: state.api,
+    props: props
 });
 
 const mapDispatchToProps = (dispatch) => ({

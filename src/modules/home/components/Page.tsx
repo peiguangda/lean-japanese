@@ -1,8 +1,8 @@
 import * as React from "react";
+import {Fragment} from "react";
 import {Helmet} from "react-helmet";
 import {CategoryCourse} from "./CategoryCourse";
 import {CourseContainer} from "./courses/container";
-import {Fragment} from "react";
 import {BackTop} from "antd";
 import {NavigationBarContainter} from "../../navigation_bar/container";
 

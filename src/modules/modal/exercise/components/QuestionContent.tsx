@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Fragment} from "react";
-import {Layout, Popover, Button, Icon, Input, Card, Checkbox} from "antd";
+import {Checkbox, Layout} from "antd";
 import {ExerciseEntity} from "../../../../common/types/exercise";
 import {QuestionTypeSetting} from "../../setting/components/QuestionTypeSetting";
 import {ListAnswer} from "./answer/ListAnswer";
@@ -11,15 +11,15 @@ const {
 } = Layout;
 
 export interface Props {
+    isShowSetting: boolean;
+    numberAnswer: number;
+    visible: boolean;
+
     onchangeSetting(): void;
 
     addAnswer(): void;
 
     deleteAnswer(): void;
-
-    isShowSetting: boolean;
-    numberAnswer: number;
-    visible: boolean;
 }
 
 export interface State {
@@ -27,6 +27,38 @@ export interface State {
 }
 
 export class QuestionContent extends React.Component<Props, State, {}> {
+    public handleAddInputRow = (e) => {
+        console.log("e", e);
+    }
+    public onchangeSetting = () => {
+        this.props.onchangeSetting();
+    }
+    public addAnswer = () => {
+        this.props.addAnswer();
+    }
+    public deleteAnswer = () => {
+        this.props.deleteAnswer();
+    }
+    public onChange = (e) => {
+        console.log(`checked = ${e.target.checked}`);
+        this.setState(prevState => ({
+            exercise: {
+                ...prevState.exercise,
+                shuffle_anser: e.target.checked
+            }
+        }))
+    }
+    public changeAnswerStatus = () => {
+        console.log("thay doi trang thai answer");
+    }
+    public onChangeExercise = (exercise) => {
+        console.log("bbbbbbb", exercise);
+        console.log("cccccccc", this.state.exercise);
+        this.setState({
+            exercise: exercise
+        })
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -56,44 +88,6 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                 // setting dạng câu hỏi : chọn đáp án, điền từ, lật mặt, phát âm
             },
         }
-    }
-
-    public handleAddInputRow = (e) => {
-        console.log("e", e);
-    }
-
-    public onchangeSetting = () => {
-        this.props.onchangeSetting();
-    }
-
-    public addAnswer = () => {
-        this.props.addAnswer();
-    }
-
-    public deleteAnswer = () => {
-        this.props.deleteAnswer();
-    }
-
-    public onChange = (e) => {
-        console.log(`checked = ${e.target.checked}`);
-        this.setState(prevState => ({
-            exercise: {
-                ...prevState.exercise,
-                shuffle_anser: e.target.checked
-            }
-        }))
-    }
-
-    public changeAnswerStatus = () => {
-        console.log("thay doi trang thai answer");
-    }
-
-    public onChangeExercise = (exercise) => {
-        console.log("bbbbbbb", exercise);
-        console.log("cccccccc", this.state.exercise);
-        this.setState({
-            exercise: exercise
-        })
     }
 
     public render() {

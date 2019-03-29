@@ -18,17 +18,17 @@ export interface State {
 }
 
 export class Exercise extends React.Component<Props, State, {}> {
+    public onClickEdit = () => {
+        this.setState({
+            visible: true
+        })
+    }
+
     constructor(props) {
         super(props);
         this.state = {
             visible: false
         }
-    }
-
-    public onClickEdit = () => {
-        this.setState({
-            visible: true
-        })
     }
 
     //

@@ -3,21 +3,21 @@ import {Fragment} from "react";
 import {Icon} from "antd";
 
 export interface Props {
-    removeQuestion(): void;
-
     num: number;
+
+    removeQuestion(): void;
 }
 
 export interface State {
 }
 
 export class Question extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-    }
-
     public removeQuestion = () => {
         this.props.removeQuestion();
+    }
+
+    constructor(props) {
+        super(props);
     }
 
     public render() {

@@ -1,96 +1,98 @@
 import * as React from "react";
+import {Fragment} from "react";
 import {Link} from "react-router-dom";
-import {Menu, Icon, Input, Dropdown, Button, message, Select, Upload, Modal} from 'antd';
+import {Button, Dropdown, Icon, Input, Menu, message} from 'antd';
 import "../../../public/css/custom.scss";
 import 'antd/dist/antd.css';
-import {Fragment} from "react";
 import {WrappedNormalLoginForm} from "../../modal/user/components/LoginModal";
 import {UserEntity} from "../../../common/types/user";
 import {ApiEntity} from "../../../common/types";
 import * as Cookie from "../../../helpers/Cookie.js";
-import {LessonEntity} from "../../../common/types/lesson";
 
 const Search = Input.Search;
 
 export interface Props {
+    currentUser: UserEntity;
+    api: ApiEntity;
+
     login(parameters): Promise<any>;
 
-    getProfile(parameters): void;
+    logout(parameters): Promise<any>;
 
-    user: UserEntity;
-    api: ApiEntity;
+    getProfile(parameters): Promise<any>;
 }
 
 export interface State {
     visible: boolean;
-    user: UserEntity;
+    logined: boolean;
 }
 
 export class NavigationBar extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            visible: false,
-            user: new class implements UserEntity {
-                id: string;
-                account: string;
-                email: string;
-                full_name: string;
-                phone_number: string;
-                description: string;
-                avatar_url: string;
-                gender: string;
-                password: string;
-                password_confirmation: string;
-            }
-        }
-    }
-
-    public componentDidMount() {
-        if (Cookie.getAccessToken()) {
-            this.props.getProfile({});
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        let {user} = nextProps;
-        console.log("haha", user);
-        this.setState({
-            user: user,
-        })
-    }
-
     public handleClick = (e) => {
         // console.log("e1",e);
     }
-
-
-    private handleMenuClick = (e) => {
-        console.log("e2", e);
-        if (e.key == 1) this.showModal();
-        if (e.key == 1) console.log("Logout");
+    public logout = () => {
+        this.props.logout({}).then(res => {
+            console.log(res);
+            if (res && res.payload.status == "success") {
+                message.info("Bạn đã đăng xuất!");
+                this.setState({
+                    logined: false
+                })
+            } else message.error("Xảy ra lỗi")
+        })
     }
-
     public showModal = () => {
         this.setState({
             visible: true
         });
     }
-
     public closeModal = () => {
         this.setState({
             visible: false
         });
     }
+    private handleMenuClick = (e) => {
+        console.log("e2", e);
+        if (e.key == 1) console.log("thong tin ca nhan");
+        if (e.key == 2) this.logout();
+        if (e.key == 3) this.showModal();
+        if (e.key == 4) console.log("dang ki");
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            visible: false,
+            logined: false
+        }
+    }
+
+    public componentDidMount() {
+        if (Cookie.getAccessToken()) {
+            this.props.getProfile({}).then(res => {
+                if (res && res.payload && res.payload.status == "success") {
+                    this.setState({
+                        logined: true
+                    })
+                }
+            });
+        }
+    }
 
     public render() {
-        let {visible} = this.state;
-        let {user} = this.props;
-        console.log("user", user);
-        const menu = (
+        let {visible, logined} = this.state;
+        let {currentUser} = this.props;
+        const menu1 = (
             <Menu onClick={this.handleMenuClick}>
-                <Menu.Item key="1"><Icon type="user"/>Personal Information</Menu.Item>
-                <Menu.Item key="2"><Icon type="user"/>Logout</Menu.Item>
+                <Menu.Item key="1"><Icon type="user"/>Thông tin cá nhân</Menu.Item>
+                <Menu.Item key="2"><Icon type="user"/>Đăng xuất</Menu.Item>
+            </Menu>
+        );
+        const menu2 = (
+            <Menu onClick={this.handleMenuClick}>
+                <Menu.Item key="3"><Icon type="user"/>Đăng nhập</Menu.Item>
+                <Menu.Item key="4"><Icon type="user"/>Đăng kí</Menu.Item>
             </Menu>
         );
         return (
@@ -113,9 +115,9 @@ export class NavigationBar extends React.Component<Props, State, {}> {
                     </Menu.Item>
 
                     <Menu.Item key="alipay" className="account_navigation">
-                        <Dropdown overlay={user ? menu : ""}>
+                        <Dropdown overlay={logined ? menu1 : menu2}>
                             <Button style={{marginLeft: 8}}>
-                                {user ? user.account : ""}<Icon type="team"/>
+                                {logined ? currentUser.account : "Người dùng"}<Icon type="team"/>
                             </Button>
                         </Dropdown>
                     </Menu.Item>

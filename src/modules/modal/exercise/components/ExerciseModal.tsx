@@ -1,9 +1,8 @@
 import * as React from "react";
 import {Fragment} from "react";
-import {Modal, Layout, Popover, Button, Icon, Input, Card} from "antd";
+import {Button, Card, Layout, Modal} from "antd";
 import {ExerciseEntity} from "../../../../common/types/exercise";
 import {QuestionTypeSetting} from "../../setting/components/QuestionTypeSetting";
-import {ListAnswer} from "./answer/ListAnswer";
 import {ListQuestion} from "./question/ListQuestion";
 import {QuestionContent} from "./QuestionContent";
 
@@ -12,12 +11,12 @@ const {
 } = Layout;
 
 export interface Props {
+    title: string;
+    visible: boolean;
+
     closeModal(): void;
 
     showModal(): void;
-
-    title: string;
-    visible: boolean;
 }
 
 export interface State {
@@ -28,6 +27,54 @@ export interface State {
 }
 
 export class ExerciseModal extends React.Component<Props, State, {}> {
+    public showModal = () => {
+        this.props.showModal();
+    }
+    public handleCancel = (e) => {
+        console.log("cancel");
+        this.props.closeModal();
+    }
+    public handleOk = (e) => {
+        console.log("ok man!");
+        this.props.closeModal();
+    }
+    public onchangeSetting = () => {
+        let {isShowSetting} = this.state;
+        this.setState({
+            isShowSetting: !isShowSetting
+        })
+    }
+    public addAnswer = () => {
+        let {numberAnswer} = this.state;
+        this.setState({
+            numberAnswer: ++numberAnswer
+        })
+    }
+    public deleteAnswer = () => {
+        let {numberAnswer} = this.state;
+        if (numberAnswer)
+            this.setState({
+                numberAnswer: --numberAnswer
+            })
+    }
+    public addQuestion = () => {
+        let {numberQuestion} = this.state;
+        this.setState({
+            numberQuestion: ++numberQuestion
+        })
+    }
+    public removeQuestion = () => {
+        console.log("remove question");
+        let {numberQuestion} = this.state;
+        if (numberQuestion)
+            this.setState({
+                numberQuestion: --numberQuestion
+            })
+    }
+    public changeAnswerStatus = () => {
+
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -56,62 +103,6 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
                 back_hint: string;
             },
         }
-    }
-
-    public showModal = () => {
-        this.props.showModal();
-    }
-
-    public handleCancel = (e) => {
-        console.log("cancel");
-        this.props.closeModal();
-    }
-
-    public handleOk = (e) => {
-        console.log("ok man!");
-        this.props.closeModal();
-    }
-
-    public onchangeSetting = () => {
-        let {isShowSetting} = this.state;
-        this.setState({
-            isShowSetting: !isShowSetting
-        })
-    }
-
-    public addAnswer = () => {
-        let {numberAnswer} = this.state;
-        this.setState({
-            numberAnswer: ++numberAnswer
-        })
-    }
-
-    public deleteAnswer = () => {
-        let {numberAnswer} = this.state;
-        if (numberAnswer)
-            this.setState({
-                numberAnswer: --numberAnswer
-            })
-    }
-
-    public addQuestion = () => {
-        let {numberQuestion} = this.state;
-        this.setState({
-            numberQuestion: ++numberQuestion
-        })
-    }
-
-    public removeQuestion = () => {
-        console.log("remove question");
-        let {numberQuestion} = this.state;
-        if (numberQuestion)
-            this.setState({
-                numberQuestion: --numberQuestion
-            })
-    }
-
-    public changeAnswerStatus = () => {
-
     }
 
     public render() {

@@ -6,10 +6,10 @@ import {reducer as reduxFormReducer} from 'redux-form';
 import {listCourseReducer} from './list_course';
 import {courseReducer} from './course';
 import {LessonEntity} from "../common/types/lesson";
-import {listLessonReducer, lessonReducer} from './lesson';
+import {lessonReducer, listLessonReducer} from './lesson';
 import {ExerciseEntity} from "../common/types/exercise";
 import {listExerciseReducer} from "./exercise";
-import {userReducer} from "./user";
+import {currentUserReducer} from "./current_user";
 import {UserEntity} from "../common/types/user";
 
 export interface State {
@@ -20,7 +20,7 @@ export interface State {
     listLesson: LessonEntity[];
     lesson: LessonEntity;
     listExercise: ExerciseEntity[];
-    user: UserEntity;
+    currentUser: UserEntity;
 
 };
 
@@ -32,5 +32,5 @@ export const state = combineReducers<State>({
     listLesson: listLessonReducer,
     lesson: lessonReducer,
     listExercise: listExerciseReducer,
-    user: userReducer,
+    currentUser: currentUserReducer,
 });

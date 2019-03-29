@@ -102,13 +102,14 @@ export const fetchListExerciseAction = parameters => dispatch => {
 export const listExerciseReducer = (state: ExerciseEntity[], action) => {
     const {type, payload = {}, responseError = {}} = action;
     state = {...state};
-    switch (action.type) {
+    switch (type) {
         case GET_LIST_EXERCISE:
-            return {...state,list_exercise: payload};
+            return payload;
         case GET_LIST_EXERCISE_ERROR:
             return {...state, ...payload, responseError};
+        default:
+            return state;
     }
-    return state;
 };
 
 export const exerciseReducer = (state: ExerciseEntity = null, action) => {
@@ -116,13 +117,14 @@ export const exerciseReducer = (state: ExerciseEntity = null, action) => {
     state = {...state};
     switch (action.type) {
         case CREATE_EXERCISE:
-            return {...state,exercise: {...payload}};
+            return {...state, ...payload};
         case CREATE_EXERCISE_ERROR:
             return {...state, ...payload, responseError};
         case FETCH_EXERCISE:
-            return {...state,exercise: {...payload}};
+            return {...state, ...payload};
         case FETCH_EXERCISE_ERROR:
             return {...state, ...payload, responseError};
+        default:
+            return state;
     }
-    return state;
 };

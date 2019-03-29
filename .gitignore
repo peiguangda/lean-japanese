@@ -4,3 +4,7 @@ dist
 .idea/
 src/public/css/custom.css
 src/public/css/custom.css.map
+src/public/css/login_form.css
+src/public/css/login_form.css.map
+src/public/css/loader.css
+src/public/css/loader.css.map

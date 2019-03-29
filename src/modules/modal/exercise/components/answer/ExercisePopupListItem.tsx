@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Fragment} from "react";
-import {Modal, Layout, Popover, Button, Icon, Input, Card} from "antd";
+import {Button} from "antd";
 
 export interface Props {
     addAnswer(): void;
@@ -10,13 +10,13 @@ export interface State {
 }
 
 export class ExercisePopupListItem extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-    }
-
     public handleAddInputRow = (e) => {
         console.log("eeee");
         this.props.addAnswer();
+    }
+
+    constructor(props) {
+        super(props);
     }
 
     public render() {

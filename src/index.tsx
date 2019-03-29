@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { AppRouter } from './router';
+import {AppRouter} from './router';
 
 ReactDOM.render(
-  <AppRouter />
-  , document.getElementById('root'));
+    <AppRouter/>
+    , document.getElementById('root'));
