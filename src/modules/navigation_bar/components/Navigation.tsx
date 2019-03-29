@@ -1,31 +1,63 @@
 import * as React from "react";
-import {Helmet} from "react-helmet";
 import {Link} from "react-router-dom";
 import {Menu, Icon, Input, Dropdown, Button, message, Select, Upload, Modal} from 'antd';
 import "../../../public/css/custom.scss";
 import 'antd/dist/antd.css';
 import {Fragment} from "react";
-import {LoginModal} from "../../modal/user/components/LoginModal";
+import {WrappedNormalLoginForm} from "../../modal/user/components/LoginModal";
+import {UserEntity} from "../../../common/types/user";
+import {ApiEntity} from "../../../common/types";
+import * as Cookie from "../../../helpers/Cookie.js";
+import {LessonEntity} from "../../../common/types/lesson";
 
 const Search = Input.Search;
 
 export interface Props {
+    login(parameters): Promise<any>;
+
+    getProfile(parameters): void;
+
+    user: UserEntity;
+    api: ApiEntity;
 }
 
 export interface State {
-    visible: boolean
+    visible: boolean;
+    user: UserEntity;
 }
 
 export class NavigationBar extends React.Component<Props, State, {}> {
     constructor(props) {
         super(props);
         this.state = {
-            visible: false
+            visible: false,
+            user: new class implements UserEntity {
+                id: string;
+                account: string;
+                email: string;
+                full_name: string;
+                phone_number: string;
+                description: string;
+                avatar_url: string;
+                gender: string;
+                password: string;
+                password_confirmation: string;
+            }
         }
     }
 
     public componentDidMount() {
-        // Call api get list data
+        if (Cookie.getAccessToken()) {
+            this.props.getProfile({});
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        let {user} = nextProps;
+        console.log("haha", user);
+        this.setState({
+            user: user,
+        })
     }
 
     public handleClick = (e) => {
@@ -34,7 +66,7 @@ export class NavigationBar extends React.Component<Props, State, {}> {
 
 
     private handleMenuClick = (e) => {
-        console.log("e2",e);
+        console.log("e2", e);
         if (e.key == 1) this.showModal();
         if (e.key == 1) console.log("Logout");
     }
@@ -53,6 +85,8 @@ export class NavigationBar extends React.Component<Props, State, {}> {
 
     public render() {
         let {visible} = this.state;
+        let {user} = this.props;
+        console.log("user", user);
         const menu = (
             <Menu onClick={this.handleMenuClick}>
                 <Menu.Item key="1"><Icon type="user"/>Personal Information</Menu.Item>
@@ -79,17 +113,19 @@ export class NavigationBar extends React.Component<Props, State, {}> {
                     </Menu.Item>
 
                     <Menu.Item key="alipay" className="account_navigation">
-                        <Dropdown overlay={menu}>
+                        <Dropdown overlay={user ? menu : ""}>
                             <Button style={{marginLeft: 8}}>
-                                Quang Dai <Icon type="team"/>
+                                {user ? user.account : ""}<Icon type="team"/>
                             </Button>
                         </Dropdown>
                     </Menu.Item>
                 </Menu>
-                <LoginModal
+                <WrappedNormalLoginForm
                     visible={visible}
                     showModal={this.showModal}
                     closeModal={this.closeModal}
+                    login={this.props.login}
+                    api={this.props.api}
                 />
             </Fragment>
         )

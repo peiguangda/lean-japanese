@@ -27,7 +27,7 @@ export const listCourseReducer = (state: CourseEntity[], action) => {
   state = { ...state };
   switch (type) {
     case FETCH_COURSE:
-      return payload;
+      return {...state,list_course: payload};
     case FETCH_COURSE_ERROR:
       return { ...state, ...payload, responseError };
   }

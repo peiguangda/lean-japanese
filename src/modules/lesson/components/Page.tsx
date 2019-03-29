@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Helmet} from "react-helmet";
-import {NavigationBar} from "../../navigation_bar/components/Navigation";
 import {Modal, Button, Icon, Input, BackTop} from 'antd';
 import {Fragment} from "react";
 import {LessonEntity} from "../../../common/types/lesson";
@@ -8,6 +7,7 @@ import {Loader} from "../../loader/components/loader";
 import {ApiEntity} from "../../../common/types";
 import {ListExerciseContainter} from "./exercise/container";
 import {ExerciseModal} from "../../modal/exercise/components/ExerciseModal";
+import {NavigationBarContainter} from "../../navigation_bar/container";
 
 const {TextArea} = Input;
 
@@ -68,7 +68,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         let {visible} = this.state;
         return (
             <Fragment>
-                <NavigationBar/>
+                <NavigationBarContainter/>
                 <div className="container">
                     <Helmet title={"Lesson"}/>
                     <div className="home_layout">

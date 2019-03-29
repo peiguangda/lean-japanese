@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { State } from '../../../../reducers/reducers';
 import { ListCourse } from './components/Page';
 import { fetchListCourseAction } from '../../../../reducers/list_course';
-import { ApiEntity } from "../../../../common/types/index";
 
 const mapStateToProps = (state: State) => ({
     courses: state.listCourse,

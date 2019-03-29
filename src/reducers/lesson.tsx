@@ -104,7 +104,7 @@ export const listLessonReducer = (state: LessonEntity[], action) => {
     state = {...state};
     switch (action.type) {
         case GET_LIST_LESSON:
-            return payload;
+            return {...state,list_lesson: payload};
         case GET_LIST_LESSON_ERROR:
             return {...state, ...payload, responseError};
     }
@@ -116,11 +116,11 @@ export const lessonReducer = (state: LessonEntity = null, action) => {
     state = {...state};
     switch (action.type) {
         case CREATE_LESSON:
-            return {...state, ...payload};
+            return {...state,lesson: {...payload}};
         case CREATE_LESSON_ERROR:
             return {...state, ...payload, responseError};
         case FETCH_LESSON:
-            return {...state, ...payload};
+            return {...state,lesson: {...payload}};
         case FETCH_LESSON_ERROR:
             return {...state, ...payload, responseError};
     }
