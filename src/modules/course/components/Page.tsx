@@ -1,12 +1,12 @@
 import * as React from "react";
 import {Helmet} from "react-helmet";
-import {NavigationBar} from "../../navigation_bar/components/Navigation";
 import {ListLessonContainter} from "./lesson/container";
 import {ApiEntity} from '../../../common/types/index';
 import {Loader} from "../../loader/components/loader";
 import {CourseInfoContainter} from "./course_info/container";
 import {Fragment} from "react";
 import {BackTop} from "antd";
+import {NavigationBarContainter} from "../../navigation_bar/container";
 
 export interface Props {
     api: ApiEntity;
@@ -29,7 +29,7 @@ export class CourseDetail extends React.Component<Props, State, {}> {
         let {match: {params}} = this.props;
         return (
             <Fragment>
-                <NavigationBar/>
+                <NavigationBarContainter/>
                 <div className="container">
                     <Helmet title={"Course"}/>
                     <div className="home_layout">

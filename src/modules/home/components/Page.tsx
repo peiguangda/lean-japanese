@@ -1,12 +1,10 @@
 import * as React from "react";
 import {Helmet} from "react-helmet";
-import {NavigationBar} from "../../navigation_bar/components/Navigation";
 import {CategoryCourse} from "./CategoryCourse";
-import {Loader} from "../../loader/components/loader";
-import * as ReactDOM from "react-dom";
 import {CourseContainer} from "./courses/container";
 import {Fragment} from "react";
 import {BackTop} from "antd";
+import {NavigationBarContainter} from "../../navigation_bar/container";
 
 export interface Props {
 }
@@ -25,7 +23,7 @@ export class HomePage extends React.Component<Props, State, {}> {
     public render() {
         return (
             <Fragment>
-                <NavigationBar/>
+                <NavigationBarContainter/>
                 <div className="container">
                     <Helmet title={"Easy Japanese"}/>
                     <div className="row home_layout">

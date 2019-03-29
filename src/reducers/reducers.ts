@@ -21,6 +21,7 @@ export interface State {
     lesson: LessonEntity;
     listExercise: ExerciseEntity[];
     user: UserEntity;
+
 };
 
 export const state = combineReducers<State>({

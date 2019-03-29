@@ -104,7 +104,7 @@ export const listExerciseReducer = (state: ExerciseEntity[], action) => {
     state = {...state};
     switch (action.type) {
         case GET_LIST_EXERCISE:
-            return payload;
+            return {...state,list_exercise: payload};
         case GET_LIST_EXERCISE_ERROR:
             return {...state, ...payload, responseError};
     }
@@ -116,11 +116,11 @@ export const exerciseReducer = (state: ExerciseEntity = null, action) => {
     state = {...state};
     switch (action.type) {
         case CREATE_EXERCISE:
-            return {...state, ...payload};
+            return {...state,exercise: {...payload}};
         case CREATE_EXERCISE_ERROR:
             return {...state, ...payload, responseError};
         case FETCH_EXERCISE:
-            return {...state, ...payload};
+            return {...state,exercise: {...payload}};
         case FETCH_EXERCISE_ERROR:
             return {...state, ...payload, responseError};
     }
