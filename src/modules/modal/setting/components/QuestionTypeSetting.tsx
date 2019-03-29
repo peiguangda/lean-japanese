@@ -17,15 +17,6 @@ export interface State {
 }
 
 export class QuestionTypeSetting extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            checkedList: defaultCheckedList,
-            indeterminate: true,
-            checkAll: false,
-        }
-    }
-
     onChange = (checkedList) => {
         console.log("checklist", checkedList);
         this.setState({
@@ -34,7 +25,6 @@ export class QuestionTypeSetting extends React.Component<Props, State, {}> {
             checkAll: checkedList.length === quetionOptions.length,
         });
     }
-
     onCheckAllChange = (e) => {
         console.log("e", e);
         console.log("indeterminate", this.state.indeterminate);
@@ -43,6 +33,15 @@ export class QuestionTypeSetting extends React.Component<Props, State, {}> {
             indeterminate: false,
             checkAll: e.target.checked,
         });
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            checkedList: defaultCheckedList,
+            indeterminate: true,
+            checkAll: false,
+        }
     }
 
     public showCheckBox() {

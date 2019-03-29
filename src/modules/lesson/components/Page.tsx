@@ -1,7 +1,7 @@
 import * as React from "react";
-import {Helmet} from "react-helmet";
-import {Modal, Button, Icon, Input, BackTop} from 'antd';
 import {Fragment} from "react";
+import {Helmet} from "react-helmet";
+import {BackTop, Button, Icon, Input} from 'antd';
 import {LessonEntity} from "../../../common/types/lesson";
 import {Loader} from "../../loader/components/loader";
 import {ApiEntity} from "../../../common/types";
@@ -12,12 +12,12 @@ import {NavigationBarContainter} from "../../navigation_bar/container";
 const {TextArea} = Input;
 
 export interface Props {
-    fetchLesson(parameters): void;
-
     match: any;
     params: any;
     lesson: LessonEntity;
     api: ApiEntity;
+
+    fetchLesson(parameters): void;
 }
 
 export interface State {
@@ -25,6 +25,28 @@ export interface State {
 }
 
 export class LessonDetail extends React.Component<Props, State, {}> {
+    public showModal = () => {
+        this.setState({
+            visible: true
+        });
+    }
+    public closeModal = () => {
+        this.setState({
+            visible: false
+        });
+    }
+    public handleCancel = (e) => {
+        this.closeModal();
+    }
+    public handleOk = (e) => {
+        this.setState({
+            visible: false,
+        });
+    }
+    private handleClickCreateQuestion = () => {
+        this.showModal();
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -34,32 +56,6 @@ export class LessonDetail extends React.Component<Props, State, {}> {
 
     componentWillMount() {
         this.props.fetchLesson({id: this.props.match.params.id});
-    }
-
-    public showModal = () => {
-        this.setState({
-            visible: true
-        });
-    }
-
-    public closeModal = () => {
-        this.setState({
-            visible: false
-        });
-    }
-
-    public handleCancel = (e) => {
-        this.closeModal();
-    }
-
-    public handleOk = (e) => {
-        this.setState({
-            visible: false,
-        });
-    }
-
-    private handleClickCreateQuestion = () => {
-        this.showModal();
     }
 
     public render() {

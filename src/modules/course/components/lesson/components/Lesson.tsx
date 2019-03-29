@@ -1,16 +1,18 @@
 import * as React from "react";
-import {Button, Card, Popover} from 'antd';
+import {Button, Card, Icon, message, Popconfirm} from 'antd';
 import {Link} from "react-router-dom";
-import {Popconfirm, message, Icon} from 'antd';
 import {LessonEntity} from "../../../../../common/types/lesson";
 import {LessonModal} from "../../../../modal/lesson/components/LessonModal";
 
 export interface Props {
-    deleteLesson(parameters): void;
-    editLesson(parameters): void;
-    fetchLesson(parameters): void
     course_id: number;
     lesson: LessonEntity;
+
+    deleteLesson(parameters): void;
+
+    editLesson(parameters): void;
+
+    fetchLesson(parameters): void
 }
 
 export interface State {
@@ -18,6 +20,22 @@ export interface State {
 }
 
 export class Lesson extends React.Component<Props, State, {}> {
+    public onClickEdit = () => {
+        this.setState({
+            visible: true
+        })
+    }
+    public _closeModal = () => {
+        this.setState({
+            visible: false
+        })
+    }
+    public _showModal = () => {
+        this.setState({
+            visible: true
+        })
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -33,24 +51,6 @@ export class Lesson extends React.Component<Props, State, {}> {
         message.error('Click on No');
     }
 
-    public onClickEdit = () => {
-        this.setState({
-            visible: true
-        })
-    }
-
-    public _closeModal = () => {
-        this.setState({
-            visible: false
-        })
-    }
-
-    public _showModal = () => {
-        this.setState({
-            visible: true
-        })
-    }
-
     public render() {
         let {lesson} = this.props;
         let {visible} = this.state;
@@ -61,7 +61,7 @@ export class Lesson extends React.Component<Props, State, {}> {
                         <Link to={lesson ? `/lesson/${lesson.id}` : '/'}><p>{lesson ? lesson.name : ""}</p></Link>
                         <div className="row">
                             <p className="col-md-10">{lesson.short_description}</p>
-                            <Icon type="eye" className="viewer" />2
+                            <Icon type="eye" className="viewer"/>2
                         </div>
                     </div>
                     <div className="col-md-4">

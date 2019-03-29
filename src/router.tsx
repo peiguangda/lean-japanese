@@ -2,7 +2,6 @@ import * as React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {store} from './store';
-import {App} from './app';
 import {HomePageContainer} from './modules/home/container';
 import {CourseDetailContainter} from "./modules/course/container";
 import {LessonDetailContainter} from "./modules/lesson/container";

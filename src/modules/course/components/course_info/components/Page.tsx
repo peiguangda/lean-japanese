@@ -10,15 +10,17 @@ import "../../../../../../node_modules/react-datepicker/dist/react-datepicker.mi
 import {LessonModal} from "../../../../modal/lesson/components/LessonModal";
 
 export interface Props {
+    course: CourseEntity;
+    api: ApiEntity;
+    loading: number;
+    props: any;
+    params: any;
+
     fetchCourse(parameters): void;
 
     fetchLessons(parameters): void;
 
     createLesson(parameters): Promise<any>;
-
-    course: CourseEntity;
-    api: ApiEntity;
-    loading: number;
 }
 
 export interface State {
@@ -30,6 +32,29 @@ export interface State {
 }
 
 export class CourseInfo extends React.Component<Props, State, {}> {
+    public _createLesson = params => {
+        this.props.createLesson(params)
+            .then(response => {
+                if (response && response.status == "success") {
+                    message.success('Successful!');
+                    this.props.fetchLessons({course_id: params.course_id});
+                }
+            })
+    }
+    public onClickCreate = () => {
+        this._showModal();
+    }
+    public _closeModal = () => {
+        this.setState({
+            visible: false
+        })
+    }
+    public _showModal = () => {
+        this.setState({
+            visible: true
+        })
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -68,37 +93,12 @@ export class CourseInfo extends React.Component<Props, State, {}> {
     }
 
     public componentWillMount() {
-        const {children} = this.props;
-        this.props.fetchCourse(children); // get course detail
-    }
-
-    public _createLesson = params => {
-        this.props.createLesson(params)
-            .then(response => {
-                if (response && response.status == "success") {
-                    message.success('Successful!');
-                    this.props.fetchLessons({course_id: params.course_id});
-                }
-            })
-    }
-
-    public onClickCreate = () => {
-        this._showModal();
-    }
-
-    public _closeModal = () => {
-        this.setState({
-            visible: false
-        })
-    }
-
-    public _showModal = () => {
-        this.setState({
-            visible: true
-        })
+        const {params} = this.props;
+        this.props.fetchCourse(params); // get course detail
     }
 
     public render() {
+        console.log("cousrse info", this.props);
         let {course} = this.props;
         let {visible, lesson} = this.state;
         return (

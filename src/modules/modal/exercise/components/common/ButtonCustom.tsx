@@ -6,6 +6,11 @@ import {ExerciseEntity} from "../../../../../common/types/exercise";
 const {TextArea} = Input;
 
 export interface Props {
+    title: string;
+    type: string; //question, answer, added_answer, sound_url
+    correct: boolean;
+    exercise: ExerciseEntity;
+
     removeAnswer(): void;
 
     addAnswer(): void;
@@ -13,11 +18,6 @@ export interface Props {
     changeAnswerStatus(): void;
 
     onChangeExercise(parameters): void;
-
-    title: string;
-    type: string; //question, answer, added_answer, sound_url
-    correct: boolean;
-    exercise: ExerciseEntity;
 }
 
 export interface State {
@@ -25,25 +25,15 @@ export interface State {
 }
 
 export class ButtonCustom extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            text: ""
-        }
-    }
-
     public addAnswer = () => {
         this.props.addAnswer();
     }
-
     public removeAnswer = () => {
         this.props.removeAnswer();
     }
-
     public changeAnswerStatus = () => {
         this.props.changeAnswerStatus();
     }
-
     public showPopup = () => {
         let {correct, type} = this.props;
         let contentAnswer
@@ -75,12 +65,10 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
             icon="ordered-list"
             className="ant-btn create-ex-fix-btn ant-btn-icon-only col-md-1"/></Popover>
     }
-
     public onChangeExercise = (exercise) => {
-        console.log("aaaaaaa",exercise);
+        console.log("aaaaaaa", exercise);
         this.props.onChangeExercise(exercise);
     }
-
     public onChangeText = (e) => {
         let {type, exercise} = this.props;
         let {value} = e.target;
@@ -95,6 +83,13 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
         // if (type == "added_answer")  can them list answer
         if (type == "answer") exercise.back_text = value;
         this.onChangeExercise(exercise);
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            text: ""
+        }
     }
 
     public render() {
