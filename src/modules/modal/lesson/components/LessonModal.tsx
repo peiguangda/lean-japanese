@@ -11,7 +11,6 @@ import "../../../../public/css/react-datepicker.min.css";
 import "../../../../public/css/react-datepicker-cssmodules.min.css";
 import "../../../../public/css/react-datepicker";
 import "../../../../public/css/react-datepicker-cssmodules.css";
-import "../../../../public/css/custom.scss";
 import {convertToRaw, EditorState} from 'draft-js';
 import {Editor} from 'react-draft-wysiwyg';
 import '../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -110,7 +109,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
         this.setState(prevState => ({
             lesson: {
                 ...prevState.lesson,
-                description: ''
+                short_description: ''
             }
         }));
     }
@@ -256,61 +255,81 @@ export class LessonModal extends React.Component<Props, State, {}> {
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                 >
-                    <Input.Group>
-                        <Input
-                            placeholder="Lesson name"
-                            prefix={<Icon type="edit" style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
-                            suffix={suffixLesson}  //set icon if having text in box
-                            value={name}
-                            onChange={this.onChangeNameLesson}
-                        />
-                        <Input
-                            className={"input_body border-create-question"}
-                            placeholder="Short description"
-                            type="textarea"
-                            size="large"
-                            value={short_description}
-                            onChange={this.onChangeShortDescription}
-                            prefix={<Icon type="form" style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
-                            suffix={suffixName}  //set icon if having text in box
-                        />
-                    </Input.Group>
-                    <Select
-                        style={{width: 120}}
-                        onChange={this.handleSelectChange}
-                        value={this.getStatus(status)}
-                    >
-                        <Option value="1">Public</Option>
-                        <Option value="2">Private</Option>
-                        <Option value="3">Deleted</Option>
-                        <Option value="4">Open</Option>
-                    </Select>
-                    <DatePicker
-                        selected={start_time}
-                        onChange={this.handleChangeStartTime}
-                        placeholderText="Start time"
-                    />
-                    <DatePicker
-                        selected={end_time}
-                        onChange={this.handleChangeEndTime}
-                        placeholderText="End time"
-                    />
-                    <Upload
-                        name="avatar"
-                        listType="picture-card"
-                        className="avatar-uploader"
-                        showUploadList={false}
-                        beforeUpload={this.beforeUpload}
-                        onChange={this.handleChange}
-                    >
-                        {avatar ? <img src={avatar} className="image-fix-size" alt="avatar"/> : uploadButton}
-                    </Upload>
-                    <Editor
-                        editorState={editorState}
-                        wrapperClassName="demo-wrapper"
-                        editorClassName="demo-editor"
-                        onEditorStateChange={this.onEditorStateChange}
-                    />
+                    <div className="row">
+                        <div className="col-md-5 m-2">
+                            <Input.Group>
+                                <Input
+                                    className="input_body"
+                                    placeholder="Lesson name"
+                                    prefix={<Icon type="edit"
+                                                  style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
+                                    suffix={suffixLesson}  //set icon if having text in box
+                                    value={name}
+                                    onChange={this.onChangeNameLesson}
+                                />
+                                <Input
+                                    className={"input_body"}
+                                    placeholder="Short description"
+                                    value={short_description}
+                                    onChange={this.onChangeShortDescription}
+                                    prefix={<Icon type="form"
+                                                  style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
+                                    suffix={suffixName}  //set icon if having text in box
+                                />
+                            </Input.Group>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <Upload
+                                        name="avatar"
+                                        listType="picture-card"
+                                        className="avatar-uploader"
+                                        showUploadList={false}
+                                        beforeUpload={this.beforeUpload}
+                                        onChange={this.handleChange}
+                                    >
+                                        {avatar ?
+                                            <img src={avatar} className="image-fix-size" alt="avatar"/> : uploadButton}
+                                    </Upload>
+                                </div>
+                                <div className="col-md-6">
+                                    <Select
+                                        className="w-100 m-1"
+                                        onChange={this.handleSelectChange}
+                                        value={this.getStatus(status)}
+                                    >
+                                        <Option value="1">Public</Option>
+                                        <Option value="2">Private</Option>
+                                        <Option value="3">Deleted</Option>
+                                        <Option value="4">Open</Option>
+                                    </Select>
+                                    <div className="w-100 m-1">
+                                        <DatePicker
+                                            className="date-picker-custom"
+                                            selected={start_time}
+                                            onChange={this.handleChangeStartTime}
+                                            placeholderText="Start time"
+                                        />
+                                    </div>
+                                    <div className="w-100 m-1">
+                                        <DatePicker
+                                            className="date-picker-custom"
+                                            selected={end_time}
+                                            onChange={this.handleChangeEndTime}
+                                            placeholderText="End time"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-6 m-2 modal-editor">
+                            <Editor
+                                editorState={editorState}
+                                wrapperClassName="demo-wrapper"
+                                editorClassName="demo-editor"
+                                onEditorStateChange={this.onEditorStateChange}
+                            />
+                        </div>
+                    </div>
                 </Modal>
             </Fragment>
 

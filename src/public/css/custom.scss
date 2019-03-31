@@ -1,8 +1,3 @@
-.OMC {
-  width: 88%;
-  height: 63%;
-}
-
 .home_navigation {
   padding-left: 3% !important;
 }
@@ -64,8 +59,8 @@
   font-weight: 500 !important;
 }
 
-.body {
-  background: #f1f1f1;
+body {
+  background: #e9ebee !important;
   font-size: 14px;
   line-height: 1.4;
   font-family: Poppins, Helvetica, sans-serif !important;
@@ -105,18 +100,9 @@
   -webkit-margin-end: 0;
 }
 
-.home_layout {
-  margin-top: 135px;
-}
-
-.course_info_layout {
-  max-height: 400px;
-}
-
 .item_button {
   border: none !important;
   color: white !important;
-  background: #e74e84 !important;
   cursor: pointer !important;
   padding: 7px 20px !important;
   display: inline-block !important;
@@ -124,14 +110,13 @@
   font-size: 14px !important;
   font-size: .875rem !important;
   transition: all .3s ease-in-out !important;
-  font-weight: 500 !important;
+  font-weight: bold !important;
   margin-top: 5px;
 }
 
 .ant-btn-primary {
   border: none !important;
   color: white !important;
-  background: #e74e84 !important;
   cursor: pointer !important;
   padding: 7px 20px !important;
   display: inline-block !important;
@@ -147,7 +132,13 @@
 }
 
 .input_body {
-  margin-top: 5px;
+  height: 40px !important;
+  min-height: 40px !important;
+  width: 100% !important;
+  margin: 1%;
+  color: #495057 !important;
+  border-radius: 5px !important;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out !important;
 }
 
 .small_button {
@@ -279,27 +270,178 @@
   width: 70% !important;
 }
 
-.ant-page-header {
-  margin-top: 7%;
-}
-
 .ant-carousel {
   margin-top: 8% !important;
   text-align: center;
-  height: 160px;
   line-height: 160px;
-  background: #364d79;
   overflow: hidden;
 }
 
 .slick-slide {
   text-align: center;
-  height: 160px;
+  height: 250px !important;
   line-height: 160px;
-  background: #364d79;
   overflow: hidden;
+  background: url("http://style-dot-e-course.appspot.com/resources/images/ms-hoa/banner.png");
+}
+
+.course-description {
+  padding: 2% 2% 0 2%;
+  font-family: cursive;
+}
+
+.avatarCourse {
+  height: 250px;
+  display: inline-block;
+  object-fit: contain;
 }
 
 .ant-carousel .slick-slide h3 {
+  margin-top: 9%;
   color: #fff;
+}
+
+.course-card-descript {
+  width: 300px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, .3) !important;
+  transition: all .3s ease-in-out !important;
+  float: right;
+}
+
+.ant-page-header {
+  background-color: #e9ebee !important;
+}
+
+.course-content {
+  background-color: white;
+  border-radius: 5px;
+  padding: 2% !important;
+  min-height: 500px;
+}
+
+.page-header-custom {
+  padding-top: 1% !important;
+  padding-left: 1% !important;
+  padding-bottom: 0 !important;
+}
+
+.ant-rate {
+  margin-bottom: 5% !important;
+}
+
+.ant-tree-node-content-wrapper {
+  width: 100% !important;
+}
+
+.btn-delete {
+  background-color: white !important;
+  bottom: 3% !important;
+
+  height: 25px !important;
+  width: 20px !important;
+  padding: 0px 0px 1px 0px !important;
+  margin: 0 !important;
+  color: #b0b3b8 !important;
+}
+
+.btn-edit {
+  background-color: white !important;
+  bottom: 5% !important;
+  right: 19px;
+  height: 25px !important;
+  width: 30px !important;
+  padding: 0px 0px 1px 0px !important;
+  margin: 0 !important;
+  color: #1c1919 !important;
+}
+
+@mixin btn-topic($w: 100%, $c: white, $b: 5%) {
+  background-color: white !important;
+  height: 25px !important;
+  width: $w;
+  bottom: $b;
+  padding: 0px 0px 1px 0px !important;
+  margin: 0 !important;
+  color: $c !important;
+}
+
+.btn-delete {
+  @include btn-topic(20px, #b0b3b8, 3%);
+  right: 19px;
+}
+
+.btn-edit {
+  @include btn-topic(30px, #1c1919);
+  right: 19px;
+}
+
+.home_layout {
+  margin-top: 135px;
+}
+
+.customPanelStyle {
+  border-radius: 4px;
+  margin-bottom: 24px;
+  border: 0;
+  overflow: hidden;
+}
+
+.btn-add {
+  @include btn-topic(30px, #1c1919);
+  right: 19px;
+}
+
+.btn-header-topic-add-edit {
+  @include btn-topic(30px, #1c1919);
+}
+
+.btn-header-topic-delete {
+  @include btn-topic(20px, #b0b3b8, 3%);
+}
+
+.ant-upload-select-picture-card {
+  background-color: white !important;
+  margin: 2% !important;
+  width: 100% !important;
+}
+
+.date-picker-custom {
+  padding: 5%;
+  margin-bottom: 2%;
+  width: 100%;
+  box-sizing: border-box;
+  font-variant: tabular-nums;
+  list-style: none;
+  -webkit-font-feature-settings: "tnum";
+  font-feature-settings: "tnum";
+  position: relative;
+  display: inline-block;
+  height: 32px;
+  color: rgba(0, 0, 0, .65);
+  font-size: 14px;
+  line-height: 1.5;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+}
+
+.react-datepicker__input-container {
+  width: 100% !important;
+}
+
+.react-datepicker-wrapper {
+  width: 100% !important;
+}
+
+.modal-editor {
+  border: 1px solid #eeeeee;
+  border-radius: 5px;
+}
+
+.ant-input {
+  border-radius: 5px 5px 5px 5px;
+  border: 1px solid #d9d9d9;
 }

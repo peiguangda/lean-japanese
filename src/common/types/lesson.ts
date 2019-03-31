@@ -23,5 +23,5 @@ export interface LessonEntity {
     duration: number,
     pass: number,
     time_practice: number,
-    score_scale: number
+    score_scale: number,
 };
