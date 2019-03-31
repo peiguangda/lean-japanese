@@ -3,13 +3,17 @@ import {connect} from 'react-redux';
 import {State} from '../../reducers/reducers';
 import {CourseDetail} from './components/Page';
 import {RouteComponentProps} from "react-router";
+import {fetchCourseAction} from "../../reducers/course";
 
 const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => ({
     api: state.api,
-    props: props
+    props: props,
+    course: state.course,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+    fetchCourse: (parameters) => dispatch(fetchCourseAction(parameters)),
+});
 
 export const CourseDetailContainter = connect(
     mapStateToProps,

@@ -16,13 +16,13 @@
 // };
 
 test("basic", async () => {
-  expect(1).toBe(1);
+    expect(1).toBe(1);
 });
 
 test("basic failure", async () => {
-  try {
-    expect(1).toBe(2);
-  } catch (error) {
-    expect(1).toBe(1);
-  }
+    try {
+        expect(1).toBe(2);
+    } catch (error) {
+        expect(1).toBe(1);
+    }
 });

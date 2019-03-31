@@ -2,7 +2,6 @@ import * as React from "react";
 import {Card} from 'antd';
 import {Link} from "react-router-dom";
 import {CourseEntity} from "../../../../../common/types/course";
-import "../../../../../public/css/custom.scss";
 
 const {Meta} = Card;
 

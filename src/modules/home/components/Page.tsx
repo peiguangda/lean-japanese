@@ -3,8 +3,12 @@ import {Fragment} from "react";
 import {Helmet} from "react-helmet";
 import {CategoryCourse} from "./CategoryCourse";
 import {CourseContainer} from "./courses/container";
-import {BackTop} from "antd";
+import {BackTop, Layout} from "antd";
 import {NavigationBarContainter} from "../../navigation_bar/container";
+
+const {
+    Footer
+} = Layout;
 
 export interface Props {
 }
@@ -39,6 +43,9 @@ export class HomePage extends React.Component<Props, State, {}> {
                         </div>
                     </div>
                 </div>
+                <Footer style={{textAlign: 'center'}}>
+                    Easy Japanese Design ©2019 Created by HEDSPI
+                </Footer>
                 <BackTop/>
             </Fragment>
         );

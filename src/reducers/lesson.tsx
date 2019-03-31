@@ -83,15 +83,15 @@ export const fetchLessonAction = parameters => dispatch => {
 };
 
 export const fetchListLessonAction = parameters => dispatch => {
-    dispatch(requestAxios(request.getLessons(parameters)))
+    return dispatch(requestAxios(request.getLessons(parameters)))
         .then(response => {
-            dispatch({
+            return dispatch({
                 type: GET_LIST_LESSON,
                 payload: response.data
             });
         })
         .catch(error => {
-            dispatch({
+            return dispatch({
                 type: GET_LIST_LESSON_ERROR,
                 payload: {},
                 responseError: error

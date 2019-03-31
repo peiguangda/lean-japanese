@@ -1,13 +1,17 @@
 import * as React from "react";
 import {Fragment} from "react";
 import {Helmet} from "react-helmet";
-import {BackTop, Button, Icon, Input} from 'antd';
+import {BackTop, Button, Icon, Input, Layout} from 'antd';
 import {LessonEntity} from "../../../common/types/lesson";
 import {Loader} from "../../loader/components/loader";
 import {ApiEntity} from "../../../common/types";
 import {ListExerciseContainter} from "./exercise/container";
 import {ExerciseModal} from "../../modal/exercise/components/ExerciseModal";
 import {NavigationBarContainter} from "../../navigation_bar/container";
+
+const {
+    Footer
+} = Layout;
 
 const {TextArea} = Input;
 
@@ -105,9 +109,10 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                         </div>
                     </div>
                 </div>
-                <div>
-                    <BackTop/>
-                </div>
+                <Footer style={{textAlign: 'center'}}>
+                    Easy Japanese Design ©2019 Created by HEDSPI
+                </Footer>
+                <BackTop/>
             </Fragment>
         );
     }
