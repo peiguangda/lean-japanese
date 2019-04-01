@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Fragment} from "react";
-import {Helmet} from "react-helmet";
 import {Button, Collapse, Icon, message, Tree} from 'antd';
 import {LessonEntity} from "../../../../../common/types/lesson";
 import {ApiEntity} from "../../../../../common/types";
@@ -12,13 +11,14 @@ import {Loader} from "../../../../loader/components/loader";
 const DirectoryTree = Tree.DirectoryTree;
 const {TreeNode} = Tree;
 const Panel = Collapse.Panel;
+export var listLesson = [];
 
 export interface Props extends RouteComponentProps<any, any> {
     lessons: LessonEntity[];
     api: ApiEntity;
     props: any;
 
-    fetchLessons(parameters): void;
+    fetchLessons(parameters): Promise<any>;
 
     deleteLesson(parameters): Promise<any>;
 
@@ -33,7 +33,7 @@ export interface State {
     lesson: LessonEntity;
     start_time: any;
     end_time: any;
-    listLesson: LessonEntity[];
+    listLesson: Array<any>;
 }
 
 export class ListLesson extends React.Component<Props, State, {}> {
@@ -102,7 +102,8 @@ export class ListLesson extends React.Component<Props, State, {}> {
     }
     private showListLesson = () => {
         var {lessons} = this.props;
-        // console.log("lessons", lessons);
+        var {listLesson} = this.state;
+        console.log("listLesson", listLesson);
         lessons = toArray(lessons);
         const customTitle = <Fragment>
             aahiahia
@@ -125,8 +126,8 @@ export class ListLesson extends React.Component<Props, State, {}> {
             <TreeNode title={customTitle} key={`0`} isLeaf/>
         </TreeNode>
 
-        if (lessons && lessons.length)
-            return lessons.map((item, index) => {
+        if (listLesson && listLesson.length)
+            return listLesson.map((item, index) => {
                 return (
                     <Collapse
                         destroyInactivePanel={true}
@@ -146,10 +147,9 @@ export class ListLesson extends React.Component<Props, State, {}> {
                                     defaultExpandAll={false}
                                     onSelect={this.onSelect}
                                     onExpand={this.onExpand}
-                                    expandAction={"doubleClick"}
+                                    expandAction={"click"}
                                 >
                                     {/*------------------------show bài con-----------------------------*/}
-                                    {/*{children}*/}
                                     {this.showChildren(item)}
                                 </DirectoryTree>
                             </p>
@@ -197,34 +197,58 @@ export class ListLesson extends React.Component<Props, State, {}> {
         }
     }
 
-    componentWillMount() {
-        console.log("aaaaaaaaa", this.props.params.id);
-        let course_id = this.props.params.id;
-        this.props.fetchLessons({course_id: course_id, parent_id: course_id});
+    public addItemToList = (list, item) => {
+        if (list) list.push(item);
     }
 
-    public showChildren(item) {
-        // console.log("item", item);
+    public fetchChild = (list, id) => {
         let course_id = this.props.params.id;
-        const customTitle = <Fragment>
-            aahiahia
+        this.props.fetchLessons({course_id: course_id, parent_id: id})
+            .then(res => {
+                res.payload.map((item, index) => {
+                    item.childList = [];
+                    this.fetchChild(item.childList, item.id);
+                    this.addItemToList(list, item);
+                })
+            })
+    }
+
+    componentWillMount() {
+        console.log("aaaaaaaaa", this.props.params.id);
+        this.fetchChild(listLesson, 0);
+        console.log("listLesson", listLesson);
+        this.setState({
+            listLesson: listLesson
+        })
+    }
+
+    public showChildren = (item) => {
+        let {childList} = item;
+        console.log("item", item);
+        console.log("childList", childList);
+        const customTitle = (name) => <Fragment>
+            {name}
             <Button className="float-right btn-delete" icon="close" onClick={(event) => this.deleteAction(event)}/>
             <Button className="float-right btn-edit" icon="edit" onClick={(event) => this.editAction(event)}/>
             <Button className="float-right btn-add" icon="plus" onClick={(event) => this.addAction(event)}/>
         </Fragment>
-        return <TreeNode title={customTitle} key={`3`}>
-            <TreeNode title={customTitle} key={`64`}>
-                <TreeNode title={customTitle} key={`192`} isLeaf/>
-            </TreeNode>
-            <TreeNode title={customTitle} key={`22`} isLeaf/>
-        </TreeNode>
+        console.log(childList.length);
+        if (childList && childList.length == 0) return <TreeNode
+            title={customTitle(item.name)} key={item.id} isLeaf/>;
+        else return childList.map((value, index) => {
+            console.log("value", value);
+            if (value.childList.length)
+                return <TreeNode title={customTitle(item.name + ' (Tổng số ' + item.childList.length + ' bài )')}
+                                 key={value.id}>
+                    {this.showChildren(value)}
+                </TreeNode>
+            else return this.showChildren(value)
+        })
     }
 
     public render() {
         let {api} = this.props;
         let {visible, lesson} = this.state;
-
-
         return (
             <Fragment>
                 <div className="row m-3 w-100">

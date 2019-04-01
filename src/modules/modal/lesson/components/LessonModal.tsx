@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Fragment} from "react";
-import {Helmet} from "react-helmet";
 import {Icon, Input, message, Modal, Select, Upload} from "antd";
 import {firebase, storage} from "../../../../firebase";
 import {LessonEntity} from '../../../../common/types/lesson';
