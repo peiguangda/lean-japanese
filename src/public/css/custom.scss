@@ -445,3 +445,23 @@ body {
   border-radius: 5px 5px 5px 5px;
   border: 1px solid #d9d9d9;
 }
+
+.hidden-custom {
+  display: none;
+}
+
+.ant-collapse-header {
+  &:hover {
+    .hidden-custom {
+      display: block;
+    }
+  }
+}
+
+.ant-tree-node-content-wrapper, ant-tree-node-content-wrapper-normal {
+  &:hover {
+    .hidden-custom {
+      display: inline;
+    }
+  }
+}

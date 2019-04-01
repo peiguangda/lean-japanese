@@ -22,6 +22,8 @@ export interface Props {
     title: string;
     visible: boolean;
     course_id: number;
+    parent_id: number;
+    action: string;
 
     fetchLessons(parameters): void;
 
@@ -39,6 +41,42 @@ export interface State {
 }
 
 export class LessonModal extends React.Component<Props, State, {}> {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false,
+            editorState: EditorState.createEmpty(),
+            lesson: new class implements LessonEntity {
+                id: string;
+                actionType: string;
+                avatar: string;
+                childrent_type: number;
+                course_id: number;
+                description: string;
+                duration: number;
+                end_time: number;
+                level: number;
+                name: string;
+                order_index: number;
+                parent_id: number;
+                pass: number;
+                password: string;
+                question_number: number;
+                score_scale: number;
+                short_description: string;
+                sort_id: number;
+                start_time: number;
+                status: number;
+                tag: string;
+                time_practice: number;
+                total_card_num: number;
+                user_id: number;
+                user_name: string;
+            }
+        }
+    }
+
     onEditorStateChange: Function = (editorState) => {
         let descript = draftToHtml(convertToRaw(editorState.getCurrentContent()))
         this.setState({
@@ -59,8 +97,9 @@ export class LessonModal extends React.Component<Props, State, {}> {
     }
     public handleOk = (e) => {
         let {lesson} = this.state;
-        let {childrent_type, status} = lesson;
+        let {childrent_type, parent_id} = lesson;
         if (!childrent_type) lesson.childrent_type = 1;
+        if (this.props.action == "create") lesson.parent_id = this.props.parent_id;
         this.props.handleLesson(lesson);
         this.props.closeModal();
     }
@@ -173,41 +212,6 @@ export class LessonModal extends React.Component<Props, State, {}> {
         if (status == 4) return "Open";
     }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false,
-            editorState: EditorState.createEmpty(),
-            lesson: new class implements LessonEntity {
-                id: string;
-                actionType: string;
-                avatar: string;
-                childrent_type: number;
-                course_id: number;
-                description: string;
-                duration: number;
-                end_time: number;
-                level: number;
-                name: string;
-                order_index: number;
-                parent_id: number;
-                pass: number;
-                password: string;
-                question_number: number;
-                score_scale: number;
-                short_description: string;
-                sort_id: number;
-                start_time: number;
-                status: number;
-                tag: string;
-                time_practice: number;
-                total_card_num: number;
-                user_id: number;
-                user_name: string;
-            }
-        }
-    }
-
     componentWillReceiveProps(nextProps) {
         let {lesson} = nextProps;
         lesson.course_id = nextProps.course_id;
@@ -236,6 +240,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
 
     public render() {
         const {editorState} = this.state;
+        console.log("edittor state", editorState);
         let {loading, lesson: {name, short_description, description, start_time, end_time, avatar, status}} = this.state;
         const suffixLesson = name ? <Icon type="close-circle" onClick={this.emitNameEmpty}/> : null;
         const suffixName = short_description ? <Icon type="close-circle" onClick={this.emitDescriptEmpty}/> : null;
