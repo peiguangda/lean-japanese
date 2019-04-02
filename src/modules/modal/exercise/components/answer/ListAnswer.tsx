@@ -18,6 +18,10 @@ export interface State {
 }
 
 export class ListAnswer extends React.Component<Props, State, {}> {
+    constructor(props) {
+        super(props);
+    }
+
     //show list dap an khi dc them vao, mac dinh la dap an sai
     public showListAnswer = () => {
         let {number, exercise} = this.props;
@@ -35,10 +39,6 @@ export class ListAnswer extends React.Component<Props, State, {}> {
                 />)
             }
         return result;
-    }
-
-    constructor(props) {
-        super(props);
     }
 
     public render() {

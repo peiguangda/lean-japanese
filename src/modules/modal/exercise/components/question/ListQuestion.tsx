@@ -4,8 +4,10 @@ import {Question} from "./Question";
 
 export interface Props {
     numberQuestion: number;
+    current_question: number;
 
-    removeQuestion(): void;
+    removeQuestion(parameters): void;
+    changeQuestion(parameters): void;
 }
 
 export interface State {
@@ -13,11 +15,16 @@ export interface State {
 
 export class ListQuestion extends React.Component<Props, State, {}> {
     public showListQuestion = () => {
-        let {numberQuestion} = this.props;
+        let {numberQuestion, current_question} = this.props;
         let result = [];
         if (numberQuestion)
             for (var i = 0; i < numberQuestion; i++)
-                result.push(<Question removeQuestion={this.props.removeQuestion} num={i + 1}/>);
+                result.push(<Question
+                                removeQuestion={this.props.removeQuestion}
+                                changeQuestion={this.props.changeQuestion}
+                                num={i + 1}
+                                current_question={current_question}
+                />);
         return result;
     }
 
