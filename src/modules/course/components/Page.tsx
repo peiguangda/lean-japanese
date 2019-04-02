@@ -3,7 +3,7 @@ import {Fragment} from "react";
 import {Helmet} from "react-helmet";
 import {ApiEntity} from '../../../common/types/index';
 import {Loader} from "../../loader/components/loader";
-import {BackTop, Input, Card, Carousel, Icon, Layout, PageHeader, Rate, Tabs, Table, Button, Tag} from "antd";
+import {BackTop, Tooltip, Input, Card, Carousel, Icon, PageHeader, Rate, Tabs, Table, Button, Layout} from "antd";
 import {NavigationBarContainter} from "../../navigation_bar/container";
 import {CourseEntity} from "../../../common/types/course";
 import {ListLessonContainter} from "./lesson/container";
@@ -12,8 +12,8 @@ import { STATUS_CODES } from "http";
 const TabPane = Tabs.TabPane;
 const { TextArea } = Input;
 const {
-    Footer
-} = Layout;
+    Header, Footer, Sider, Content,
+  } = Layout;
 const columns = [{
     title: 'STT',
     dataIndex: 'stt',
@@ -53,6 +53,36 @@ const columns = [{
     title: 'Vai Trò',
     dataIndex: 'status',
     key: 'status',
+  }]; 
+
+  const test_columns = [{
+    title: 'STT',
+    dataIndex: 'stt',
+    key: 'stt',
+  },{
+    title: 'Tên',
+    dataIndex: 'name',
+    key: 'name',
+  }, {
+    title: 'Bài hoàn thành/ Tổng số',
+    dataIndex: 'number',
+    key: 'number',
+  }, {
+    title: 'Câu đúng/ Tổng số',
+    dataIndex: 'number',
+    key: 'number',
+  }, {
+    title: 'Điểm kinh nghiệm',
+    dataIndex: 'number',
+    key: 'numer',
+  },{
+    title: 'Số Chat',
+    dataIndex: 'number',
+    key: 'numer',
+  },{
+    title: 'Số Bình Luận',
+    dataIndex: 'number',
+    key: 'numer',
   }]; 
 
 export interface Props {
@@ -146,13 +176,57 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                     <Table columns={user_columns}  />
                                 </TabPane>
                                 <TabPane tab="Hỏi đáp" key="4">
-                                    <tr>
-                                    <Icon type="question-circle" />
-                                    <TextArea placeholder="Đăng cái gì đó..." autosize={{ minRows: 2, maxRows: 6 }} />
-                                    </tr>
+                                    <div className= "row">
+                                    <div className="col-1"><Icon type="question-circle" theme="twoTone" /></div>
+                                    <div className="col-11"><Input placeholder="Đăng cái gì đó..."
+                                    suffix={
+                                        <Tooltip title="Extra information">
+                                        <Icon type="upload" style={{ color: 'rgba(0,0,0,.45)' }} />
+                                         </Tooltip>
+                                        }  />
+                                        </div>
+                                    </div>
                                 </TabPane>
-                                <TabPane tab="Kết quả học tập" key="5">Content of Tab Pane 5</TabPane>
-                                <TabPane tab="Đánh giá" key="6">Content of Tab Pane 6</TabPane>
+                                <TabPane tab="Kết quả học tập" key="5">
+                                <div className="container">
+                                    <div className="this_is_block_panel_main">
+                                        <Table columns={test_columns}  />
+                                    </div>
+                                </div>
+                                </TabPane>
+                                <TabPane tab="Đánh giá" key="6">
+                                <div className="row reset-row-col">
+                                    <div className="col-xs-12 col-sm-12 reset-row-col padding_right_with_col-12">
+                                        <div className="this_is_block_panel_main_parent">
+                                            <div className="this_is_block_panel_main">
+                                                <div className="this_is_header_block_panel">
+                                                    <div className="this_is_header_left_block_panel">
+                                                        <div className= "this_is_block_title">Phản hồi từ học viên</div>
+                                                    </div>
+                                                    <div className="this_is_header_right_block_panel"></div>
+                                                </div>
+                                                <div className="this_is_content_block_panel">
+                                                    <div className="main_panel_rating_of_viewer_panel">
+                                                        <div className="content_panel_rating_of_viewer_panel">
+                                                            <div className="header_panel_rating_of_viewer_panel">
+                                                                <Rate allowHalf />
+                                                            </div>
+                                                            <div className="body_panel_rating_of_viewer_panel">
+                                                                <Input placeholder="Đăng cái gì đó..."
+                                                                    suffix={
+                                                                           <Tooltip title="Extra information">
+                                                                         <Icon type="upload" style={{ color: 'rgba(0,0,0,.45)' }} />
+                                                                            </Tooltip>
+                                                                            }  />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </TabPane>
                             </Tabs>
                         </div>
                         {/*------------------------------tong quan khoa hoc--------------------------------*/}

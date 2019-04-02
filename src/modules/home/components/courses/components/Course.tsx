@@ -1,5 +1,6 @@
 import * as React from "react";
-import {Card} from 'antd';
+import {Card, Rate, Icon, Button} from 'antd';
+import {Fragment} from "react";
 import {Link} from "react-router-dom";
 import {CourseEntity} from "../../../../../common/types/course";
 
@@ -24,6 +25,10 @@ export class Course extends React.Component<Props, State, {}> {
     public render() {
         let {course} = this.props;
         return (
+            <Fragment>
+                <div className="right-corder-container">     
+                <Button type="primary" shape="circle" icon="plus-circle" />
+                </div>
             <Link className="col-md-4 col-lg-4" to={course ? `/course/${course.id}` : '/'}>
                 <Card
                     className="course_list"
@@ -32,10 +37,24 @@ export class Course extends React.Component<Props, State, {}> {
                 >
                     <Meta
                         title={course ? course.name : ""}
-                        description={course ? course.short_description : ""}
                     />
+                <div className="LOC">
+                    <div className="BOC">
+                        <div className="FOC" >
+                        <Icon type="team" />
+                        </div>
+                        <div className="DOC">{course.member_num ? course.member_num : 0}</div>
+                    </div>
+                    <div className="BOC">
+                    <Rate allowHalf defaultValue={3} />
+                    </div>
+                </div>
+                <div className="LOC">
+                <div className="GOC">{course.cost ? course.cost : 0}</div>
+                </div>
                 </Card>
             </Link>
+            </Fragment>
         );
     }
 }
