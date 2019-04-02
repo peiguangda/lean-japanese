@@ -5,6 +5,7 @@ import {ExerciseEntity} from "../../../../common/types/exercise";
 import {QuestionTypeSetting} from "../../setting/components/QuestionTypeSetting";
 import {ListQuestion} from "./question/ListQuestion";
 import {QuestionContent} from "./QuestionContent";
+import {Exercise} from "../../../lesson/components/exercise/components/Exercise";
 
 const {
     Sider,
@@ -20,13 +21,23 @@ export interface Props {
 }
 
 export interface State {
-    exercise: ExerciseEntity;
+    exercise: Array<ExerciseEntity>;
     isShowSetting: boolean;
-    numberAnswer: number;
     numberQuestion: number;
+    current_question: number;
 }
 
 export class ExerciseModal extends React.Component<Props, State, {}> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            current_question: 0,
+            numberQuestion: 1,
+            isShowSetting: false,
+            exercise: []
+        }
+    }
+
     public showModal = () => {
         this.props.showModal();
     }
@@ -44,26 +55,15 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
             isShowSetting: !isShowSetting
         })
     }
-    public addAnswer = () => {
-        let {numberAnswer} = this.state;
-        this.setState({
-            numberAnswer: ++numberAnswer
-        })
-    }
-    public deleteAnswer = () => {
-        let {numberAnswer} = this.state;
-        if (numberAnswer)
-            this.setState({
-                numberAnswer: --numberAnswer
-            })
-    }
     public addQuestion = () => {
         let {numberQuestion} = this.state;
         this.setState({
-            numberQuestion: ++numberQuestion
+            numberQuestion: ++numberQuestion,
         })
     }
-    public removeQuestion = () => {
+    public removeQuestion = (parameters) => {
+        console.log("parameters", parameters);
+        let index = parameters - 1;
         console.log("remove question");
         let {numberQuestion} = this.state;
         if (numberQuestion)
@@ -71,42 +71,27 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
                 numberQuestion: --numberQuestion
             })
     }
+
+    public changeQuestion = (parameters) => {
+        console.log("parameters", parameters);
+        let index = parameters - 1;
+        console.log("change question");
+        let {current_question} = this.state;
+        this.setState({
+            current_question: index
+        })
+    }
+
+    public onUpdateExercise = (parameters) => {
+        console.log("ex", parameters.exercise);
+    }
+
     public changeAnswerStatus = () => {
 
     }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            numberAnswer: 1,
-            numberQuestion: 1,
-            isShowSetting: false,
-            exercise: new class implements ExerciseEntity {
-                id: string;
-                user_id: number;
-                course_id: number;
-                topic_id: number;
-                order_index: number;
-                difficulty_level: number;
-                has_child: number;
-                parent_id: number;
-                status: number;
-                code: string;
-                shuffle_anser: number;
-                front_text: string;
-                front_image: string;
-                front_sound: string;
-                front_hint: string;
-                back_text: string;
-                back_image: string;
-                back_sound: string;
-                back_hint: string;
-            },
-        }
-    }
-
     public render() {
-        let {numberQuestion, isShowSetting, numberAnswer, exercise} = this.state;
+        let {numberQuestion, isShowSetting, exercise, current_question} = this.state;
         return (
             <Fragment>
                 <Modal
@@ -124,9 +109,11 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
                                     <div className="question_items">
                                         <ListQuestion
                                             removeQuestion={this.removeQuestion}
+                                            changeQuestion={this.changeQuestion}
                                             numberQuestion={numberQuestion}
+                                            current_question={current_question}
                                         />
-                                        <div className="row">
+                                        <div className="row mt-4">
                                             <Button className="col-md-2" type="dashed" icon="plus"
                                                     onClick={this.addQuestion}></Button>
                                             <Button className="col-md-10" type="ghost" icon="import">Thêm từ thư
@@ -147,11 +134,11 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
                         {/*----------------question content--------------------*/}
                         <QuestionContent
                             onchangeSetting={this.onchangeSetting}
-                            addAnswer={this.addAnswer}
-                            deleteAnswer={this.deleteAnswer}
                             isShowSetting={isShowSetting}
-                            numberAnswer={numberAnswer}
                             visible={true}
+                            exercise={exercise[current_question]}
+                            onUpdateExercise={this.onUpdateExercise}
+                            current_question={current_question}
                         />
                     </Layout>
                 </Modal>

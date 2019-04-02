@@ -1,14 +1,11 @@
 .home_navigation {
-  padding-left: 3% !important;
-}
+  padding-left: 3% !important; }
 
 .search_navigation {
-  padding-left: 8% !important;
-}
+  padding-left: 8% !important; }
 
 .account_navigation {
-  float: right;
-}
+  float: right; }
 
 .course_list {
   border-radius: 20px !important;
@@ -17,28 +14,24 @@
   min-height: 200px;
   min-width: 200px;
   text-align: center;
-  margin-bottom: 30px !important;
-}
+  margin-bottom: 30px !important; }
 
 .category_course_item_main_panel {
   list-style: none;
   padding: 0px;
   margin: 0px;
-  margin-top: 5px;
-}
+  margin-top: 5px; }
 
 .category_course_icon {
   margin-right: 10px;
   font-size: 18px;
   height: 30px;
-  text-align: center;
-}
+  text-align: center; }
 
 .category_course_name {
   width: 100%;
   text-decoration: none;
-  position: relative;
-}
+  position: relative; }
 
 .menu-header {
   border-bottom: 1px solid rgba(76, 87, 102, 0.1) !important;
@@ -49,23 +42,20 @@
   min-height: 48px !important;
   padding: 3px 0 !important;
   top: 0;
-  position: fixed;
-}
+  position: fixed; }
 
 .logo-header {
   color: white !important;
   padding: 2px 15px 0px !important;
   font-size: .875rem !important;
-  font-weight: 500 !important;
-}
+  font-weight: 500 !important; }
 
 body {
   background: #e9ebee !important;
   font-size: 14px;
   line-height: 1.4;
   font-family: Poppins, Helvetica, sans-serif !important;
-  color: #555;
-}
+  color: #555; }
 
 .category_index {
   border-radius: 15px 15px 0 0;
@@ -76,16 +66,14 @@ body {
   margin: 0;
   padding: 13px 24px 13px 12px;
   overflow: hidden;
-  text-align: center;
-}
+  text-align: center; }
 
 .category_box {
   background-color: #fff;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.12);
   border-radius: 20px;
   width: 30%;
-  max-height: 400px;
-}
+  max-height: 400px; }
 
 .category_item {
   background-color: #fff;
@@ -97,8 +85,7 @@ body {
   -webkit-margin-before: 1em;
   -webkit-margin-after: 1em;
   -webkit-margin-start: 0;
-  -webkit-margin-end: 0;
-}
+  -webkit-margin-end: 0; }
 
 .item_button {
   border: none !important;
@@ -110,8 +97,7 @@ body {
   font-size: 14px !important;
   transition: all .3s ease-in-out !important;
   font-weight: bold !important;
-  margin-top: 5px;
-}
+  margin-top: 5px; }
 
 .ant-btn-primary {
   border: none !important;
@@ -120,15 +106,11 @@ body {
   padding: 7px 20px !important;
   display: inline-block !important;
   outline: 0 !important;
-  //font-size: 14px !important;
-  //font-size: .875rem !important;
   transition: all .3s ease-in-out !important;
-  font-weight: 500 !important;
-}
+  font-weight: 500 !important; }
 
 .title {
-  text-align: center;
-}
+  text-align: center; }
 
 .input_body {
   height: 40px !important;
@@ -137,8 +119,7 @@ body {
   margin: 1%;
   color: #495057 !important;
   border-radius: 5px !important;
-  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out !important;
-}
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out !important; }
 
 .small_button {
   margin: 1.5px;
@@ -152,48 +133,40 @@ body {
   font-size: 14px !important;
   font-size: .875rem !important;
   transition: all .3s ease-in-out !important;
-  font-weight: 500 !important;
-}
+  font-weight: 500 !important; }
 
 .viewer {
   width: 0.5em;
-  margin: 8px;
-}
+  margin: 8px; }
 
 .modal-create-question {
-  width: 80% !important;
-}
+  width: 80% !important; }
 
 .nav_question {
   background-color: #ffffff;
   width: 100%;
   height: auto;
   border-radius: 0.25rem;
-  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.05);
-}
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.05); }
 
 .question_items {
   cursor: pointer;
   border-radius: 20px;
-  transition: all ease-in-out 0.4s;
-}
+  transition: all ease-in-out 0.4s; }
 
 .inline-grid {
-  display: grid !important;
-}
+  display: grid !important; }
 
 .setting-title {
   width: 100%;
   text-align: left;
   font-family: SourceSansPro;
-  font-weight: 600;
-}
+  font-weight: 600; }
 
 .question-content {
   padding: 1%;
   margin-right: 0px !important;
-  margin-left: 0px !important;
-}
+  margin-left: 0px !important; }
 
 .input-question {
   display: block;
@@ -207,8 +180,7 @@ body {
   background-clip: padding-box;
   border: 0 !important;
   border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }
 
 .title-custom {
   font-weight: 500;
@@ -216,27 +188,22 @@ body {
   margin-top: 2%;
   margin-bottom: 0;
   font-family: sans-serif;
-  color: gray;
-}
+  color: gray; }
 
 .ant-layout-sider {
-  background-color: white !important;
-}
+  background-color: white !important; }
 
 .ant-layout-content {
-  background-color: white !important;
-}
+  background-color: white !important; }
 
 .create-ex-fix-btn {
-  border: 0 !important;
-}
+  border: 0 !important; }
 
 .border-create-question {
   border: 1px solid #ced4da;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.05);
   transition: all ease-in-out 0.3s;
-  border-radius: 5px;
-}
+  border-radius: 5px; }
 
 .button-close {
   float: right !important;
@@ -249,99 +216,81 @@ body {
   width: 20px !important;
   padding: 0px 0px 1px 0px !important;
   margin: 0 !important;
-  color: #c54848 !important;
-}
+  color: #c54848 !important; }
 
 .resize_none_text_area {
-  resize: none;
-}
+  resize: none; }
 
 .in_correct {
-  border: 1px solid red;
-}
+  border: 1px solid red; }
 
 .image-fix-size {
   object-fit: contain;
-  width: inherit;
-}
+  width: inherit; }
 
 .modal-create-lesson {
-  width: 70% !important;
-}
+  width: 70% !important; }
 
 .ant-carousel {
   margin-top: 8% !important;
   text-align: center;
   line-height: 160px;
-  overflow: hidden;
-}
+  overflow: hidden; }
 
 .slick-slide {
   text-align: center;
   height: 250px !important;
   line-height: 160px;
   overflow: hidden;
-  background: url("https://firebasestorage.googleapis.com/v0/b/easy-japanese-154d1.appspot.com/o/images%2Fbanner%20(1).jpeg?alt=media&token=b76942cd-5f95-4bf1-9e2a-44dd26b067c0");
-}
+  background: url("https://firebasestorage.googleapis.com/v0/b/easy-japanese-154d1.appspot.com/o/images%2Fbanner%20(1).jpeg?alt=media&token=b76942cd-5f95-4bf1-9e2a-44dd26b067c0"); }
 
 .course-description {
   padding: 2% 2% 0 2%;
-  font-family: cursive;
-}
+  font-family: cursive; }
 
 .avatarCourse {
   height: 250px;
   display: inline-block;
-  object-fit: contain;
-}
+  object-fit: contain; }
 
 .ant-carousel .slick-slide h3 {
   margin-top: 9%;
-  color: #fff;
-}
+  color: #fff; }
 
 .course-card-descript {
   width: 300px;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, .3) !important;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3) !important;
   transition: all .3s ease-in-out !important;
-  float: right;
-}
+  float: right; }
 
 .ant-page-header {
-  background-color: #e9ebee !important;
-}
+  background-color: #e9ebee !important; }
 
 .course-content {
   background-color: white;
   border-radius: 5px;
   padding: 2% !important;
-  min-height: 500px;
-}
+  min-height: 500px; }
 
 .page-header-custom {
   padding-top: 1% !important;
   padding-left: 1% !important;
-  padding-bottom: 0 !important;
-}
+  padding-bottom: 0 !important; }
 
 .ant-rate {
-  margin-bottom: 5% !important;
-}
+  margin-bottom: 5% !important; }
 
 .ant-tree-node-content-wrapper {
-  width: 100% !important;
-}
+  width: 100% !important; }
 
 .btn-delete {
   background-color: white !important;
   bottom: 3% !important;
-
   height: 25px !important;
   width: 20px !important;
   padding: 0px 0px 1px 0px !important;
   margin: 0 !important;
-  color: #b0b3b8 !important;
-}
+  color: #b0b3b8 !important; }
 
 .btn-edit {
   background-color: white !important;
@@ -351,58 +300,69 @@ body {
   width: 30px !important;
   padding: 0px 0px 1px 0px !important;
   margin: 0 !important;
-  color: #1c1919 !important;
-}
-
-@mixin btn-topic($w: 100%, $c: white, $b: 5%) {
-  background-color: white !important;
-  height: 25px !important;
-  width: $w;
-  bottom: $b;
-  padding: 0px 0px 1px 0px !important;
-  margin: 0 !important;
-  color: $c !important;
-}
+  color: #1c1919 !important; }
 
 .btn-delete {
-  @include btn-topic(20px, #b0b3b8, 3%);
-  right: 19px;
-}
+  background-color: white !important;
+  height: 25px !important;
+  width: 20px;
+  bottom: 3%;
+  padding: 0px 0px 1px 0px !important;
+  margin: 0 !important;
+  color: #b0b3b8 !important;
+  right: 19px; }
 
 .btn-edit {
-  @include btn-topic(30px, #1c1919);
-  right: 19px;
-}
+  background-color: white !important;
+  height: 25px !important;
+  width: 30px;
+  bottom: 5%;
+  padding: 0px 0px 1px 0px !important;
+  margin: 0 !important;
+  color: #1c1919 !important;
+  right: 19px; }
 
 .home_layout {
-  margin-top: 135px;
-}
+  margin-top: 135px; }
 
 .customPanelStyle {
   border-radius: 4px;
   margin-bottom: 24px;
   border: 0;
-  overflow: hidden;
-}
+  overflow: hidden; }
 
 .btn-add {
-  @include btn-topic(30px, #1c1919);
-  right: 19px;
-}
+  background-color: white !important;
+  height: 25px !important;
+  width: 30px;
+  bottom: 5%;
+  padding: 0px 0px 1px 0px !important;
+  margin: 0 !important;
+  color: #1c1919 !important;
+  right: 19px; }
 
 .btn-header-topic-add-edit {
-  @include btn-topic(30px, #1c1919);
-}
+  background-color: white !important;
+  height: 25px !important;
+  width: 30px;
+  bottom: 5%;
+  padding: 0px 0px 1px 0px !important;
+  margin: 0 !important;
+  color: #1c1919 !important; }
 
 .btn-header-topic-delete {
-  @include btn-topic(20px, #b0b3b8, 3%);
-}
+  background-color: white !important;
+  height: 25px !important;
+  width: 20px;
+  bottom: 3%;
+  padding: 0px 0px 1px 0px !important;
+  margin: 0 !important;
+  color: #b0b3b8 !important; }
 
 .ant-upload-select-picture-card {
   background-color: white !important;
   margin: 2% !important;
-  width: 100% !important;
-}
+  width: 100% !important; }
 
 .date-picker-custom {
   padding: 5%;
@@ -416,7 +376,7 @@ body {
   position: relative;
   display: inline-block;
   height: 32px;
-  color: rgba(0, 0, 0, .65);
+  color: rgba(0, 0, 0, 0.65);
   font-size: 14px;
   line-height: 1.5;
   background-color: #fff;
@@ -424,63 +384,42 @@ body {
   border: 1px solid #d9d9d9;
   border-radius: 4px;
   -webkit-transition: all .3s;
-  transition: all .3s;
-}
+  transition: all .3s; }
 
 .react-datepicker__input-container {
-  width: 100% !important;
-}
+  width: 100% !important; }
 
 .react-datepicker-wrapper {
-  width: 100% !important;
-}
+  width: 100% !important; }
 
 .modal-editor {
   border: 1px solid #eeeeee;
-  border-radius: 5px;
-}
+  border-radius: 5px; }
 
 .ant-input {
   border-radius: 5px 5px 5px 5px;
-  border: 1px solid #d9d9d9;
-}
+  border: 1px solid #d9d9d9; }
 
 .hidden-custom {
-  display: none;
-}
+  display: none; }
 
-.ant-collapse-header {
-  &:hover {
-    .hidden-custom {
-      display: block;
-    }
-  }
-}
+.ant-collapse-header:hover .hidden-custom {
+  display: block; }
 
-.ant-tree-node-content-wrapper, ant-tree-node-content-wrapper-normal {
-  &:hover {
-    .hidden-custom {
-      display: inline;
-    }
-  }
-}
+.ant-tree-node-content-wrapper:hover .hidden-custom, ant-tree-node-content-wrapper-normal:hover .hidden-custom {
+  display: inline; }
 
 .seleted {
   border: 1px solid #1b2732;
   border-radius: 5px;
   height: 35px;
   background-color: #7b97b7;
-  color: white;
-}
+  color: white; }
 
 .question-close-icon {
-  display: none;
-}
+  display: none; }
 
-.question-block {
-  &:hover {
-    .question-close-icon {
-      display: inline;
-    }
-  }
-}
+.question-block:hover .question-close-icon {
+  display: inline; }
+
+/*# sourceMappingURL=custom.css.map */
