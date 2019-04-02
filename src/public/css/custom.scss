@@ -445,6 +445,20 @@ body {
   border: 1px solid #d9d9d9;
 }
 
+.button_create{
+  text-align: center;
+  width: 90px;
+  vertical-align: top;
+}
+
+.save_btn {
+  background: #1890ff;
+  color: white !important;
+  padding: 6px 20px !important;
+  border: 0;
+  font-size: 1.1em;
+  border-radius: 3px;
+}
 .hidden-custom {
   display: none;
 }

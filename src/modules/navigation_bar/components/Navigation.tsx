@@ -2,7 +2,6 @@ import * as React from "react";
 import {Fragment} from "react";
 import {Link} from "react-router-dom";
 import {Button, Dropdown, Icon, Input, Menu, message} from 'antd';
-import "../../../public/css/custom.css";
 import 'antd/dist/antd.css';
 import {WrappedNormalLoginForm} from "../../modal/user/components/LoginModal";
 import {UserEntity} from "../../../common/types/user";

@@ -3,15 +3,57 @@ import {Fragment} from "react";
 import {Helmet} from "react-helmet";
 import {ApiEntity} from '../../../common/types/index';
 import {Loader} from "../../loader/components/loader";
-import {BackTop, Card, Carousel, Icon, Layout, PageHeader, Rate, Tabs} from "antd";
+import {BackTop, Input, Card, Carousel, Icon, Layout, PageHeader, Rate, Tabs, Table, Button, Tag} from "antd";
 import {NavigationBarContainter} from "../../navigation_bar/container";
 import {CourseEntity} from "../../../common/types/course";
 import {ListLessonContainter} from "./lesson/container";
+import { STATUS_CODES } from "http";
 
 const TabPane = Tabs.TabPane;
+const { TextArea } = Input;
 const {
     Footer
 } = Layout;
+const columns = [{
+    title: 'STT',
+    dataIndex: 'stt',
+    key: 'stt',
+  },
+    {
+    title: 'Tên',
+    dataIndex: 'name',
+    key: 'name',
+  }, {
+    title: 'Kích Thước',
+    dataIndex: 'size',
+    key: 'size',
+  }, {
+    title: 'Thời Gian',
+    dataIndex: 'time',
+    key: 'time',
+  }];
+ 
+  const user_columns = [{
+    title: 'STT',
+    dataIndex: 'stt',
+    key: 'stt',
+  },{
+    title: 'Tên',
+    dataIndex: 'name',
+    key: 'name',
+  }, {
+    title: 'Ngày Tham Gia',
+    dataIndex: 'date',
+    key: 'date',
+  }, {
+    title: 'Thời Gian',
+    dataIndex: 'time',
+    key: 'time',
+  }, {
+    title: 'Vai Trò',
+    dataIndex: 'status',
+    key: 'status',
+  }]; 
 
 export interface Props {
     api: ApiEntity;
@@ -96,9 +138,19 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                         />
                                     </div>
                                 </TabPane>
-                                <TabPane tab="Tài liệu" key="2">Content of Tab Pane 2</TabPane>
-                                <TabPane tab="Thành viên" key="3">Content of Tab Pane 3</TabPane>
-                                <TabPane tab="Hỏi đáp" key="4">Content of Tab Pane 4</TabPane>
+                                <TabPane tab="Tài liệu" key="2">
+                                    <Table columns={columns}  />
+                                    <Button type="primary" block>+Tải lên</Button>
+                                </TabPane>
+                                <TabPane tab="Thành viên" key="3">
+                                    <Table columns={user_columns}  />
+                                </TabPane>
+                                <TabPane tab="Hỏi đáp" key="4">
+                                    <tr>
+                                    <Icon type="question-circle" />
+                                    <TextArea placeholder="Đăng cái gì đó..." autosize={{ minRows: 2, maxRows: 6 }} />
+                                    </tr>
+                                </TabPane>
                                 <TabPane tab="Kết quả học tập" key="5">Content of Tab Pane 5</TabPane>
                                 <TabPane tab="Đánh giá" key="6">Content of Tab Pane 6</TabPane>
                             </Tabs>
@@ -112,7 +164,7 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                     <div className="row w-100">
                                         <Icon type="book" className="col-md-2"/>
                                         <p className="col-md-10">Tổng số
-                                            bài:{course.member_num ? course.member_num : 0}</p>
+                                            bài:{course.lesson_num ? course.lesson_num : 0}</p>
                                     </div>
                                     <div className="row w-100">
                                         <Icon type="team" className="col-md-2"/>
@@ -121,11 +173,11 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                     </div>
                                     <div className="row w-100">
                                         <Icon type="font-colors" className="col-md-2"/>
-                                        <p className="col-md-10">Ngôn ngữ : Tiếng Nhật</p>
+                                        <p className="col-md-10">Ngôn ngữ : {course.language? course.language : 0}</p>
                                     </div>
                                     <div className="row w-100">
                                         <Icon type="pound" className="col-md-2"/>
-                                        <p className="col-md-10">Học phí: 500.000 VND</p>
+                                        <p className="col-md-10">Học phí: {course.cost ? course.cost : 0}</p>
                                     </div>
                                 </Card>
                             </div>
