@@ -29,8 +29,6 @@ export class Question extends React.Component<Props, State, {}> {
 
     public render() {
         let {num, current_question} = this.props;
-        console.log("current,ques", current_question);
-        console.log("num", num);
         return (
             <Fragment>
                 <div className={`row question-block ${current_question + 1 == num ? "seleted" : ""}`}>
