@@ -7,9 +7,7 @@ export interface Props {
     number: number;
     exercise: ExerciseEntity;
 
-    addAnswer(): void;
-
-    deleteAnswer(): void;
+    deleteAnswer(parameters): void;
 
     onChangeExercise(parameters): void;
 }
@@ -29,7 +27,7 @@ export class ListAnswer extends React.Component<Props, State, {}> {
         if (number)
             for (var i = 0; i < number; i++) {
                 result.push(<Answer
-                    addAnswer={this.props.addAnswer}
+                    current_added_answer={i}
                     deleteAnswer={this.props.deleteAnswer}
                     correct={false}
                     title={"Đáp án sai"}

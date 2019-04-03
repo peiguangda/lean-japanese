@@ -11,10 +11,9 @@ export interface Props {
     type: string;
     correct: boolean;
     exercise: ExerciseEntity;
+    current_added_answer: number;
 
-    addAnswer(): void;
-
-    deleteAnswer(): void;
+    deleteAnswer(parameters): void;
 
     onChangeExercise(parameters): void;
 }
@@ -27,19 +26,20 @@ export class Answer extends React.Component<Props, State, {}> {
         super(props);
     }
 
-    public deleteAnswer = () => {
-        this.props.deleteAnswer();
+    public deleteAnswer = (parameters) => {
+        this.props.deleteAnswer(parameters);
     }
     public changeAnswerStatus = () => {
         console.log("thay doi trang thai answer")
     }
 
     public render() {
-        let {title, type, correct, exercise} = this.props;
+        let {title, type, correct, exercise, current_added_answer} = this.props;
         return (
             <Fragment>
                 <div className="col-md-10">
                     <ButtonCustom
+                        current_added_answer={current_added_answer}
                         removeAnswer={this.deleteAnswer}
                         addAnswer={null}
                         title={title}

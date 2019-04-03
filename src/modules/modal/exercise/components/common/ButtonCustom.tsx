@@ -7,11 +7,12 @@ const {TextArea} = Input;
 
 export interface Props {
     title: string;
-    type: string; //question, answer, added_answer, sound_url
+    type: string; //question, answer, added_answer, sound_url_question, sound_url_answer
     correct: boolean;
     exercise: ExerciseEntity;
+    current_added_answer: number;
 
-    removeAnswer(): void;
+    removeAnswer(parameters): void;
 
     addAnswer(): void;
 
@@ -28,16 +29,16 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
     public addAnswer = () => {
         this.props.addAnswer();
     }
-    public removeAnswer = () => {
-        this.props.removeAnswer();
+    public removeAnswer = (parameters) => {
+        this.props.removeAnswer(parameters);
     }
     public changeAnswerStatus = () => {
         this.props.changeAnswerStatus();
     }
     public showPopup = () => {
         let {correct, type} = this.props;
-        let contentAnswer
-        if (type && type == "sound_url") return null;
+        let contentAnswer;
+        if (type && (type == "sound_url_question" || type == "sound_url_answer")) return null;
         else if (type == "question")
             contentAnswer = <div className="col">
                 <Button className="row w-100 create-ex-fix-btn" type="dashed">Thêm ảnh</Button>
@@ -70,17 +71,19 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
         this.props.onChangeExercise(exercise);
     }
     public onChangeText = (e) => {
-        let {type, exercise} = this.props;
+        let {type, exercise, current_added_answer} = this.props;
         let {value} = e.target;
         this.setState({
             text: value
         })
-        if (type && type == "sound_url") {
+        if (type && type == "sound_url_question") {
             exercise.front_sound = value;
+        }
+        if (type && type == "sound_url_answer") {
             exercise.back_sound = value;
         }
         if (type == "question") exercise.front_text = value;
-        // if (type == "added_answer")  can them list answer
+        if (type == "added_answer") exercise.list_answer[current_added_answer] = value;
         if (type == "answer") exercise.back_text = value;
         this.onChangeExercise(exercise);
     }
@@ -92,8 +95,25 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
         }
     }
 
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        let {type, exercise, current_added_answer} = nextProps;
+        let value;
+        if (type && type == "sound_url_question") {
+            value = exercise.front_sound;
+        }
+        if (type && type == "sound_url_answer") {
+            value = exercise.back_sound;
+        }
+        if (type == "question") value = exercise.front_text;
+        if (type == "added_answer") value = exercise.list_answer[current_added_answer];
+        if (type == "answer") value = exercise.back_text;
+        this.setState({
+            text: value
+        })
+    }
+
     public render() {
-        let {title, type, correct, exercise} = this.props;
+        let {title, type, correct, exercise, current_added_answer} = this.props;
         let {text} = this.state;
         // console.log("ex", exercise);
         return (
@@ -108,7 +128,8 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
                     />
                     {this.showPopup()}
                     {type == "added_answer" ?
-                        <Button icon="close" className="button-close" onClick={this.removeAnswer}/> : ""}
+                        <Button icon="close" className="button-close"
+                                onClick={() => this.removeAnswer(current_added_answer)}/> : ""}
                 </div>
             </Fragment>
         );

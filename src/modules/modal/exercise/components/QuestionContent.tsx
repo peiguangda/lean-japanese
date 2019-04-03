@@ -23,11 +23,9 @@ export interface Props {
 
 export interface State {
     exercise: ExerciseEntity;
-    numberAnswer: number;
 }
 
 const initialState = {
-    numberAnswer: 1,
     exercise: new class implements ExerciseEntity {
         id: string;
         user_id: number;  //người tạo card
@@ -39,7 +37,7 @@ const initialState = {
         parent_id: number;  //topic id
         status: number;
         code: string;
-        shuffle_anser: number; //settting đáp án có đảo hay ko
+        shuffle_answer: number; //setting đáp án có đảo hay ko
         front_text: string;     //cau hoi
         front_image: string;     //ảnh câu hỏi
         front_sound: string;      //âm thanh câu hỏi
@@ -48,8 +46,8 @@ const initialState = {
         back_image: string;     //ảnh đáp án
         back_sound: string;     //âm thành đáp án
         back_hint: string;      //gợi ý đáp án
-        // danh sách đáp án dạng multichoices,
-        // danh sách đáp án dạng câu hỏi nhiều đáp án đúng,
+        list_answer: Array<string>;// danh sách đáp án dạng multichoices,
+        list_correct_answer: Array<string>;// danh sách đáp án dung dạng câu hỏi nhiều đáp án đúng,
         // nếu hasChild khác null thì có list các child con,
         // setting dạng câu hỏi : chọn đáp án, điền từ, lật mặt, phát âm
     },
@@ -67,33 +65,29 @@ export class QuestionContent extends React.Component<Props, State, {}> {
     public onchangeSetting = () => {
         this.props.onchangeSetting();
     }
-    public addAnswer = () => {
-        let {numberAnswer} = this.state;
-        this.setState({
-            numberAnswer: ++numberAnswer
-        })
+    public addAnswer = (exercise) => {
+        let {list_answer} = exercise;
+        if (!list_answer) list_answer = []; //check list_answer ko ton tai thi khoi tao no
+        list_answer.push("");
+        exercise.list_answer = list_answer;
+        this.updateExercise({exercise: exercise, current_question: this.props.current_question});
     }
-    public deleteAnswer = () => {
-        let {numberAnswer} = this.state;
-        if (numberAnswer)
-            this.setState({
-                numberAnswer: --numberAnswer
-            })
+    public deleteAnswer = (parameters) => {
+        console.log("param", parameters);
+        let {exercise} = this.props;
+        let {list_answer} = exercise;
+        list_answer.splice(parameters, 1);
+        exercise.list_answer = list_answer;
+        this.updateExercise({exercise: exercise, current_question: this.props.current_question});
     }
 
     public updateExercise = (parameters) => {
         this.props.onUpdateExercise(parameters);
     }
 
-    public onChange = (e) => {
-        console.log(`checked = ${e.target.checked}`);
-        this.setState(prevState => ({
-            exercise: {
-                ...prevState.exercise,
-                shuffle_anser: e.target.checked == true ? 1 : 0
-            }
-        }))
-        this.updateExercise({exercise: this.state.exercise, current_question: this.props.current_question});
+    public onChangeStatus = (e, exercise) => {
+        exercise.shuffle_answer = e.target.checked ? 1 : 0;
+        this.updateExercise({exercise: exercise, current_question: this.props.current_question});
     }
 
     public changeAnswerStatus = () => {
@@ -101,17 +95,12 @@ export class QuestionContent extends React.Component<Props, State, {}> {
     }
 
     public onChangeExercise = (exercise) => {
-        console.log("bbbbbbb", exercise);
-        console.log("cccccccc", this.state.exercise);
-        this.setState({
-            exercise: exercise
-        })
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
     }
 
     public render() {
-        let {exercise} = this.state;
-        // let {exercise} = this.props;
+        let {exercise} = this.props;
+        let {list_answer} = exercise;
         return (
             <Fragment>
                 <Content>
@@ -120,6 +109,7 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                         <div className="col-md-5 ml-2">
                             <div className="row">
                                 <ButtonCustom
+                                    current_added_answer={null}
                                     removeAnswer={null}
                                     addAnswer={null}
                                     title={"Câu hỏi"}
@@ -128,14 +118,16 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                                     changeAnswerStatus={this.changeAnswerStatus}
                                     exercise={exercise}
                                     onChangeExercise={this.onChangeExercise}
+
                                 />
                             </div>
                             <div className="row">
                                 <ButtonCustom
+                                    current_added_answer={null}
                                     removeAnswer={null}
                                     addAnswer={null}
                                     title={"Url sound"}
-                                    type={"sound_url"}
+                                    type={"sound_url_question"}
                                     correct={true}
                                     changeAnswerStatus={this.changeAnswerStatus}
                                     exercise={exercise}
@@ -153,7 +145,8 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                                 <div className="col-md-6">
                                     <p className="setting-title">Cài đặt khác</p>
                                     <Checkbox
-                                        onChange={this.onChange.bind(this)}
+                                        checked={exercise.shuffle_answer ? true : false}
+                                        onChange={(checkbox) => this.onChangeStatus(checkbox, exercise)}
                                     >Đảo đáp án
                                     </Checkbox>
                                 </div>
@@ -165,8 +158,9 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                             <div className="row">
                                 <div className="col-md-10">
                                     <ButtonCustom
+                                        current_added_answer={null}
                                         removeAnswer={null}
-                                        addAnswer={this.addAnswer}
+                                        addAnswer={() => this.addAnswer(exercise)}
                                         title={"Đáp án đúng"}
                                         type={"answer"}
                                         correct={true}
@@ -177,10 +171,11 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                                 </div>
                                 <div className="col-md-10">
                                     <ButtonCustom
+                                        current_added_answer={null}
                                         removeAnswer={null}
                                         addAnswer={null}
                                         title={"Url sound"}
-                                        type={"sound_url"}
+                                        type={"sound_url_answer"}
                                         correct={true}
                                         changeAnswerStatus={this.changeAnswerStatus}
                                         exercise={exercise}
@@ -188,8 +183,7 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                                     />
                                 </div>
                                 <ListAnswer
-                                    number={this.state.numberAnswer}
-                                    addAnswer={this.addAnswer}
+                                    number={list_answer ? list_answer.length : 0}
                                     deleteAnswer={this.deleteAnswer}
                                     exercise={exercise}
                                     onChangeExercise={this.onChangeExercise}

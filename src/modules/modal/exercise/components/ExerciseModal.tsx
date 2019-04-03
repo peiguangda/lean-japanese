@@ -6,6 +6,7 @@ import {QuestionTypeSetting} from "../../setting/components/QuestionTypeSetting"
 import {ListQuestion} from "./question/ListQuestion";
 import {QuestionContent} from "./QuestionContent";
 import {Exercise} from "../../../lesson/components/exercise/components/Exercise";
+import {state} from "../../../../reducers/reducers";
 
 const {
     Sider,
@@ -23,8 +24,31 @@ export interface Props {
 export interface State {
     exercise: Array<ExerciseEntity>;
     isShowSetting: boolean;
-    numberQuestion: number;
     current_question: number;
+}
+
+const initExercise = new class implements ExerciseEntity {
+    back_hint: string;
+    back_image: string;
+    back_sound: string;
+    back_text: string;
+    code: string;
+    course_id: number;
+    difficulty_level: number;
+    front_hint: string;
+    front_image: string;
+    front_sound: string;
+    front_text: string;
+    has_child: number;
+    id: string;
+    order_index: number;
+    parent_id: number;
+    shuffle_answer: number;
+    status: number;
+    topic_id: number;
+    user_id: number;
+    list_answer: Array<string>;
+    list_correct_answer: Array<string>;
 }
 
 export class ExerciseModal extends React.Component<Props, State, {}> {
@@ -32,10 +56,13 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
         super(props);
         this.state = {
             current_question: 0,
-            numberQuestion: 1,
             isShowSetting: false,
             exercise: []
         }
+    }
+
+    componentWillMount(): void {
+        this.state.exercise.push({...initExercise});
     }
 
     public showModal = () => {
@@ -56,34 +83,36 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
         })
     }
     public addQuestion = () => {
-        let {numberQuestion} = this.state;
+        let {exercise} = this.state;
+        exercise.push({...initExercise});
         this.setState({
-            numberQuestion: ++numberQuestion,
+            exercise: exercise
         })
     }
+
     public removeQuestion = (parameters) => {
-        console.log("parameters", parameters);
+        let {exercise, current_question} = this.state;
         let index = parameters - 1;
-        console.log("remove question");
-        let {numberQuestion} = this.state;
-        if (numberQuestion)
-            this.setState({
-                numberQuestion: --numberQuestion
-            })
+        if (index <= current_question) current_question--;  //neu index can xoa < question hien tai thi can giam index cua question hien tai xuong 1 don vi
+        exercise.splice(index, 1);
+        this.setState({
+            exercise: exercise,
+            current_question: current_question
+        })
     }
 
     public changeQuestion = (parameters) => {
-        console.log("parameters", parameters);
         let index = parameters - 1;
-        console.log("change question");
-        let {current_question} = this.state;
         this.setState({
             current_question: index
         })
     }
 
     public onUpdateExercise = (parameters) => {
-        console.log("ex", parameters.exercise);
+        let {current_question, exercise} = parameters;
+        console.log("exercise", exercise);
+        this.state.exercise[current_question] = exercise;
+        this.forceUpdate()
     }
 
     public changeAnswerStatus = () => {
@@ -91,7 +120,8 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {numberQuestion, isShowSetting, exercise, current_question} = this.state;
+        let {isShowSetting, exercise, current_question} = this.state;
+        console.log('exercise', exercise);
         return (
             <Fragment>
                 <Modal
@@ -110,7 +140,7 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
                                         <ListQuestion
                                             removeQuestion={this.removeQuestion}
                                             changeQuestion={this.changeQuestion}
-                                            numberQuestion={numberQuestion}
+                                            numberQuestion={exercise.length}
                                             current_question={current_question}
                                         />
                                         <div className="row mt-4">
@@ -132,14 +162,16 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
                             </div>
                         </Sider>
                         {/*----------------question content--------------------*/}
-                        <QuestionContent
-                            onchangeSetting={this.onchangeSetting}
-                            isShowSetting={isShowSetting}
-                            visible={true}
-                            exercise={exercise[current_question]}
-                            onUpdateExercise={this.onUpdateExercise}
-                            current_question={current_question}
-                        />
+                        {
+                            exercise && (<QuestionContent
+                                onchangeSetting={this.onchangeSetting}
+                                isShowSetting={isShowSetting}
+                                visible={true}
+                                exercise={exercise[current_question]}
+                                onUpdateExercise={this.onUpdateExercise}
+                                current_question={current_question}
+                            />)
+                        }
                     </Layout>
                 </Modal>
             </Fragment>
