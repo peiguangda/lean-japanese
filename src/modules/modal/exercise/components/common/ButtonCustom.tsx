@@ -16,7 +16,7 @@ export interface Props {
 
     addAnswer(): void;
 
-    changeAnswerStatus(): void;
+    changeAnswerStatus(parameters): void;
 
     onChangeExercise(parameters): void;
 }
@@ -32,10 +32,10 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
     public removeAnswer = (parameters) => {
         this.props.removeAnswer(parameters);
     }
-    public changeAnswerStatus = () => {
-        this.props.changeAnswerStatus();
+    public changeAnswerStatus = (parameters) => {
+        this.props.changeAnswerStatus(parameters);
     }
-    public showPopup = () => {
+    public showPopup = (current_added_answer, text) => {
         let {correct, type} = this.props;
         let contentAnswer;
         if (type && (type == "sound_url_question" || type == "sound_url_answer")) return null;
@@ -48,7 +48,12 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
             </div>
         else if (type == "added_answer")
             contentAnswer = <div className="col">
-                <Button className="row w-100 create-ex-fix-btn" type="dashed" onClick={this.changeAnswerStatus}>Set đáp
+                <Button className="row w-100 create-ex-fix-btn" type="dashed"
+                        onClick={() => this.changeAnswerStatus({
+                            index: current_added_answer,
+                            correct: correct,
+                            value: text
+                        })}>Set đáp
                     án {correct ? "sai" : "đúng"}</Button>
             </div>
         else if (type == "answer")
@@ -126,7 +131,7 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
                         value={text}
                         onChange={this.onChangeText.bind(this)}
                     />
-                    {this.showPopup()}
+                    {this.showPopup(current_added_answer, text)}
                     {type == "added_answer" ?
                         <Button icon="close" className="button-close"
                                 onClick={() => this.removeAnswer(current_added_answer)}/> : ""}

@@ -10,16 +10,14 @@ export interface Props {
     deleteAnswer(parameters): void;
 
     onChangeExercise(parameters): void;
+
+    changeAnswerStatus(parameters): void;
 }
 
 export interface State {
 }
 
 export class ListAnswer extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-    }
-
     //show list dap an khi dc them vao, mac dinh la dap an sai
     public showListAnswer = () => {
         let {number, exercise} = this.props;
@@ -29,14 +27,19 @@ export class ListAnswer extends React.Component<Props, State, {}> {
                 result.push(<Answer
                     current_added_answer={i}
                     deleteAnswer={this.props.deleteAnswer}
-                    correct={false}
-                    title={"Đáp án sai"}
+                    correct={(exercise && exercise.list_correct_answer && exercise.list_correct_answer.indexOf(i) > -1) ? true : false}
+                    title={(exercise && exercise.list_correct_answer && exercise.list_correct_answer.indexOf(i) > -1) ? "Đáp án đúng" : "Đáp án sai"}
                     type={"added_answer"}
                     exercise={exercise}
                     onChangeExercise={this.props.onChangeExercise}
+                    changeAnswerStatus={this.props.changeAnswerStatus}
                 />)
             }
         return result;
+    }
+
+    constructor(props) {
+        super(props);
     }
 
     public render() {

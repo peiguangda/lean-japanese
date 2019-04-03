@@ -5,8 +5,6 @@ import {ExerciseEntity} from "../../../../common/types/exercise";
 import {QuestionTypeSetting} from "../../setting/components/QuestionTypeSetting";
 import {ListQuestion} from "./question/ListQuestion";
 import {QuestionContent} from "./QuestionContent";
-import {Exercise} from "../../../lesson/components/exercise/components/Exercise";
-import {state} from "../../../../reducers/reducers";
 
 const {
     Sider,
@@ -48,23 +46,10 @@ const initExercise = new class implements ExerciseEntity {
     topic_id: number;
     user_id: number;
     list_answer: Array<string>;
-    list_correct_answer: Array<string>;
+    list_correct_answer: Array<number>;
 }
 
 export class ExerciseModal extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            current_question: 0,
-            isShowSetting: false,
-            exercise: []
-        }
-    }
-
-    componentWillMount(): void {
-        this.state.exercise.push({...initExercise});
-    }
-
     public showModal = () => {
         this.props.showModal();
     }
@@ -89,7 +74,6 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
             exercise: exercise
         })
     }
-
     public removeQuestion = (parameters) => {
         let {exercise, current_question} = this.state;
         let index = parameters - 1;
@@ -100,23 +84,33 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
             current_question: current_question
         })
     }
-
     public changeQuestion = (parameters) => {
         let index = parameters - 1;
         this.setState({
             current_question: index
         })
     }
-
     public onUpdateExercise = (parameters) => {
         let {current_question, exercise} = parameters;
         console.log("exercise", exercise);
         this.state.exercise[current_question] = exercise;
         this.forceUpdate()
     }
-
     public changeAnswerStatus = () => {
 
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            current_question: 0,
+            isShowSetting: false,
+            exercise: []
+        }
+    }
+
+    componentWillMount(): void {
+        this.state.exercise.push({...initExercise});
     }
 
     public render() {

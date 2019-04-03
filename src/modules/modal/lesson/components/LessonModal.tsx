@@ -42,41 +42,6 @@ export interface State {
 
 export class LessonModal extends React.Component<Props, State, {}> {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false,
-            editorState: EditorState.createEmpty(),
-            lesson: new class implements LessonEntity {
-                id: string;
-                actionType: string;
-                avatar: string;
-                childrent_type: number;
-                course_id: number;
-                description: string;
-                duration: number;
-                end_time: number;
-                level: number;
-                name: string;
-                order_index: number;
-                parent_id: number;
-                pass: number;
-                password: string;
-                question_number: number;
-                score_scale: number;
-                short_description: string;
-                sort_id: number;
-                start_time: number;
-                status: number;
-                tag: string;
-                time_practice: number;
-                total_card_num: number;
-                user_id: number;
-                user_name: string;
-            }
-        }
-    }
-
     onEditorStateChange: Function = (editorState) => {
         let descript = draftToHtml(convertToRaw(editorState.getCurrentContent()))
         this.setState({
@@ -210,6 +175,41 @@ export class LessonModal extends React.Component<Props, State, {}> {
         if (status == 2) return "Private";
         if (status == 3) return "Deleted";
         if (status == 4) return "Open";
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false,
+            editorState: EditorState.createEmpty(),
+            lesson: new class implements LessonEntity {
+                id: string;
+                actionType: string;
+                avatar: string;
+                childrent_type: number;
+                course_id: number;
+                description: string;
+                duration: number;
+                end_time: number;
+                level: number;
+                name: string;
+                order_index: number;
+                parent_id: number;
+                pass: number;
+                password: string;
+                question_number: number;
+                score_scale: number;
+                short_description: string;
+                sort_id: number;
+                start_time: number;
+                status: number;
+                tag: string;
+                time_practice: number;
+                total_card_num: number;
+                user_id: number;
+                user_name: string;
+            }
+        }
     }
 
     componentWillReceiveProps(nextProps) {

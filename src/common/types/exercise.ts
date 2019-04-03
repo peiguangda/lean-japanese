@@ -20,5 +20,5 @@ export interface ExerciseEntity {
     back_sound: string,
     back_hint: string,
     list_answer: Array<string>,
-    list_correct_answer: Array<string>,
+    list_correct_answer: Array<number>,
 };

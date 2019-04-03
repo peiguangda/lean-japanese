@@ -3,87 +3,86 @@ import {Fragment} from "react";
 import {Helmet} from "react-helmet";
 import {ApiEntity} from '../../../common/types/index';
 import {Loader} from "../../loader/components/loader";
-import {BackTop, Tooltip, Input, Card, Carousel, Icon, PageHeader, Rate, Tabs, Table, Button, Layout} from "antd";
+import {BackTop, Button, Card, Carousel, Icon, Input, Layout, PageHeader, Rate, Table, Tabs, Tooltip} from "antd";
 import {NavigationBarContainter} from "../../navigation_bar/container";
 import {CourseEntity} from "../../../common/types/course";
 import {ListLessonContainter} from "./lesson/container";
-import { STATUS_CODES } from "http";
 
 const TabPane = Tabs.TabPane;
-const { TextArea } = Input;
+const {TextArea} = Input;
 const {
     Header, Footer, Sider, Content,
-  } = Layout;
+} = Layout;
 const columns = [{
     title: 'STT',
     dataIndex: 'stt',
     key: 'stt',
-  },
+},
     {
-    title: 'Tên',
-    dataIndex: 'name',
-    key: 'name',
-  }, {
-    title: 'Kích Thước',
-    dataIndex: 'size',
-    key: 'size',
-  }, {
-    title: 'Thời Gian',
-    dataIndex: 'time',
-    key: 'time',
-  }];
- 
-  const user_columns = [{
+        title: 'Tên',
+        dataIndex: 'name',
+        key: 'name',
+    }, {
+        title: 'Kích Thước',
+        dataIndex: 'size',
+        key: 'size',
+    }, {
+        title: 'Thời Gian',
+        dataIndex: 'time',
+        key: 'time',
+    }];
+
+const user_columns = [{
     title: 'STT',
     dataIndex: 'stt',
     key: 'stt',
-  },{
+}, {
     title: 'Tên',
     dataIndex: 'name',
     key: 'name',
-  }, {
+}, {
     title: 'Ngày Tham Gia',
     dataIndex: 'date',
     key: 'date',
-  }, {
+}, {
     title: 'Thời Gian',
     dataIndex: 'time',
     key: 'time',
-  }, {
+}, {
     title: 'Vai Trò',
     dataIndex: 'status',
     key: 'status',
-  }]; 
+}];
 
-  const test_columns = [{
+const test_columns = [{
     title: 'STT',
     dataIndex: 'stt',
     key: 'stt',
-  },{
+}, {
     title: 'Tên',
     dataIndex: 'name',
     key: 'name',
-  }, {
+}, {
     title: 'Bài hoàn thành/ Tổng số',
     dataIndex: 'number',
     key: 'number',
-  }, {
+}, {
     title: 'Câu đúng/ Tổng số',
     dataIndex: 'number',
     key: 'number',
-  }, {
+}, {
     title: 'Điểm kinh nghiệm',
     dataIndex: 'number',
     key: 'numer',
-  },{
+}, {
     title: 'Số Chat',
     dataIndex: 'number',
     key: 'numer',
-  },{
+}, {
     title: 'Số Bình Luận',
     dataIndex: 'number',
     key: 'numer',
-  }]; 
+}];
 
 export interface Props {
     api: ApiEntity;
@@ -169,55 +168,59 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                     </div>
                                 </TabPane>
                                 <TabPane tab="Tài liệu" key="2">
-                                    <Table columns={columns}  />
+                                    <Table columns={columns}/>
                                     <Button type="primary" block>+Tải lên</Button>
                                 </TabPane>
                                 <TabPane tab="Thành viên" key="3">
-                                    <Table columns={user_columns}  />
+                                    <Table columns={user_columns}/>
                                 </TabPane>
                                 <TabPane tab="Hỏi đáp" key="4">
-                                    <div className= "row">
-                                    <div className="col-1"><Icon type="question-circle" theme="twoTone" /></div>
-                                    <div className="col-11"><Input placeholder="Đăng cái gì đó..."
-                                    suffix={
-                                        <Tooltip title="Extra information">
-                                        <Icon type="upload" style={{ color: 'rgba(0,0,0,.45)' }} />
-                                         </Tooltip>
-                                        }  />
+                                    <div className="row">
+                                        <div className="col-1"><Icon type="question-circle" theme="twoTone"/></div>
+                                        <div className="col-11"><Input placeholder="Đăng cái gì đó..."
+                                                                       suffix={
+                                                                           <Tooltip title="Extra information">
+                                                                               <Icon type="upload"
+                                                                                     style={{color: 'rgba(0,0,0,.45)'}}/>
+                                                                           </Tooltip>
+                                                                       }/>
                                         </div>
                                     </div>
                                 </TabPane>
                                 <TabPane tab="Kết quả học tập" key="5">
-                                <div className="container">
-                                    <div className="this_is_block_panel_main">
-                                        <Table columns={test_columns}  />
+                                    <div className="container">
+                                        <div className="this_is_block_panel_main">
+                                            <Table columns={test_columns}/>
+                                        </div>
                                     </div>
-                                </div>
                                 </TabPane>
                                 <TabPane tab="Đánh giá" key="6">
-                                <div className="row reset-row-col">
-                                    <div className="col-xs-12 col-sm-12 reset-row-col padding_right_with_col-12">
-                                        <div className="this_is_block_panel_main_parent">
-                                            <div className="this_is_block_panel_main">
-                                                <div className="this_is_header_block_panel">
-                                                    <div className="this_is_header_left_block_panel">
-                                                        <div className= "this_is_block_title">Phản hồi từ học viên</div>
-                                                    </div>
-                                                    <div className="this_is_header_right_block_panel"></div>
-                                                </div>
-                                                <div className="this_is_content_block_panel">
-                                                    <div className="main_panel_rating_of_viewer_panel">
-                                                        <div className="content_panel_rating_of_viewer_panel">
-                                                            <div className="header_panel_rating_of_viewer_panel">
-                                                                <Rate allowHalf />
+                                    <div className="row reset-row-col">
+                                        <div className="col-xs-12 col-sm-12 reset-row-col padding_right_with_col-12">
+                                            <div className="this_is_block_panel_main_parent">
+                                                <div className="this_is_block_panel_main">
+                                                    <div className="this_is_header_block_panel">
+                                                        <div className="this_is_header_left_block_panel">
+                                                            <div className="this_is_block_title">Phản hồi từ học viên
                                                             </div>
-                                                            <div className="body_panel_rating_of_viewer_panel">
-                                                                <Input placeholder="Đăng cái gì đó..."
-                                                                    suffix={
-                                                                           <Tooltip title="Extra information">
-                                                                         <Icon type="upload" style={{ color: 'rgba(0,0,0,.45)' }} />
-                                                                            </Tooltip>
-                                                                            }  />
+                                                        </div>
+                                                        <div className="this_is_header_right_block_panel"></div>
+                                                    </div>
+                                                    <div className="this_is_content_block_panel">
+                                                        <div className="main_panel_rating_of_viewer_panel">
+                                                            <div className="content_panel_rating_of_viewer_panel">
+                                                                <div className="header_panel_rating_of_viewer_panel">
+                                                                    <Rate allowHalf/>
+                                                                </div>
+                                                                <div className="body_panel_rating_of_viewer_panel">
+                                                                    <Input placeholder="Đăng cái gì đó..."
+                                                                           suffix={
+                                                                               <Tooltip title="Extra information">
+                                                                                   <Icon type="upload"
+                                                                                         style={{color: 'rgba(0,0,0,.45)'}}/>
+                                                                               </Tooltip>
+                                                                           }/>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -225,7 +228,6 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 </TabPane>
                             </Tabs>
                         </div>
@@ -247,7 +249,7 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                     </div>
                                     <div className="row w-100">
                                         <Icon type="font-colors" className="col-md-2"/>
-                                        <p className="col-md-10">Ngôn ngữ : {course.language? course.language : 0}</p>
+                                        <p className="col-md-10">Ngôn ngữ : {course.language ? course.language : 0}</p>
                                     </div>
                                     <div className="row w-100">
                                         <Icon type="pound" className="col-md-2"/>

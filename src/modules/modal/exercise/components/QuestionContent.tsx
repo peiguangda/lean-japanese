@@ -47,18 +47,13 @@ const initialState = {
         back_sound: string;     //âm thành đáp án
         back_hint: string;      //gợi ý đáp án
         list_answer: Array<string>;// danh sách đáp án dạng multichoices,
-        list_correct_answer: Array<string>;// danh sách đáp án dung dạng câu hỏi nhiều đáp án đúng,
+        list_correct_answer: Array<number>;// danh sách đáp án dung dạng câu hỏi nhiều đáp án đúng,
         // nếu hasChild khác null thì có list các child con,
         // setting dạng câu hỏi : chọn đáp án, điền từ, lật mặt, phát âm
     },
 }
 
 export class QuestionContent extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-        this.state = initialState;
-    }
-
     public handleAddInputRow = (e) => {
         console.log("e", e);
     }
@@ -80,22 +75,41 @@ export class QuestionContent extends React.Component<Props, State, {}> {
         exercise.list_answer = list_answer;
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
     }
-
     public updateExercise = (parameters) => {
         this.props.onUpdateExercise(parameters);
     }
-
     public onChangeStatus = (e, exercise) => {
         exercise.shuffle_answer = e.target.checked ? 1 : 0;
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
     }
-
-    public changeAnswerStatus = () => {
-        console.log("thay doi trang thai answer");
+    public changeAnswerStatus = (parameters) => {
+        console.log("thay doi trang thai answer", parameters);
+        let {exercise} = this.props;
+        let {index, correct, value} = parameters;
+        let {list_correct_answer} = exercise;
+        //dung thanh sai
+        if (correct) {
+            //xoa phan tu khoi list cau tra loi dung
+            list_correct_answer = list_correct_answer.filter((item) => {
+                return item !== index
+            })
+            console.log("aaaaaaaaaaaaaaaaaaa", list_correct_answer);
+        } else {
+            // sai thanh dung, can phai xet xem list da ton tai chua, neu chua thi phai khoi tao
+            if (!list_correct_answer) list_correct_answer = [];
+            //them phan tu vao list cau hoi dung
+            list_correct_answer.push(index);
+        }
+        exercise.list_correct_answer = list_correct_answer;
+        this.updateExercise({exercise: exercise, current_question: this.props.current_question});
     }
-
     public onChangeExercise = (exercise) => {
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = initialState;
     }
 
     public render() {
@@ -187,6 +201,7 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                                     deleteAnswer={this.deleteAnswer}
                                     exercise={exercise}
                                     onChangeExercise={this.onChangeExercise}
+                                    changeAnswerStatus={this.changeAnswerStatus}
                                 />
                             </div>
                         </div>
