@@ -16,21 +16,23 @@ export interface Props {
     deleteAnswer(parameters): void;
 
     onChangeExercise(parameters): void;
+
+    changeAnswerStatus(parameters): void;
 }
 
 export interface State {
 }
 
 export class Answer extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-    }
-
     public deleteAnswer = (parameters) => {
         this.props.deleteAnswer(parameters);
     }
     public changeAnswerStatus = () => {
         console.log("thay doi trang thai answer")
+    }
+
+    constructor(props) {
+        super(props);
     }
 
     public render() {
@@ -45,7 +47,7 @@ export class Answer extends React.Component<Props, State, {}> {
                         title={title}
                         type={type}
                         correct={correct}
-                        changeAnswerStatus={this.changeAnswerStatus}
+                        changeAnswerStatus={this.props.changeAnswerStatus}
                         exercise={exercise}
                         onChangeExercise={this.props.onChangeExercise}
                     />

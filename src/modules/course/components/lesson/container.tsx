@@ -5,7 +5,8 @@ import {ListLesson} from './components/Page';
 import {
     createLessonAction,
     deleteLessonAction,
-    editLessonAction, fetchLessonAction,
+    editLessonAction,
+    fetchLessonAction,
     fetchListLessonAction
 } from '../../../../reducers/lesson';
 import {RouteComponentProps} from "react-router";

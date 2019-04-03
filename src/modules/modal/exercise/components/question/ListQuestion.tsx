@@ -7,6 +7,7 @@ export interface Props {
     current_question: number;
 
     removeQuestion(parameters): void;
+
     changeQuestion(parameters): void;
 }
 
@@ -20,10 +21,10 @@ export class ListQuestion extends React.Component<Props, State, {}> {
         if (numberQuestion)
             for (var i = 0; i < numberQuestion; i++)
                 result.push(<Question
-                                removeQuestion={this.props.removeQuestion}
-                                changeQuestion={this.props.changeQuestion}
-                                num={i + 1}
-                                current_question={current_question}
+                    removeQuestion={this.props.removeQuestion}
+                    changeQuestion={this.props.changeQuestion}
+                    num={i + 1}
+                    current_question={current_question}
                 />);
         return result;
     }
