@@ -33,7 +33,7 @@ export class NavigationBar extends React.Component<Props, State, {}> {
     public logout = () => {
         this.props.logout({}).then(res => {
             console.log(res);
-            if (res && res.payload.status == "success") {
+            if (res && res.status == "success") {
                 message.info("Bạn đã đăng xuất!");
                 this.setState({
                     logined: false
@@ -66,15 +66,19 @@ export class NavigationBar extends React.Component<Props, State, {}> {
         }
     }
 
+    public getProfile = () => {
+        this.props.getProfile({}).then(res => {
+            if (res && res.status == "success") {
+                this.setState({
+                    logined: true
+                })
+            }
+        });
+    }
+
     public componentDidMount() {
         if (Cookie.getAccessToken()) {
-            this.props.getProfile({}).then(res => {
-                if (res && res.payload && res.payload.status == "success") {
-                    this.setState({
-                        logined: true
-                    })
-                }
-            });
+            this.getProfile();
         }
     }
 
@@ -126,6 +130,7 @@ export class NavigationBar extends React.Component<Props, State, {}> {
                     closeModal={this.closeModal}
                     login={this.props.login}
                     api={this.props.api}
+                    getProfile={this.getProfile}
                 />
             </Fragment>
         )

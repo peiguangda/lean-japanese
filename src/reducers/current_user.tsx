@@ -14,10 +14,11 @@ export const createSessionAction = parameters => dispatch => {
     return dispatch(requestAxios(request.createSession(parameters)))
         .then(response => {
             Cookie.setAccessToken(response.data.auth_token);
-            return dispatch({
+            dispatch({
                 type: CREATE_SESSION,
                 payload: response
             });
+            return response;
         })
         .catch(error => {
             dispatch({
@@ -32,10 +33,11 @@ export const LogoutAction = parameters => dispatch => {
     return dispatch(requestAxios(request.deleteSession(parameters)))
         .then(response => {
             Cookie.removeAccessToken();
-            return dispatch({
+            dispatch({
                 type: DELETE_SESSION,
                 payload: response
             });
+            return response;
         })
         .catch(error => {
             dispatch({
@@ -49,10 +51,11 @@ export const LogoutAction = parameters => dispatch => {
 export const getProfileAction = parameters => dispatch => {
     return dispatch(requestAxios(request.getProfile(parameters)))
         .then(response => {
-            return dispatch({
+            dispatch({
                 type: GET_PROFILE,
                 payload: response
             });
+            return response;
         })
         .catch(error => {
             dispatch({

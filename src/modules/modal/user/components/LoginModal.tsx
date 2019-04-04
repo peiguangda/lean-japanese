@@ -13,6 +13,8 @@ export interface Props {
 
     showModal(): void;
 
+    getProfile(): void;
+
     login(parameters): Promise<any>;
 }
 
@@ -33,9 +35,10 @@ export class LoginModal extends React.Component<Props & { form: WrappedFormUtils
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.props.login(values).then(res => {
-                    if (res && res.payload.status == "success") {
+                    if (res && res.status == "success") {
                         message.success("Đăng nhập thành công");
                         this.props.closeModal();
+                        this.props.getProfile();
                     } else message.error("Sai tài khoản hoặc mật khẩu");
                 })
             }
@@ -53,7 +56,7 @@ export class LoginModal extends React.Component<Props & { form: WrappedFormUtils
             <Fragment>
                 <Modal
                     className={"title"}
-                    title={"LOGIN"}
+                    title={"ĐĂNG NHẬP"}
                     style={{}}
                     visible={this.props.visible}
                     onOk={this.handleOk}
@@ -62,7 +65,7 @@ export class LoginModal extends React.Component<Props & { form: WrappedFormUtils
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <Form.Item>
                             {getFieldDecorator('account', {
-                                rules: [{required: true, message: 'Please input your username!'}],
+                                rules: [{required: true, message: 'Vui lòng nhập username!'}],
                             })(
                                 <Input prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                        placeholder="Username"/>
@@ -70,24 +73,18 @@ export class LoginModal extends React.Component<Props & { form: WrappedFormUtils
                         </Form.Item>
                         <Form.Item>
                             {getFieldDecorator('password', {
-                                rules: [{required: true, message: 'Please input your Password!'}],
+                                rules: [{required: true, message: 'Vui lòng nhập mật khẩu!'}],
                             })(
                                 <Input prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>} type="password"
                                        placeholder="Password"/>
                             )}
                         </Form.Item>
                         <Form.Item>
-                            {getFieldDecorator('remember', {
-                                valuePropName: 'checked',
-                                initialValue: true,
-                            })(
-                                <Checkbox>Remember me</Checkbox>
-                            )}
-                            <a className="login-form-forgot" href="">Forgot password</a>
+                            <a className="login-form-forgot" href="">Quên mật khẩu</a>
                             <Button type="primary" htmlType="submit" className="login-form-button">
-                                Log in
+                                Đăng nhập
                             </Button>
-                            Or <a href="">register now!</a>
+                            Or <a href="">Đăng kí ngay!!</a>
                         </Form.Item>
                     </Form>
                 </Modal>

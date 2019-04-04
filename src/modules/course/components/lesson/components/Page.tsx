@@ -276,7 +276,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
         return (
             <Fragment>
                 <h5 className="title-list-lesson ml-4">Danh sách bài học</h5>
-                <div className="row m-3 w-100 list-topic-content">
+                <div className="row m-3 w-100 pt-4 list-topic-content">
                     {api.loadings > 0 ? <Loader/> : this.showListLesson()}
                     <div className="row w-100">
                         <Button type="primary" className="item_button w-100 ml-5 mr-5 mb-5" icon="plus"

@@ -245,8 +245,7 @@ body {
   background: url("https://firebasestorage.googleapis.com/v0/b/easy-japanese-154d1.appspot.com/o/images%2Fbanner%20(1).jpeg?alt=media&token=b76942cd-5f95-4bf1-9e2a-44dd26b067c0"); }
 
 .course-description {
-  padding: 2% 2% 0 2%;
-  font-family: cursive; }
+  padding: 2% 4% 0 5%; }
 
 .avatarCourse {
   height: 250px;
@@ -560,5 +559,11 @@ body {
   padding: 9px !important;
   width: 50px;
   height: 50px; }
+
+.list-topic-content {
+  border-top: 1px solid #1890ff; }
+
+.title-list-lesson {
+  margin-bottom: 0; }
 
 /*# sourceMappingURL=custom.css.map */
