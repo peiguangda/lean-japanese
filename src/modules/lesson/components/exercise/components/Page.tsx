@@ -20,7 +20,6 @@ export class ListExercise extends React.Component<Props, State, {}> {
     public _deleteExercise = params => {
         this.props.deleteExercise({id: params.exercise.id})
             .then(response => {
-                console.log("response", response);
                 if (response && response.status == "success") {
                     message.success('Successful!');
                     this.props.fetchListExercise({topic_id: params.exercise.topic_id});

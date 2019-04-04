@@ -29,7 +29,6 @@ export interface State {
 
 export class NavigationBar extends React.Component<Props, State, {}> {
     public handleClick = (e) => {
-        // console.log("e1",e);
     }
     public logout = () => {
         this.props.logout({}).then(res => {
@@ -53,7 +52,6 @@ export class NavigationBar extends React.Component<Props, State, {}> {
         });
     }
     private handleMenuClick = (e) => {
-        console.log("e2", e);
         if (e.key == 1) console.log("thong tin ca nhan");
         if (e.key == 2) this.logout();
         if (e.key == 3) this.showModal();

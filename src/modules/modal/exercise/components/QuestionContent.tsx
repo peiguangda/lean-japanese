@@ -68,11 +68,14 @@ export class QuestionContent extends React.Component<Props, State, {}> {
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
     }
     public deleteAnswer = (parameters) => {
-        console.log("param", parameters);
         let {exercise} = this.props;
-        let {list_answer} = exercise;
+        let {list_answer, list_correct_answer} = exercise;
+        if (list_correct_answer) list_correct_answer = list_correct_answer.filter((item) => {
+            return item !== parameters
+        })
         list_answer.splice(parameters, 1);
         exercise.list_answer = list_answer;
+        exercise.list_correct_answer = list_correct_answer;
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
     }
     public updateExercise = (parameters) => {
@@ -83,7 +86,6 @@ export class QuestionContent extends React.Component<Props, State, {}> {
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
     }
     public changeAnswerStatus = (parameters) => {
-        console.log("thay doi trang thai answer", parameters);
         let {exercise} = this.props;
         let {index, correct, value} = parameters;
         let {list_correct_answer} = exercise;
@@ -93,7 +95,6 @@ export class QuestionContent extends React.Component<Props, State, {}> {
             list_correct_answer = list_correct_answer.filter((item) => {
                 return item !== index
             })
-            console.log("aaaaaaaaaaaaaaaaaaa", list_correct_answer);
         } else {
             // sai thanh dung, can phai xet xem list da ton tai chua, neu chua thi phai khoi tao
             if (!list_correct_answer) list_correct_answer = [];
