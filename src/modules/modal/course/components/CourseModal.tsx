@@ -1,8 +1,6 @@
 import * as React from "react";
 import {Fragment} from "react";
 import {Icon, Input, message, Modal, Select, Upload} from "antd";
-import {firebase, storage} from "../../../../firebase";
-import {LessonEntity} from '../../../../common/types/lesson';
 import DatePicker from "react-datepicker";
 import "../../../../public/css/react-datepicker.min";
 import "../../../../public/css/react-datepicker.css";
@@ -14,20 +12,15 @@ import {convertToRaw, EditorState} from 'draft-js';
 import {Editor} from 'react-draft-wysiwyg';
 import '../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
+import {CourseEntity} from "../../../../common/types/course";
+import {firebase, storage} from "../../../../firebase";
 
 const Option = Select.Option;
 
 export interface Props {
-    lesson: LessonEntity;
-    title: string;
     visible: boolean;
-    course_id: number;
-    parent_id: number;
-    action: string;
 
-    fetchLessons(parameters): void;
-
-    handleLesson(parameters): void;
+    createCourse(parameters): Promise<any>;
 
     closeModal(): void;
 
@@ -35,12 +28,47 @@ export interface Props {
 }
 
 export interface State {
-    loading: boolean;
-    lesson: LessonEntity;
+    course: CourseEntity;
     editorState: any
+    loading: boolean;
 }
 
-export class LessonModal extends React.Component<Props, State, {}> {
+export class CourseModal extends React.Component<Props, State, {}> {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false,
+            editorState: EditorState.createEmpty(),
+            course: new class implements CourseEntity {
+                actionType: string;
+                android_url: string;
+                avatar: string;
+                code: string;
+                cost: string;
+                created_at: number;
+                day_to_open_lesson: number;
+                description: string;
+                end_date: string;
+                id: number;
+                index: number;
+                language: string;
+                lesson_num: number;
+                member_num: number;
+                name: string;
+                owner_name: string;
+                password: string;
+                short_description: string;
+                status: number;
+                time_expire: number;
+                updated_at: number;
+                user_id: number;
+            }
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+    }
 
     onEditorStateChange: Function = (editorState) => {
         let descript = draftToHtml(convertToRaw(editorState.getCurrentContent()))
@@ -48,8 +76,8 @@ export class LessonModal extends React.Component<Props, State, {}> {
             editorState,
         });
         this.setState(prevState => ({
-            lesson: {
-                ...prevState.lesson,
+            course: {
+                ...prevState.course,
                 description: descript
             }
         }));
@@ -61,164 +89,15 @@ export class LessonModal extends React.Component<Props, State, {}> {
         this.props.closeModal();
     }
     public handleOk = (e) => {
-        let {lesson} = this.state;
-        let {childrent_type, parent_id} = lesson;
-        if (!childrent_type) lesson.childrent_type = 1;
-        if (this.props.action == "create") lesson.parent_id = this.props.parent_id;
-        this.props.handleLesson(lesson);
+        let {course} = this.state;
+        this.props.createCourse(course)
+            .then(res => {
+                console.log("res", res);
+                if (res && res.status == "success") {
+                    message.success("Tạo khóa học thành công!");
+                } else message.error("Xảy ra lỗi!");
+            })
         this.props.closeModal();
-    }
-    public handleChange = (info) => {
-        if (info.file.status === "uploading") {
-            var now = new Date().getMilliseconds();
-            const uploadTask = storage.ref(`topic/avatar/${info.file.name + "_" + now}`).put(info.file.originFileObj);
-            uploadTask.on('state_changed', snapshot => {
-                var progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
-                switch (uploadTask.snapshot.state) {
-                    case firebase.storage.TaskState.PAUSED: // or 'paused'
-                        console.log('Upload is paused');
-                        break;
-                    case firebase.storage.TaskState.RUNNING: // or 'running'
-                        console.log('Upload is running');
-                        break;
-                }
-            }, error => {
-                message.error("Have error in uploading");
-            }, () => {
-                uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-                    this.getBase64(info.file.originFileObj, downloadURL => this.setState(prevState => ({
-                            lesson: {
-                                ...prevState.lesson,
-                                avatar: downloadURL
-                            },
-                            loading: false
-                        }))
-                    );
-                });
-            });
-            this.setState({loading: true});
-            return;
-        }
-    }
-    public emitNameEmpty = () => {
-        this.setState(prevState => ({
-            lesson: {
-                ...prevState.lesson,
-                name: ''
-            }
-        }));
-    }
-    public emitDescriptEmpty = () => {
-        this.setState(prevState => ({
-            lesson: {
-                ...prevState.lesson,
-                short_description: ''
-            }
-        }));
-    }
-    public onChangeNameLesson = (e) => {
-        let {value} = e.target;
-        this.setState(prevState => ({
-            lesson: {
-                ...prevState.lesson,
-                name: value
-            }
-        }));
-    }
-    public onChangeShortDescription = (e) => {
-        let {value} = e.target;
-        this.setState(prevState => ({
-            lesson: {
-                ...prevState.lesson,
-                short_description: value
-            }
-        }));
-    }
-    public handleSelectChange = value => {
-        this.setState(prevState => ({
-            lesson: {
-                ...prevState.lesson,
-                status: value
-            }
-        }));
-    }
-    public handleChangeStartTime = date => {
-        this.setState(prevState => ({
-            lesson: {
-                ...prevState.lesson,
-                start_time: date
-            }
-        }));
-    }
-    public handleChangeEndTime = date => {
-        this.setState(prevState => ({
-            lesson: {
-                ...prevState.lesson,
-                end_time: date
-            }
-        }));
-    }
-    public setDetaultStatusValue = () => {
-        this.setState(prevState => ({
-            lesson: {
-                ...prevState.lesson,
-                status: 1
-            }
-        }));
-    }
-    public getStatus = status => {
-        if (!status) {
-            this.setDetaultStatusValue();
-            return "Public";
-        }
-        if (status == 1) return "Public";
-        if (status == 2) return "Private";
-        if (status == 3) return "Deleted";
-        if (status == 4) return "Open";
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false,
-            editorState: EditorState.createEmpty(),
-            lesson: new class implements LessonEntity {
-                id: string;
-                actionType: string;
-                avatar: string;
-                childrent_type: number;
-                course_id: number;
-                description: string;
-                duration: number;
-                end_time: number;
-                level: number;
-                name: string;
-                order_index: number;
-                parent_id: number;
-                pass: number;
-                password: string;
-                question_number: number;
-                score_scale: number;
-                short_description: string;
-                sort_id: number;
-                start_time: number;
-                status: number;
-                tag: string;
-                time_practice: number;
-                total_card_num: number;
-                user_id: number;
-                user_name: string;
-            }
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        let {lesson} = nextProps;
-        lesson.course_id = nextProps.course_id;
-        this.setState({
-            lesson: lesson,
-        })
     }
 
     public beforeUpload(file) {
@@ -239,10 +118,121 @@ export class LessonModal extends React.Component<Props, State, {}> {
         reader.readAsDataURL(img);
     }
 
+    public handleChange = (info) => {
+        if (info.file.status === "uploading") {
+            var now = new Date().getMilliseconds();
+            const uploadTask = storage.ref(`course/avatar/${info.file.name + "_" + now}`).put(info.file.originFileObj);
+            uploadTask.on('state_changed', snapshot => {
+                var progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (uploadTask.snapshot.state) {
+                    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                        console.log('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING: // or 'running'
+                        console.log('Upload is running');
+                        break;
+                }
+            }, error => {
+                message.error("Have error in uploading");
+            }, () => {
+                uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
+                    this.getBase64(info.file.originFileObj, downloadURL => this.setState(prevState => ({
+                            course: {
+                                ...prevState.course,
+                                avatar: downloadURL
+                            },
+                            loading: false
+                        }))
+                    );
+                });
+            });
+            this.setState({loading: true});
+            return;
+        }
+    }
+
+    public emitNameEmpty = () => {
+        this.setState(prevState => ({
+            course: {
+                ...prevState.course,
+                name: ''
+            }
+        }));
+    }
+    public emitDescriptEmpty = () => {
+        this.setState(prevState => ({
+            course: {
+                ...prevState.course,
+                short_description: ''
+            }
+        }));
+    }
+    public onChangeNameLesson = (e) => {
+        let {value} = e.target;
+        this.setState(prevState => ({
+            course: {
+                ...prevState.course,
+                name: value
+            }
+        }));
+    }
+    public onChangeShortDescription = (e) => {
+        let {value} = e.target;
+        this.setState(prevState => ({
+            course: {
+                ...prevState.course,
+                short_description: value
+            }
+        }));
+    }
+    public handleSelectChange = value => {
+        this.setState(prevState => ({
+            course: {
+                ...prevState.course,
+                status: value
+            }
+        }));
+    }
+    public handleChangeStartTime = date => {
+        this.setState(prevState => ({
+            course: {
+                ...prevState.course,
+                day_to_open_lesson: date
+            }
+        }));
+    }
+    public handleChangeEndTime = date => {
+        this.setState(prevState => ({
+            course: {
+                ...prevState.course,
+                end_date: date
+            }
+        }));
+    }
+    public setDetaultStatusValue = () => {
+        this.setState(prevState => ({
+            course: {
+                ...prevState.course,
+                status: 1
+            }
+        }));
+    }
+    public getStatus = status => {
+        if (!status) {
+            this.setDetaultStatusValue();
+            return "Public";
+        }
+        if (status == 1) return "Public";
+        if (status == 2) return "Private";
+        if (status == 3) return "Deleted";
+        if (status == 4) return "Open";
+    }
+
     public render() {
         const {editorState} = this.state;
         // console.log("edittor state", editorState);
-        let {loading, lesson: {name, short_description, description, start_time, end_time, avatar, status}} = this.state;
+        let {loading, course: {name, short_description, description, avatar, status, end_date, day_to_open_lesson}} = this.state;
         const suffixLesson = name ? <Icon type="close-circle" onClick={this.emitNameEmpty}/> : null;
         const suffixName = short_description ? <Icon type="close-circle" onClick={this.emitDescriptEmpty}/> : null;
         const uploadButton = (
@@ -255,7 +245,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
             <Fragment>
                 <Modal
                     className={"title modal-create-lesson"}
-                    title={this.props.title}
+                    title={"Create a course"}
                     visible={this.props.visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
@@ -265,7 +255,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                             <Input.Group>
                                 <Input
                                     className="input_body"
-                                    placeholder="Lesson name"
+                                    placeholder="Course name"
                                     prefix={<Icon type="edit"
                                                   style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
                                     suffix={suffixLesson}  //set icon if having text in box
@@ -310,7 +300,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                                     <div className="w-100 m-1">
                                         <DatePicker
                                             className="date-picker-custom"
-                                            selected={start_time}
+                                            selected={day_to_open_lesson}
                                             onChange={this.handleChangeStartTime}
                                             placeholderText="Start time"
                                         />
@@ -318,7 +308,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                                     <div className="w-100 m-1">
                                         <DatePicker
                                             className="date-picker-custom"
-                                            selected={end_time}
+                                            selected={end_date}
                                             onChange={this.handleChangeEndTime}
                                             placeholderText="End time"
                                         />
