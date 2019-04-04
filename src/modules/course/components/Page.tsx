@@ -7,17 +7,19 @@ import {BackTop, Button, Card, Carousel, Icon, Input, Layout, PageHeader, Rate, 
 import {NavigationBarContainter} from "../../navigation_bar/container";
 import {CourseEntity} from "../../../common/types/course";
 import {ListLessonContainter} from "./lesson/container";
+import {ListMemberContainter} from "./list_member/container";
 
 const TabPane = Tabs.TabPane;
 const {TextArea} = Input;
 const {
     Header, Footer, Sider, Content,
 } = Layout;
-const columns = [{
-    title: 'STT',
-    dataIndex: 'stt',
-    key: 'stt',
-},
+const columns = [
+    {
+        title: 'STT',
+        dataIndex: 'stt',
+        key: 'stt',
+    },
     {
         title: 'Tên',
         dataIndex: 'name',
@@ -52,6 +54,22 @@ const user_columns = [{
     title: 'Vai Trò',
     dataIndex: 'status',
     key: 'status',
+}];
+
+const dataSource = [{
+    key: '1',
+    stt: 1,
+    name: 'Mike',
+    date: '13-4-1852',
+    time: '13-4-1852',
+    status: 'member'
+}, {
+    key: '2',
+    stt: 2,
+    name: 'John',
+    date: '13-4-1852',
+    time: '13-4-1852',
+    status: 'admin'
 }];
 
 const test_columns = [{
@@ -152,6 +170,7 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                         <div className="col-md-8">
                             {/*------------------------tab-------------------------------*/}
                             <Tabs defaultActiveKey="1" onChange={this.callback} className="course-content">
+                                {/*-------------------content-------------------------*/}
                                 <TabPane tab="Nội dung" key="1">
                                     <div className="row course_info_layout">
                                         <div className="course-description">{course.description}</div>
@@ -167,13 +186,24 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                         />
                                     </div>
                                 </TabPane>
+                                {/*-------------------document-------------------------*/}
                                 <TabPane tab="Tài liệu" key="2">
                                     <Table columns={columns}/>
                                     <Button type="primary" block>+Tải lên</Button>
                                 </TabPane>
+                                {/*-------------------members-------------------------*/}
                                 <TabPane tab="Thành viên" key="3">
-                                    <Table columns={user_columns}/>
+                                    {/*<Table columns={user_columns} dataSource={dataSource}/>*/}
+                                    <ListMemberContainter
+                                        params={props.match.params}
+                                        location={props.location}
+                                        route={null}
+                                        routeParams={null}
+                                        router={null}
+                                        routes={null}
+                                    />
                                 </TabPane>
+                                {/*-------------------hoi dap-------------------------*/}
                                 <TabPane tab="Hỏi đáp" key="4">
                                     <div className="row">
                                         <div className="col-1"><Icon type="question-circle" theme="twoTone"/></div>
@@ -187,6 +217,7 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                         </div>
                                     </div>
                                 </TabPane>
+                                {/*-------------------ket qua hoc tap-------------------------*/}
                                 <TabPane tab="Kết quả học tập" key="5">
                                     <div className="container">
                                         <div className="this_is_block_panel_main">
@@ -194,6 +225,7 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                         </div>
                                     </div>
                                 </TabPane>
+                                {/*-------------------danh gia-------------------------*/}
                                 <TabPane tab="Đánh giá" key="6">
                                     <div className="row reset-row-col">
                                         <div className="col-xs-12 col-sm-12 reset-row-col padding_right_with_col-12">

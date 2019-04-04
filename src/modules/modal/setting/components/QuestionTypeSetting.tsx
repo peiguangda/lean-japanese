@@ -18,7 +18,7 @@ export interface State {
 
 export class QuestionTypeSetting extends React.Component<Props, State, {}> {
     onChange = (checkedList) => {
-        console.log("checklist", checkedList);
+        // console.log("checklist", checkedList);
         this.setState({
             checkedList,
             indeterminate: !!checkedList.length && (checkedList.length < quetionOptions.length), //indeterminate bang true khi co 1 so option dc checked nhung ko check het
@@ -26,8 +26,8 @@ export class QuestionTypeSetting extends React.Component<Props, State, {}> {
         });
     }
     onCheckAllChange = (e) => {
-        console.log("e", e);
-        console.log("indeterminate", this.state.indeterminate);
+        // console.log("e", e);
+        // console.log("indeterminate", this.state.indeterminate);
         this.setState({
             checkedList: e.target.checked ? quetionOptions : [], //neu nut checked dc check thi tra ve full list con ko thi tra ve []
             indeterminate: false,

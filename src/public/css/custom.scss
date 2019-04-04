@@ -285,8 +285,7 @@ body {
 }
 
 .course-description {
-  padding: 2% 2% 0 2%;
-  font-family: cursive;
+  padding: 2% 4% 0 5%;
 }
 
 .avatarCourse {
@@ -649,4 +648,12 @@ body {
   padding: 9px !important;
   width: 50px;
   height: 50px;
+}
+
+.list-topic-content {
+  border-top: 1px solid #1890ff;
+}
+
+.title-list-lesson {
+  margin-bottom: 0;
 }

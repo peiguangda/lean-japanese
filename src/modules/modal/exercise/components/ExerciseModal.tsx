@@ -92,7 +92,6 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
     }
     public onUpdateExercise = (parameters) => {
         let {current_question, exercise} = parameters;
-        console.log("exercise", exercise);
         this.state.exercise[current_question] = exercise;
         this.forceUpdate()
     }

@@ -72,7 +72,6 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
             className="ant-btn create-ex-fix-btn ant-btn-icon-only col-md-1"/></Popover>
     }
     public onChangeExercise = (exercise) => {
-        console.log("aaaaaaa", exercise);
         this.props.onChangeExercise(exercise);
     }
     public onChangeText = (e) => {
@@ -120,7 +119,7 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
     public render() {
         let {title, type, correct, exercise, current_added_answer} = this.props;
         let {text} = this.state;
-        // console.log("ex", exercise);
+        console.log("ex", exercise);
         return (
             <Fragment>
                 <p className="title-custom w-100">{title}</p>

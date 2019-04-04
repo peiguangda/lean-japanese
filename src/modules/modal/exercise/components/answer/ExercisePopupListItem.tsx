@@ -11,7 +11,6 @@ export interface State {
 
 export class ExercisePopupListItem extends React.Component<Props, State, {}> {
     public handleAddInputRow = (e) => {
-        console.log("eeee");
         this.props.addAnswer();
     }
 
