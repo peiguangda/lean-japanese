@@ -265,7 +265,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                             <Input.Group>
                                 <Input
                                     className="input_body"
-                                    placeholder="Lesson name"
+                                    placeholder="Tên bài giảng"
                                     prefix={<Icon type="edit"
                                                   style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
                                     suffix={suffixLesson}  //set icon if having text in box
@@ -274,7 +274,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                                 />
                                 <Input
                                     className={"input_body"}
-                                    placeholder="Short description"
+                                    placeholder="Mô tả ngắn"
                                     value={short_description}
                                     onChange={this.onChangeShortDescription}
                                     prefix={<Icon type="form"
@@ -312,7 +312,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                                             className="date-picker-custom"
                                             selected={start_time}
                                             onChange={this.handleChangeStartTime}
-                                            placeholderText="Start time"
+                                            placeholderText="Thời gian bắt đầu"
                                         />
                                     </div>
                                     <div className="w-100 m-1">
@@ -320,7 +320,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                                             className="date-picker-custom"
                                             selected={end_time}
                                             onChange={this.handleChangeEndTime}
-                                            placeholderText="End time"
+                                            placeholderText="Thời gian kết thúc"
                                         />
                                     </div>
                                 </div>

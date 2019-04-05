@@ -68,7 +68,7 @@ export class LoginModal extends React.Component<Props & { form: WrappedFormUtils
                                 rules: [{required: true, message: 'Vui lòng nhập username!'}],
                             })(
                                 <Input prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                       placeholder="Username"/>
+                                       placeholder="Tên đăng nhập"/>
                             )}
                         </Form.Item>
                         <Form.Item>
@@ -76,7 +76,7 @@ export class LoginModal extends React.Component<Props & { form: WrappedFormUtils
                                 rules: [{required: true, message: 'Vui lòng nhập mật khẩu!'}],
                             })(
                                 <Input prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>} type="password"
-                                       placeholder="Password"/>
+                                       placeholder="Mật khẩu"/>
                             )}
                         </Form.Item>
                         <Form.Item>

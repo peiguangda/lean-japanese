@@ -68,7 +68,7 @@ export class Exercise extends React.Component<Props, State, {}> {
                         />
 
                         <Popconfirm
-                            title="Are you sure delete this question?"
+                            title="Bạn có chắc chắn muốn xóa câu hỏi này?"
                             onConfirm={() => this.confirm({exercise: exercise})}
                             onCancel={this.cancel}
                             okText="Yes"

@@ -132,7 +132,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
             {name}
             <div className="hidden-custom">
                 <Popconfirm
-                    title="Are you sure delete this lesson?"
+                    title="Bạn có chắc chắn muốn xóa?"
                     onConfirm={() => this.confirm({lessonId: item.id, course_id: item.course_id})}
                     onCancel={this.cancel}
                     okText="Yes"
@@ -161,7 +161,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
         const extra_edit_delete = (item) => <Fragment>
             <div className="hidden-custom">
                 <Popconfirm
-                    title="Are you sure delete this lesson?"
+                    title="Bạn có chắc chắn muốn xóa?"
                     onConfirm={() => this.confirm({lessonId: item.id, course_id: item.course_id})}
                     onCancel={this.cancel}
                     okText="Yes"
@@ -295,7 +295,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
                             course_id={this.props.params.id}
                             parent_id={parent_id}
                             action={action}
-                            title={action == "create" ? "Create a lesson" : "Edit a lesson"}
+                            title={action == "create" ? "Tạo bài học" : "Sửa bài học"}
                         />
                     </div>
                 </div>
