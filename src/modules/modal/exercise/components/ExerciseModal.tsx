@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Fragment} from "react";
-import {Button, Card, Layout, Modal} from "antd";
+import {Button, Card, Layout, message, Modal} from "antd";
 import {ExerciseEntity} from "../../../../common/types/exercise";
 import {QuestionTypeSetting} from "../../setting/components/QuestionTypeSetting";
 import {ListQuestion} from "./question/ListQuestion";
@@ -13,10 +13,13 @@ const {
 export interface Props {
     title: string;
     visible: boolean;
+    topic_id: number;
 
     closeModal(): void;
 
     showModal(): void;
+
+    createExercise(parameters): Promise<any>;
 }
 
 export interface State {
@@ -50,6 +53,19 @@ const initExercise = new class implements ExerciseEntity {
 }
 
 export class ExerciseModal extends React.Component<Props, State, {}> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            current_question: 0,
+            isShowSetting: false,
+            exercise: []
+        }
+    }
+
+    componentWillMount(): void {
+        this.state.exercise.push({...initExercise, topic_id: this.props.topic_id});
+    }
+
     public showModal = () => {
         this.props.showModal();
     }
@@ -58,7 +74,12 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
         this.props.closeModal();
     }
     public handleOk = (e) => {
-        console.log("ok man!");
+        let {exercise} = this.state;
+        this.props.createExercise(exercise)
+            .then(res => {
+                if (res && res.status == "success") message.success("Tạo bài học thành công!");
+                else message.error("Xảy ra lỗi!");
+            })
         this.props.closeModal();
     }
     public onchangeSetting = () => {
@@ -69,7 +90,7 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
     }
     public addQuestion = () => {
         let {exercise} = this.state;
-        exercise.push({...initExercise});
+        exercise.push({...initExercise, topic_id: this.props.topic_id});
         this.setState({
             exercise: exercise
         })
@@ -99,22 +120,8 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
 
     }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            current_question: 0,
-            isShowSetting: false,
-            exercise: []
-        }
-    }
-
-    componentWillMount(): void {
-        this.state.exercise.push({...initExercise});
-    }
-
     public render() {
         let {isShowSetting, exercise, current_question} = this.state;
-        console.log('exercise', exercise);
         return (
             <Fragment>
                 <Modal
@@ -163,6 +170,7 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
                                 exercise={exercise[current_question]}
                                 onUpdateExercise={this.onUpdateExercise}
                                 current_question={current_question}
+                                topic_id={this.props.topic_id}
                             />)
                         }
                     </Layout>

@@ -15,6 +15,7 @@ export interface Props {
     visible: boolean;
     exercise: ExerciseEntity;
     current_question: number;
+    topic_id: number;
 
     onchangeSetting(): void;
 
@@ -22,38 +23,17 @@ export interface Props {
 }
 
 export interface State {
-    exercise: ExerciseEntity;
 }
 
 const initialState = {
-    exercise: new class implements ExerciseEntity {
-        id: string;
-        user_id: number;  //người tạo card
-        course_id: number;
-        topic_id: number;
-        order_index: number;
-        difficulty_level: number;
-        has_child: number; //có con ko(áp dụng câu hỏi đoạn văn)
-        parent_id: number;  //topic id
-        status: number;
-        code: string;
-        shuffle_answer: number; //setting đáp án có đảo hay ko
-        front_text: string;     //cau hoi
-        front_image: string;     //ảnh câu hỏi
-        front_sound: string;      //âm thanh câu hỏi
-        front_hint: string;      //gợi ý cho câu hỏi
-        back_text: string;      //đáp án
-        back_image: string;     //ảnh đáp án
-        back_sound: string;     //âm thành đáp án
-        back_hint: string;      //gợi ý đáp án
-        list_answer: Array<string>;// danh sách đáp án dạng multichoices,
-        list_correct_answer: Array<number>;// danh sách đáp án dung dạng câu hỏi nhiều đáp án đúng,
-        // nếu hasChild khác null thì có list các child con,
-        // setting dạng câu hỏi : chọn đáp án, điền từ, lật mặt, phát âm
-    },
 }
 
 export class QuestionContent extends React.Component<Props, State, {}> {
+    constructor(props) {
+        super(props);
+        this.state = initialState;
+    }
+
     public handleAddInputRow = (e) => {
         console.log("e", e);
     }
@@ -106,11 +86,6 @@ export class QuestionContent extends React.Component<Props, State, {}> {
     }
     public onChangeExercise = (exercise) => {
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = initialState;
     }
 
     public render() {

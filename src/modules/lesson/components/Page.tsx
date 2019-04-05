@@ -19,9 +19,11 @@ export interface Props {
     match: any;
     params: any;
     lesson: LessonEntity;
+    props: any,
     api: ApiEntity;
 
     fetchLesson(parameters): void;
+    createExercise(parameters): Promise<any>;
 }
 
 export interface State {
@@ -101,6 +103,8 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                     showModal={this.showModal}
                                     visible={visible}
                                     title={"Tạo câu hỏi"}
+                                    createExercise={this.props.createExercise}
+                                    topic_id={this.props.match.params.id}
                                 />
                             </div>
                             <div className="">

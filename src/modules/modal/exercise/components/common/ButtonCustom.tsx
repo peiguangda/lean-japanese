@@ -119,7 +119,6 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
     public render() {
         let {title, type, correct, exercise, current_added_answer} = this.props;
         let {text} = this.state;
-        console.log("ex", exercise);
         return (
             <Fragment>
                 <p className="title-custom w-100">{title}</p>
