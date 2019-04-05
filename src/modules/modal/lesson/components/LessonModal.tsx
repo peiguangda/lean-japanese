@@ -54,9 +54,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
             }
         }));
     };
-    public showModal = () => {
-        this.props.showModal();
-    }
+
     public handleCancel = (e) => {
         this.props.closeModal();
     }

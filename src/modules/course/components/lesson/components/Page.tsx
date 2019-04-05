@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Fragment} from "react";
-import {Button, Collapse, Icon, message, Popconfirm, Tree} from 'antd';
+import {Button, Collapse, Icon, message, Popconfirm, Tooltip, Tree} from 'antd';
 import {LessonEntity} from "../../../../../common/types/lesson";
 import {ApiEntity} from "../../../../../common/types";
 import {RouteComponentProps} from "react-router";
@@ -50,6 +50,11 @@ export class ListLesson extends React.Component<Props, State, {}> {
     onExpand = () => {
         console.log('Trigger Expand');
     };
+
+    public onCheck = () => {
+        console.log('Trigger Check');
+    }
+
     public _closeModal = () => {
         this.setState({
             visible: false
@@ -140,8 +145,15 @@ export class ListLesson extends React.Component<Props, State, {}> {
                 >
                     <Button className="float-right btn-delete" icon="close"/>
                 </Popconfirm>
-                <Button className="float-right btn-edit" icon="edit" onClick={(event) => this.editAction(event, item)}/>
-                <Button className="float-right btn-add" icon="plus" onClick={(event) => this.addAction(event, item)}/>
+                <Button className="float-right btn-edit" icon="edit"
+                        onClick={(event) => this.editAction(event, item)}/>
+                <Button className="float-right btn-add" icon="plus"
+                        onClick={(event) => this.addAction(event, item)}/>
+                <Tooltip placement="topLeft" title={"Chi tiết"}>
+                    <Button className="float-right btn-add" icon="link"
+                            href={`/lesson/${item.id}`} target="_blank"
+                            onClick={(event) => this.addAction(event, item)}/>
+                </Tooltip>
             </div>
         </Fragment>
         if (childList && childList.length == 0) return;
@@ -198,6 +210,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
                                     defaultExpandAll={false}
                                     onSelect={this.onSelect}
                                     onExpand={this.onExpand}
+                                    onCheck={this.onCheck}
                                     expandAction={"click"}
                                 >
                                     {/*------------------------show bài con-----------------------------*/}
