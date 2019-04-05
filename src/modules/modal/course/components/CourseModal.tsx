@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Fragment} from "react";
-import {Icon, Input, message, Modal, Select, Upload} from "antd";
+import {Icon, Input, InputNumber, message, Modal, Select, Upload} from "antd";
 import DatePicker from "react-datepicker";
 import "../../../../public/css/react-datepicker.min";
 import "../../../../public/css/react-datepicker.css";
@@ -186,6 +186,25 @@ export class CourseModal extends React.Component<Props, State, {}> {
             }
         }));
     }
+    public onChangePass = (e) => {
+        let {value} = e.target;
+        this.setState(prevState => ({
+            course: {
+                ...prevState.course,
+                password: value
+            }
+        }));
+    }
+    public onChangeCost = (e) => {
+        console.log(e);
+        let {value} = e.target;
+        this.setState(prevState => ({
+            course: {
+                ...prevState.course,
+                cost: value
+            }
+        }));
+    }
     public handleSelectChange = value => {
         this.setState(prevState => ({
             course: {
@@ -232,7 +251,8 @@ export class CourseModal extends React.Component<Props, State, {}> {
     public render() {
         const {editorState} = this.state;
         // console.log("edittor state", editorState);
-        let {loading, course: {name, short_description, description, avatar, status, end_date, day_to_open_lesson}} = this.state;
+        let {loading, course: {name, short_description, password, cost, avatar, status, end_date, day_to_open_lesson}} = this.state;
+        // let costt = parseInt(cost, 10);
         const suffixLesson = name ? <Icon type="close-circle" onClick={this.emitNameEmpty}/> : null;
         const suffixName = short_description ? <Icon type="close-circle" onClick={this.emitDescriptEmpty}/> : null;
         const uploadButton = (
@@ -245,7 +265,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
             <Fragment>
                 <Modal
                     className={"title modal-create-lesson"}
-                    title={"Create a course"}
+                    title={"Tạo khóa học"}
                     visible={this.props.visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
@@ -255,7 +275,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
                             <Input.Group>
                                 <Input
                                     className="input_body"
-                                    placeholder="Course name"
+                                    placeholder="Tên khóa học"
                                     prefix={<Icon type="edit"
                                                   style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
                                     suffix={suffixLesson}  //set icon if having text in box
@@ -264,14 +284,37 @@ export class CourseModal extends React.Component<Props, State, {}> {
                                 />
                                 <Input
                                     className={"input_body"}
-                                    placeholder="Short description"
+                                    placeholder="Mô tả ngắn"
                                     value={short_description}
                                     onChange={this.onChangeShortDescription}
-                                    prefix={<Icon type="form"
+                                    prefix={<Icon type="lock"
                                                   style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
                                     suffix={suffixName}  //set icon if having text in box
                                 />
                             </Input.Group>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <Input
+                                        className={"pass-course"}
+                                        placeholder="Mật khẩu"
+                                        type="password"
+                                        value={password}
+                                        onChange={this.onChangePass}
+                                        prefix={<Icon type="form"
+                                                      style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
+                                        suffix={suffixName}  //set icon if having text in box
+                                    />
+                                </div>
+                                <div className="col-md-6">
+                                    <InputNumber
+                                        className="w-100 m-1"
+                                        defaultValue={1000}
+                                        formatter={value => `${value} VNĐ`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                        parser={cost => parseInt(cost.replace(/\$\s?|(,*)/g, ''), 10)}
+                                        onChange={this.onChangeCost}
+                                    />
+                                </div>
+                            </div>
                             <div className="row">
                                 <div className="col-md-6">
                                     <Upload
