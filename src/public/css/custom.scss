@@ -661,3 +661,31 @@ body {
 .pass-course {
   margin: 2%;
 }
+
+.upload-list-inline .ant-upload-list-item {
+  float: left;
+  width: 105%;
+  margin-right: 3%;
+}
+
+.upload-list-inline .ant-upload-animate-enter {
+  animation-name: uploadAnimateInlineIn;
+}
+
+.upload-list-inline .ant-upload-animate-leave {
+  animation-name: uploadAnimateInlineOut;
+}
+
+.image-search {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  border-radius: 5%;
+  border: 1px solid #1d8efb;
+}
+
+.image-search-mini {
+  width: 8%;
+  height: 100%;
+  object-fit: contain;
+}
