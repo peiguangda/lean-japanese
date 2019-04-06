@@ -1,13 +1,15 @@
 import * as React from "react";
 import {Fragment} from "react";
+import {Link} from "react-router-dom";
 import {Helmet} from "react-helmet";
 import {ApiEntity} from '../../../common/types/index';
 import {Loader} from "../../loader/components/loader";
-import {BackTop, Button, Card, Carousel, Icon, Input, Layout, PageHeader, Rate, Table, Tabs, Tooltip} from "antd";
+import {BackTop, Modal,Upload, Button,message, Card, Carousel, Icon, Input, Layout, PageHeader, Rate, Table, Tabs, Tooltip, Divider} from "antd";
 import {NavigationBarContainter} from "../../navigation_bar/container";
 import {CourseEntity} from "../../../common/types/course";
 import {ListLessonContainter} from "./lesson/container";
 import {ListMemberContainter} from "./list_member/container";
+
 
 const TabPane = Tabs.TabPane;
 const {TextArea} = Input;
@@ -129,10 +131,41 @@ const routes = [
     },
 ];
 
+const props = {
+    name: 'file',
+    action: '//jsonplaceholder.typicode.com/posts/',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
 export class CourseDetail extends React.Component<Props, State, {}> {
+
+    state = { visible: false }
+
+    showModal = () => {
+        this.setState({
+        visible: true,
+     });
+    }
+
+    hideModal = () => {
+        this.setState({
+        visible: false,
+        });
+    }
     constructor(props) {
         super(props);
-        this.state = {}
     }
 
     public componentWillMount() {
@@ -189,7 +222,22 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                 {/*-------------------document-------------------------*/}
                                 <TabPane tab="Tài liệu" key="2">
                                     <Table columns={columns}/>
-                                    <Button type="primary" block>+Tải lên</Button>
+                                    <Button type="primary" onClick={this.showModal} block>+Tải lên</Button>
+                                    <Modal
+                                        className="title"
+                                        title="Tải tài liệu"
+                                        visible={this.state.visible}
+                                        onOk={this.hideModal}
+                                        onCancel={this.hideModal}
+                                        okText="OK"
+                                        cancelText="CANCEL"
+                                    >
+                                        <Upload {...props}>
+                                            <Button>
+                                                <Icon type="upload" /> Click to Upload
+                                            </Button>
+                                        </Upload>,
+                                    </Modal>
                                 </TabPane>
                                 {/*-------------------members-------------------------*/}
                                 <TabPane tab="Thành viên" key="3">
@@ -227,6 +275,51 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                 </TabPane>
                                 {/*-------------------danh gia-------------------------*/}
                                 <TabPane tab="Đánh giá" key="6">
+                                    <div className= "chart-panel ">
+                                        <div className="main-evaluate-panel" id="evaluate-chart-panel">
+                                            <div className="left-panel">
+                                                <h1>3</h1>
+                                                <Rate allowHalf defaultValue={3}/>
+                                                <div className="set_rate">
+                                                    <Icon type="team" />
+                                                    5 đánh giá
+                                                </div>
+                                            </div>
+                                            <div className="center-line"></div>
+                                            <div className= "right-panel">
+                                                <div className="evaluate-item">
+                                                    <label>5</label>
+                                                    <div>
+                                                        <div className= "style_rate1">(5)</div>
+                                                    </div>
+                                                </div>
+                                                <div className="evaluate-item">
+                                                    <label>4</label>
+                                                    <div>
+                                                        <div className= "style_rate2">(0)</div>
+                                                    </div>
+                                                </div>
+                                                <div className="evaluate-item">
+                                                    <label>3</label>
+                                                    <div>
+                                                        <div className= "style_rate3">(0)</div>
+                                                    </div>
+                                                </div>
+                                                <div className="evaluate-item">
+                                                    <label>2</label>
+                                                    <div>
+                                                        <div className= "style_rate4">(0)</div>
+                                                    </div>
+                                                </div>
+                                                <div className="evaluate-item">
+                                                    <label>1</label>
+                                                    <div>
+                                                        <div className= "style_rate5">(0)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="row reset-row-col">
                                         <div className="col-xs-12 col-sm-12 reset-row-col padding_right_with_col-12">
                                             <div className="this_is_block_panel_main_parent">
@@ -291,12 +384,54 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                             </div>
                             <div className="row mt-5">
                                 <Card title="Khóa học khác của bạn" bordered={false} className="course-card-descript">
-                                    <p>Khóa học khác của bạn</p>
+                                <Link to="/courses/1" className="course-utility-item display-flex">
+                                    <img src = "https://storage.googleapis.com/kslearning/images/955804494-1524044220063-congtacquocphong-min.jpg"/>
+                                    <div>
+                                        <div>Khóa học N2</div>
+                                        <Rate className="rate_size" allowHalf defaultValue={3}/>
+                                        <p className="size_font">500.000VND</p>
+                                    </div>
+                                </Link>
+                                <Link to="/courses/2" className="course-utility-item display-flex">
+                                    <img src = "https://storage.googleapis.com/kslearning/images/955804494-1524044220063-congtacquocphong-min.jpg"/>
+                                    <div>
+                                        <div>Khóa học N3</div>
+                                        <Rate className="rate_size" allowHalf defaultValue={3}/>
+                                        <p className="size_font">500.000VND</p>
+                                    </div>
+                                </Link>
+                                <Link to="/courses/3" className="course-utility-item display-flex">
+                                    <img src = "https://storage.googleapis.com/kslearning/images/955804494-1524044220063-congtacquocphong-min.jpg"/>
+                                    <div>
+                                        <div>Khóa học N4</div>
+                                        <Rate className="rate_size" allowHalf defaultValue={3}/>
+                                        <p className="size_font">500.000VND</p>
+                                    </div>
+                                </Link>
+                                <Link to="/courses/4" className="course-utility-item display-flex">
+                                    <img src = "https://storage.googleapis.com/kslearning/images/955804494-1524044220063-congtacquocphong-min.jpg"/>
+                                    <div>
+                                        <div>Khóa học N5</div>
+                                        <Rate className="rate_size" allowHalf defaultValue={3}/>
+                                        <p className="size_font">500.000VND</p>
+                                    </div>
+                                </Link>
                                 </Card>
                             </div>
                             <div className="row mt-5">
                                 <Card title="Tin tức liên quan" bordered={false} className="course-card-descript">
-                                    <p>Tin tức liên quan</p>
+                                    <Link to="" className="course-utility-item display-flex">
+                                        <img  src = "https://storage.googleapis.com/kslearning/images/533186243-1554281765867-koolsoftnew-03(1).jpg"/>
+                                        <p>Học thông minh là gì? Có thật sự tuyệt vời đến thế?</p>
+                                    </Link>
+                                    <Link to="" className="course-utility-item display-flex">
+                                        <img src = "https://storage.googleapis.com/kslearning/images/450687542-1527576887317-rectangle11copy.jpg"/>
+                                        <p>Danh sách các môn học mới tháng 4/2018</p>
+                                    </Link>
+                                    <Link to="" className="course-utility-item display-flex">
+                                        <img src = "https://storage.googleapis.com/kslearning/images/807315495-1527577754035-3.png"/>
+                                        <p>Hướng dẫn thanh toán</p>
+                                    </Link>
                                 </Card>
                             </div>
                         </div>
