@@ -13,7 +13,7 @@ import {Editor} from 'react-draft-wysiwyg';
 import '../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
 import {CourseEntity} from "../../../../common/types/course";
-import {firebase, storage} from "../../../../firebase";
+import {firebase, storage} from "../../../../helpers/firebase";
 
 const Option = Select.Option;
 

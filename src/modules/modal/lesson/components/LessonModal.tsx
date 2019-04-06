@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Fragment} from "react";
 import {Icon, Input, message, Modal, Select, Upload} from "antd";
-import {firebase, storage} from "../../../../firebase";
+import {firebase, storage} from "../../../../helpers/firebase";
 import {LessonEntity} from '../../../../common/types/lesson';
 import DatePicker from "react-datepicker";
 import "../../../../public/css/react-datepicker.min";
