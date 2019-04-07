@@ -36,6 +36,8 @@ export class HomePage extends React.Component<Props, State, {}> {
                             <div className="category_item">
                                 <CategoryCourse category_name="Tất cả khoá học" icon="desktop"/>
                                 <CategoryCourse category_name="Khóa học tiếng nhật" icon="read"/>
+                                <CategoryCourse category_name="Khóa học đã tham gia" icon="user"/>
+                                <CategoryCourse category_name="Khóa học của tôi" icon="solution"/>
                             </div>
                         </div>
                         <div className="col-md-9">
