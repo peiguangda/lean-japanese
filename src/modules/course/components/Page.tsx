@@ -422,15 +422,24 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                 <Card title="Tin tức liên quan" bordered={false} className="course-card-descript">
                                     <Link to="" className="course-utility-item display-flex">
                                         <img  src = "https://storage.googleapis.com/kslearning/images/533186243-1554281765867-koolsoftnew-03(1).jpg"/>
-                                        <p>Học thông minh là gì? Có thật sự tuyệt vời đến thế?</p>
+                                        <div>
+                                            <p>Học thông minh là gì? Có thật sự tuyệt vời đến thế?</p>
+                                            <p className="font_tt_size">Cập nhật 7/3/2019</p>
+                                        </div>
                                     </Link>
                                     <Link to="" className="course-utility-item display-flex">
                                         <img src = "https://storage.googleapis.com/kslearning/images/450687542-1527576887317-rectangle11copy.jpg"/>
-                                        <p>Danh sách các môn học mới tháng 4/2018</p>
+                                        <div>
+                                            <p>Danh sách các môn học mới tháng 4/2018</p>
+                                            <p className="font_tt_size">Cập nhật 7/3/2019</p>
+                                        </div>
                                     </Link>
                                     <Link to="" className="course-utility-item display-flex">
                                         <img src = "https://storage.googleapis.com/kslearning/images/807315495-1527577754035-3.png"/>
-                                        <p>Hướng dẫn thanh toán</p>
+                                        <div>
+                                            <p>Hướng dẫn thanh toán</p>
+                                            <p className="font_tt_size">Cập nhật 7/3/2019</p>
+                                        </div>
                                     </Link>
                                 </Card>
                             </div>
