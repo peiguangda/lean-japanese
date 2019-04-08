@@ -6,6 +6,7 @@ import {HomePageContainer} from './modules/home/container';
 import {CourseDetailContainter} from "./modules/course/container";
 import {LessonDetailContainter} from "./modules/lesson/container";
 import './public/css/custom.scss';
+import './public/css/nga_custom.css';
 
 export const AppRouter: React.StatelessComponent<{}> = () => {
     return (
