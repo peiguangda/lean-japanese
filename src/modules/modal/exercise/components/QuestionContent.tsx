@@ -25,8 +25,7 @@ export interface Props {
 export interface State {
 }
 
-const initialState = {
-}
+const initialState = {};
 
 export class QuestionContent extends React.Component<Props, State, {}> {
     constructor(props) {
@@ -36,35 +35,35 @@ export class QuestionContent extends React.Component<Props, State, {}> {
 
     public handleAddInputRow = (e) => {
         console.log("e", e);
-    }
+    };
     public onchangeSetting = () => {
         this.props.onchangeSetting();
-    }
+    };
     public addAnswer = (exercise) => {
         let {list_answer} = exercise;
         if (!list_answer) list_answer = []; //check list_answer ko ton tai thi khoi tao no
         list_answer.push("");
         exercise.list_answer = list_answer;
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
-    }
+    };
     public deleteAnswer = (parameters) => {
         let {exercise} = this.props;
         let {list_answer, list_correct_answer} = exercise;
         if (list_correct_answer) list_correct_answer = list_correct_answer.filter((item) => {
             return item !== parameters
-        })
+        });
         list_answer.splice(parameters, 1);
         exercise.list_answer = list_answer;
         exercise.list_correct_answer = list_correct_answer;
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
-    }
+    };
     public updateExercise = (parameters) => {
         this.props.onUpdateExercise(parameters);
-    }
+    };
     public onChangeStatus = (e, exercise) => {
         exercise.shuffle_answer = e.target.checked ? 1 : 0;
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
-    }
+    };
     public changeAnswerStatus = (parameters) => {
         let {exercise} = this.props;
         let {index, correct, value} = parameters;
@@ -83,10 +82,10 @@ export class QuestionContent extends React.Component<Props, State, {}> {
         }
         exercise.list_correct_answer = list_correct_answer;
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
-    }
+    };
     public onChangeExercise = (exercise) => {
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
-    }
+    };
 
     public render() {
         let {exercise} = this.props;

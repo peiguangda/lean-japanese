@@ -36,7 +36,7 @@ export class ListAnswer extends React.Component<Props, State, {}> {
                 />)
             }
         return result;
-    }
+    };
 
     constructor(props) {
         super(props);

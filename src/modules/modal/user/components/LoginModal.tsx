@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Fragment} from "react";
-import {Button, Checkbox, Form, Icon, Input, message, Modal} from "antd";
+import {Button, Form, Icon, Input, message, Modal} from "antd";
 import {WrappedFormUtils} from 'antd/lib/form/Form';
 import "../../../../public/css/login_form.scss"
 import {ApiEntity} from "../../../../common/types";
@@ -26,10 +26,10 @@ export class LoginModal extends React.Component<Props & { form: WrappedFormUtils
         this.props.closeModal();
         console.log("Cancel");
 
-    }
+    };
     public handleOk = () => {
         console.log("Ok");
-    }
+    };
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -43,7 +43,7 @@ export class LoginModal extends React.Component<Props & { form: WrappedFormUtils
                 })
             }
         });
-    }
+    };
 
     constructor(props, form) {
         super(props);

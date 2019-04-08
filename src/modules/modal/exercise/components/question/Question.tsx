@@ -17,10 +17,10 @@ export interface State {
 export class Question extends React.Component<Props, State, {}> {
     public removeQuestion = (parameters) => {
         this.props.removeQuestion(parameters);
-    }
+    };
     public changeQuestion = (parameters) => {
         this.props.changeQuestion(parameters);
-    }
+    };
 
     constructor(props) {
         super(props);

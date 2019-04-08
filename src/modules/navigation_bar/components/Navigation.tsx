@@ -29,7 +29,7 @@ export interface State {
 
 export class NavigationBar extends React.Component<Props, State, {}> {
     public handleClick = (e) => {
-    }
+    };
     public logout = () => {
         this.props.logout({}).then(res => {
             console.log(res);
@@ -40,23 +40,23 @@ export class NavigationBar extends React.Component<Props, State, {}> {
                 })
             } else message.error("Xảy ra lỗi")
         })
-    }
+    };
     public showModal = () => {
         this.setState({
             visible: true
         });
-    }
+    };
     public closeModal = () => {
         this.setState({
             visible: false
         });
-    }
+    };
     private handleMenuClick = (e) => {
         if (e.key == 1) console.log("thong tin ca nhan");
         if (e.key == 2) this.logout();
         if (e.key == 3) this.showModal();
         if (e.key == 4) console.log("dang ki");
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -74,7 +74,7 @@ export class NavigationBar extends React.Component<Props, State, {}> {
                 })
             }
         });
-    }
+    };
 
     public componentDidMount() {
         if (Cookie.getAccessToken()) {

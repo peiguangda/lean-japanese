@@ -22,7 +22,7 @@ export class Exercise extends React.Component<Props, State, {}> {
         this.setState({
             visible: true
         })
-    }
+    };
 
     constructor(props) {
         super(props);

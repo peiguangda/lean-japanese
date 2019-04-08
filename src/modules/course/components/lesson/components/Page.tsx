@@ -43,7 +43,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
     public onChangeStatusLesson = (event, item) => {
         console.log("change", event);
         console.log("item", item);
-    }
+    };
     onSelect = () => {
         console.log('Trigger Select');
     };
@@ -53,21 +53,21 @@ export class ListLesson extends React.Component<Props, State, {}> {
 
     public onCheck = () => {
         console.log('Trigger Check');
-    }
+    };
 
     public _closeModal = () => {
         this.setState({
             visible: false
         })
-    }
+    };
     public _showModal = () => {
         this.setState({
             visible: true
         })
-    }
+    };
     public addItemToList = (list, item) => {
         if (list) list.push(item);
-    }
+    };
     public fetchChild = (list, id) => {
         let course_id = this.props.params.id;
         this.props.fetchLessons({course_id: course_id, parent_id: id})
@@ -78,10 +78,10 @@ export class ListLesson extends React.Component<Props, State, {}> {
                     this.addItemToList(list, item);
                 })
             })
-    }
+    };
     public onClickCreate = () => {
         this._showModal();
-    }
+    };
     public _createLesson = params => {
         this.props.createLesson(params)
             .then(response => {
@@ -90,7 +90,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
                     this.initData();
                 }
             })
-    }
+    };
     public _deleteLesson = params => {
         this.props.deleteLesson({course_id: params.course_id, id: params.lessonId})
             .then(response => {
@@ -99,7 +99,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
                     this.initData();
                 }
             })
-    }
+    };
     public _editLesson = params => {
         this.props.editLesson(params)
             .then(response => {
@@ -108,7 +108,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
                     this.initData();
                 }
             })
-    }
+    };
     public addAction = (event, item) => {
         console.log("add", item);
         event.stopPropagation();
@@ -117,7 +117,13 @@ export class ListLesson extends React.Component<Props, State, {}> {
             parent_id: item.id,
             action: "create"
         })
-    }
+    };
+
+    public openLesson = (event, item) => {
+        console.log("open", item);
+        event.stopPropagation();
+    };
+
     public editAction = (event, item) => {
         console.log("edit");
         event.stopPropagation();
@@ -126,11 +132,11 @@ export class ListLesson extends React.Component<Props, State, {}> {
             action: "edit"
         });
         this._showModal();
-    }
+    };
     public deleteAction = (event, item) => {
         console.log("delete");
         event.stopPropagation();
-    }
+    };
     public showChildren = (item) => {
         let {childList} = item;
         const customTitle = (name, item) => <Fragment>
@@ -152,10 +158,10 @@ export class ListLesson extends React.Component<Props, State, {}> {
                 <Tooltip placement="topLeft" title={"Chi tiết"}>
                     <Button className="float-right btn-add" icon="link"
                             href={`/lesson/${item.id}`} target="_blank"
-                            onClick={(event) => this.addAction(event, item)}/>
+                            onClick={(event) => this.openLesson(event, item)}/>
                 </Tooltip>
             </div>
-        </Fragment>
+        </Fragment>;
         if (childList && childList.length == 0) return;
         else return childList.map((value, index) => {
             if (value.childList.length)
@@ -163,11 +169,11 @@ export class ListLesson extends React.Component<Props, State, {}> {
                     title={customTitle(value.name + ' (Tổng số ' + value.childList.length + ' bài )', value)}
                     key={value.id}>
                     {this.showChildren(value)}
-                </TreeNode>
+                </TreeNode>;
             else return <TreeNode
                 title={customTitle(value.name, value)} key={value.id} isLeaf/>;
         })
-    }
+    };
     private showListLesson = () => {
         var {listLesson} = this.state;
         const extra_edit_delete = (item) => <Fragment>
@@ -187,7 +193,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
                 <Button className="float-right btn-header-topic-add-edit" icon="plus"
                         onClick={(event) => this.addAction(event, item)}/>
             </div>
-        </Fragment>
+        </Fragment>;
 
         if (listLesson && listLesson.length)
             return listLesson.map((item, index) => {
@@ -221,7 +227,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
                     </Collapse>
                 );
             });
-    }
+    };
 
     constructor(props) {
         super(props);

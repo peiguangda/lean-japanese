@@ -65,13 +65,13 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
 
     public addAnswer = () => {
         this.props.addAnswer();
-    }
+    };
     public removeAnswer = (parameters) => {
         this.props.removeAnswer(parameters);
-    }
+    };
     public changeAnswerStatus = (parameters) => {
         this.props.changeAnswerStatus(parameters);
-    }
+    };
     public showPopup = (current_added_answer, text) => {
         let {correct, type} = this.props;
         let contentAnswer;
@@ -83,7 +83,7 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
                 <Button className="row w-100 create-ex-fix-btn" type="dashed">Thêm âm thanh</Button>
                 <Button className="row w-100 create-ex-fix-btn" type="dashed">Thêm gợi ý</Button>
                 <Button className="row w-100 create-ex-fix-btn" type="dashed">Định dạng nội dung</Button>
-            </div>
+            </div>;
         else if (type == "added_answer")
             contentAnswer = <div className="col">
                 <Button className="row w-100 create-ex-fix-btn" type="dashed"
@@ -93,7 +93,7 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
                             value: text
                         })}>Set đáp
                     án {correct ? "sai" : "đúng"}</Button>
-            </div>
+            </div>;
         else if (type == "answer")
             contentAnswer = <div className="col">
                 <Button className="row w-100 create-ex-fix-btn" type="dashed" onClick={this.addAnswer}>Thêm đáp
@@ -104,21 +104,21 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
                 <Button className="row w-100 create-ex-fix-btn" type="dashed">Thêm giải thích</Button>
                 <Button className="row w-100 create-ex-fix-btn" type="dashed">Định dạng nội dung</Button>
                 <Button className="row w-100 create-ex-fix-btn" type="dashed">Set đáp án sai</Button>
-            </div>
+            </div>;
         else return null;
         return <Popover content={contentAnswer} title="Mở rộng" trigger="hover"><Button
             icon="ordered-list"
             className="ant-btn create-ex-fix-btn ant-btn-icon-only col-md-1"/></Popover>
-    }
+    };
     public onChangeExercise = (exercise) => {
         this.props.onChangeExercise(exercise);
-    }
+    };
     public onChangeText = (e) => {
         let {type, exercise, current_added_answer} = this.props;
         let {value} = e.target;
         this.setState({
             text: value
-        })
+        });
         if (type && type == "sound_url_question") {
             exercise.front_sound = value;
         }
@@ -129,26 +129,26 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
         if (type == "added_answer") exercise.list_answer[current_added_answer] = value;
         if (type == "answer") exercise.back_text = value;
         this.onChangeExercise(exercise);
-    }
+    };
 
     public showModal = (type) => {
         this.setState({
             visible: true,
             search_question_text_area_type: type
         });
-    }
+    };
 
     public handleOk = () => {
         this.setState({
             visible: false,
         });
-    }
+    };
 
     public handleCancel = () => {
         this.setState({
             visible: false,
         });
-    }
+    };
 
     public search = (value, page) => {
         imageSearch.search(value, {size: 'medium', page: page})
@@ -161,7 +161,7 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
                     listImageSearch: listImageSearch
                 });
             });
-    }
+    };
 
     public onSearchFromGoogle(value) {
         this.setState({
@@ -178,7 +178,7 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
         if (this.state.search_question_text_area_type == "question") exercise.front_image = url;
         if (this.state.search_question_text_area_type == "answer") exercise.back_image = url;
         this.onChangeExercise(exercise);
-    }
+    };
 
     public showListImageResult = () => {
         let {listImageSearch} = this.state;
@@ -188,7 +188,7 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
             </div>
 
         })
-    }
+    };
 
     public onNextPage = () => {
         let {page, searchValue} = this.state;
@@ -197,7 +197,7 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
         this.setState({
             page: page
         })
-    }
+    };
 
     public onPrevPage = () => {
         let {page, searchValue} = this.state;
@@ -208,7 +208,7 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
         this.setState({
             page: page
         })
-    }
+    };
 
     public render() {
         let {title, type, correct, exercise, current_added_answer} = this.props;
@@ -220,10 +220,10 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
         const isAnswerImgExits = (exercise.back_image);
         const questionImg = isQuesImgExits &&
             <img src={exercise.front_image} className="image-search-mini"
-                 onClick={(image) => this.onClickImage(image)}/>
+                 onClick={(image) => this.onClickImage(image)}/>;
         const anwerImg = isAnswerImgExits &&
             <img src={exercise.back_image} className="image-search-mini"
-                 onClick={(image) => this.onClickImage(image)}/>
+                 onClick={(image) => this.onClickImage(image)}/>;
         return (
             <Fragment>
                 <p className="title-custom w-100">{title}</p>

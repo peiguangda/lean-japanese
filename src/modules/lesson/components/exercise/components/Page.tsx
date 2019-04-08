@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Helmet} from "react-helmet";
 import {Exercise} from './Exercise';
 import {ExerciseEntity} from "../../../../../common/types/exercise";
 import {message} from "antd";
@@ -25,7 +24,7 @@ export class ListExercise extends React.Component<Props, State, {}> {
                     this.props.fetchListExercise({topic_id: params.exercise.topic_id});
                 }
             })
-    }
+    };
     private showListExercise = () => {
         let {listExercise} = this.props;
         listExercise = toArray(listExercise);
@@ -34,7 +33,7 @@ export class ListExercise extends React.Component<Props, State, {}> {
                 return <Exercise exercise={item} key={index} deleteExercise={this._deleteExercise}/>;
             });
         }
-    }
+    };
 
     constructor(props) {
         super(props);

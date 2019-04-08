@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Fragment} from "react";
 import {RouteComponentProps} from "react-router";
-import {Table, Tabs} from "antd";
+import {Table} from "antd";
 import {UserCourseEntity} from "../../../../../common/types/user_course";
 
 const user_columns = [{
