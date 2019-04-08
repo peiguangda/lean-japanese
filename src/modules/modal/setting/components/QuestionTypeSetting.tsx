@@ -24,7 +24,7 @@ export class QuestionTypeSetting extends React.Component<Props, State, {}> {
             indeterminate: !!checkedList.length && (checkedList.length < quetionOptions.length), //indeterminate bang true khi co 1 so option dc checked nhung ko check het
             checkAll: checkedList.length === quetionOptions.length,
         });
-    }
+    };
     onCheckAllChange = (e) => {
         // console.log("e", e);
         // console.log("indeterminate", this.state.indeterminate);
@@ -33,7 +33,7 @@ export class QuestionTypeSetting extends React.Component<Props, State, {}> {
             indeterminate: false,
             checkAll: e.target.checked,
         });
-    }
+    };
 
     constructor(props) {
         super(props);

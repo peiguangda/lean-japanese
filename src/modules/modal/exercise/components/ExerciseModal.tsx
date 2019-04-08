@@ -50,7 +50,7 @@ const initExercise = new class implements ExerciseEntity {
     user_id: number;
     list_answer: Array<string>;
     list_correct_answer: Array<number>;
-}
+};
 
 export class ExerciseModal extends React.Component<Props, State, {}> {
     constructor(props) {
@@ -68,33 +68,33 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
 
     public showModal = () => {
         this.props.showModal();
-    }
+    };
     public handleCancel = (e) => {
         console.log("cancel");
         this.props.closeModal();
-    }
+    };
     public handleOk = (e) => {
         let {exercise} = this.state;
         this.props.createExercise(exercise)
             .then(res => {
                 if (res && res.status == "success") message.success("Tạo bài học thành công!");
                 else message.error("Xảy ra lỗi!");
-            })
+            });
         this.props.closeModal();
-    }
+    };
     public onchangeSetting = () => {
         let {isShowSetting} = this.state;
         this.setState({
             isShowSetting: !isShowSetting
         })
-    }
+    };
     public addQuestion = () => {
         let {exercise} = this.state;
         exercise.push({...initExercise, topic_id: this.props.topic_id});
         this.setState({
             exercise: exercise
         })
-    }
+    };
     public removeQuestion = (parameters) => {
         let {exercise, current_question} = this.state;
         let index = parameters - 1;
@@ -104,21 +104,21 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
             exercise: exercise,
             current_question: current_question
         })
-    }
+    };
     public changeQuestion = (parameters) => {
         let index = parameters - 1;
         this.setState({
             current_question: index
         })
-    }
+    };
     public onUpdateExercise = (parameters) => {
         let {current_question, exercise} = parameters;
         this.state.exercise[current_question] = exercise;
         this.forceUpdate()
-    }
+    };
     public changeAnswerStatus = () => {
 
-    }
+    };
 
     public render() {
         let {isShowSetting, exercise, current_question} = this.state;

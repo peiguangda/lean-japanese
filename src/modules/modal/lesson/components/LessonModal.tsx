@@ -43,7 +43,7 @@ export interface State {
 export class LessonModal extends React.Component<Props, State, {}> {
 
     onEditorStateChange: Function = (editorState) => {
-        let descript = draftToHtml(convertToRaw(editorState.getCurrentContent()))
+        let descript = draftToHtml(convertToRaw(editorState.getCurrentContent()));
         this.setState({
             editorState,
         });
@@ -57,7 +57,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
 
     public handleCancel = (e) => {
         this.props.closeModal();
-    }
+    };
     public handleOk = (e) => {
         let {lesson} = this.state;
         let {childrent_type, parent_id} = lesson;
@@ -65,7 +65,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
         if (this.props.action == "create") lesson.parent_id = this.props.parent_id;
         this.props.handleLesson(lesson);
         this.props.closeModal();
-    }
+    };
     public handleChange = (info) => {
         if (info.file.status === "uploading") {
             var now = new Date().getMilliseconds();
@@ -98,7 +98,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
             this.setState({loading: true});
             return;
         }
-    }
+    };
     public emitNameEmpty = () => {
         this.setState(prevState => ({
             lesson: {
@@ -106,7 +106,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                 name: ''
             }
         }));
-    }
+    };
     public emitDescriptEmpty = () => {
         this.setState(prevState => ({
             lesson: {
@@ -114,7 +114,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                 short_description: ''
             }
         }));
-    }
+    };
     public onChangeNameLesson = (e) => {
         let {value} = e.target;
         this.setState(prevState => ({
@@ -123,7 +123,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                 name: value
             }
         }));
-    }
+    };
     public onChangeShortDescription = (e) => {
         let {value} = e.target;
         this.setState(prevState => ({
@@ -132,7 +132,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                 short_description: value
             }
         }));
-    }
+    };
     public handleSelectChange = value => {
         this.setState(prevState => ({
             lesson: {
@@ -140,7 +140,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                 status: value
             }
         }));
-    }
+    };
     public handleChangeStartTime = date => {
         this.setState(prevState => ({
             lesson: {
@@ -148,7 +148,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                 start_time: date
             }
         }));
-    }
+    };
     public handleChangeEndTime = date => {
         this.setState(prevState => ({
             lesson: {
@@ -156,7 +156,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                 end_time: date
             }
         }));
-    }
+    };
     public setDetaultStatusValue = () => {
         this.setState(prevState => ({
             lesson: {
@@ -164,7 +164,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                 status: 1
             }
         }));
-    }
+    };
     public getStatus = status => {
         if (!status) {
             this.setDetaultStatusValue();
@@ -174,7 +174,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
         if (status == 2) return "Private";
         if (status == 3) return "Deleted";
         if (status == 4) return "Open";
-    }
+    };
 
     constructor(props) {
         super(props);

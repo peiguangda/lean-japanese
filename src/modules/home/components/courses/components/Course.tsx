@@ -33,13 +33,13 @@ export class Course extends React.Component<Props, State, {}> {
         this.setState({
             visible: true
         })
-    }
+    };
 
     public closeModal = () => {
         this.setState({
             visible: false
         })
-    }
+    };
 
     public render() {
         let {course} = this.props;

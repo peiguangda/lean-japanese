@@ -11,6 +11,7 @@ export interface Props {
     loadings: number;
 
     fetchCourses(parameters): void
+
     createCourse(parameters): Promise<any>;
 }
 

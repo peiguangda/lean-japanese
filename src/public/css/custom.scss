@@ -689,3 +689,23 @@ body {
   height: 100%;
   object-fit: contain;
 }
+
+.lesson-content {
+  background-color: white;
+  border-radius: 5px;
+  padding: 2% !important;
+  min-height: 500px;
+}
+
+.lesson-list-header {
+  background-color: white;
+  border-bottom: 2px solid #dcdee0;
+  height: 63px;
+  border-radius: 5px 5px 5px 5px;
+}
+
+.lesson-detail-card {
+  border: 1px solid #e9ebee;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, .3) !important;
+  transition: all .3s ease-in-out !important;
+}

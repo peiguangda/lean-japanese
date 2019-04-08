@@ -71,7 +71,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
     }
 
     onEditorStateChange: Function = (editorState) => {
-        let descript = draftToHtml(convertToRaw(editorState.getCurrentContent()))
+        let descript = draftToHtml(convertToRaw(editorState.getCurrentContent()));
         this.setState({
             editorState,
         });
@@ -84,10 +84,10 @@ export class CourseModal extends React.Component<Props, State, {}> {
     };
     public showModal = () => {
         this.props.showModal();
-    }
+    };
     public handleCancel = (e) => {
         this.props.closeModal();
-    }
+    };
     public handleOk = (e) => {
         let {course} = this.state;
         this.props.createCourse(course)
@@ -96,9 +96,9 @@ export class CourseModal extends React.Component<Props, State, {}> {
                 if (res && res.status == "success") {
                     message.success("Tạo khóa học thành công!");
                 } else message.error("Xảy ra lỗi!");
-            })
+            });
         this.props.closeModal();
-    }
+    };
 
     public beforeUpload(file) {
         const isImage = (file.type === "image/jpeg" || file.type === "image/png");
@@ -150,7 +150,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
             this.setState({loading: true});
             return;
         }
-    }
+    };
 
     public emitNameEmpty = () => {
         this.setState(prevState => ({
@@ -159,7 +159,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
                 name: ''
             }
         }));
-    }
+    };
     public emitDescriptEmpty = () => {
         this.setState(prevState => ({
             course: {
@@ -167,7 +167,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
                 short_description: ''
             }
         }));
-    }
+    };
     public onChangeNameLesson = (e) => {
         let {value} = e.target;
         this.setState(prevState => ({
@@ -176,7 +176,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
                 name: value
             }
         }));
-    }
+    };
     public onChangeShortDescription = (e) => {
         let {value} = e.target;
         this.setState(prevState => ({
@@ -185,7 +185,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
                 short_description: value
             }
         }));
-    }
+    };
     public onChangePass = (e) => {
         let {value} = e.target;
         this.setState(prevState => ({
@@ -194,7 +194,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
                 password: value
             }
         }));
-    }
+    };
     public onChangeCost = (e) => {
         console.log(e);
         let {value} = e.target;
@@ -204,7 +204,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
                 cost: value
             }
         }));
-    }
+    };
     public handleSelectChange = value => {
         this.setState(prevState => ({
             course: {
@@ -212,7 +212,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
                 status: value
             }
         }));
-    }
+    };
     public handleChangeStartTime = date => {
         this.setState(prevState => ({
             course: {
@@ -220,7 +220,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
                 day_to_open_lesson: date
             }
         }));
-    }
+    };
     public handleChangeEndTime = date => {
         this.setState(prevState => ({
             course: {
@@ -228,7 +228,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
                 end_date: date
             }
         }));
-    }
+    };
     public setDetaultStatusValue = () => {
         this.setState(prevState => ({
             course: {
@@ -236,7 +236,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
                 status: 1
             }
         }));
-    }
+    };
     public getStatus = status => {
         if (!status) {
             this.setDetaultStatusValue();
@@ -246,7 +246,7 @@ export class CourseModal extends React.Component<Props, State, {}> {
         if (status == 2) return "Private";
         if (status == 3) return "Deleted";
         if (status == 4) return "Open";
-    }
+    };
 
     public render() {
         const {editorState} = this.state;

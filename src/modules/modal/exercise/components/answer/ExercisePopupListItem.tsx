@@ -12,7 +12,7 @@ export interface State {
 export class ExercisePopupListItem extends React.Component<Props, State, {}> {
     public handleAddInputRow = (e) => {
         this.props.addAnswer();
-    }
+    };
 
     constructor(props) {
         super(props);

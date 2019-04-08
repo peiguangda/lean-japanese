@@ -27,7 +27,7 @@ export class ListQuestion extends React.Component<Props, State, {}> {
                     current_question={current_question}
                 />);
         return result;
-    }
+    };
 
     constructor(props) {
         super(props);
