@@ -1,13 +1,11 @@
 import * as React from "react";
-import {Button, Card, message, Popconfirm} from 'antd';
-import {Link} from "react-router-dom";
+import {message} from 'antd';
 import {ExerciseEntity} from "../../../../../common/types/exercise";
-
+import {toArray} from "../../../../../helpers/Function";
 
 export interface Props {
     exercise: ExerciseEntity;
 
-    // fetchListExercise(parameters): void
     deleteExercise(parameters): void;
 
     // editExercise(parameters): Promise<any>;
@@ -51,34 +49,38 @@ export class Exercise extends React.Component<Props, State, {}> {
         message.error('Click on No');
     }
 
+    public showListAnswer = () => {
+        let {exercise} = this.props;
+        console.log(exercise);
+        let {list_answer, list_correct_answer} = exercise;
+        console.log(list_answer);
+        if (list_answer) return toArray(list_answer).map((answer, index) => {
+            return <p className="row">{answer}</p>;
+        })
+    }
+
     public render() {
         let {exercise} = this.props;
+        console.log("exxxxxxxxx", exercise);
         return (
-            <Card style={{width: 1000}}>
-                <div className="row">
-                    <div className="col-md-8">
-                        <Link to={exercise ? `exercises/${exercise.id}` : "/"}><p>{exercise.code}</p></Link>
-                    </div>
-                    <div className="col-md-4">
-                        <Button
-                            type="primary"
-                            className="small_button"
-                            icon="edit"
-                            onClick={() => this.onClickEdit()}
-                        />
-
-                        <Popconfirm
-                            title="Bạn có chắc chắn muốn xóa câu hỏi này?"
-                            onConfirm={() => this.confirm({exercise: exercise})}
-                            onCancel={this.cancel}
-                            okText="Yes"
-                            cancelText="No"
-                        >
-                            <Button type="primary" className="small_button" icon="close"/>
-                        </Popconfirm>
-                    </div>
+            <div className="row border-exercise">
+                <div className="col-md-6 mt-3">
+                    {`Câu ${exercise.id} : ${exercise.front_text}`}
                 </div>
-            </Card>
+                <div className="col-md-5 mt-3 ml-3">
+                    <p className="row">{exercise.back_text}</p>
+                    {exercise.list_answer ? this.showListAnswer() : ""}
+                </div>
+                {/*<Popconfirm*/}
+                {/*    title="Bạn có chắc chắn muốn xóa câu hỏi này?"*/}
+                {/*    onConfirm={() => this.confirm({exercise: exercise})}*/}
+                {/*    onCancel={this.cancel}*/}
+                {/*    okText="Yes"*/}
+                {/*    cancelText="No"*/}
+                {/*>*/}
+                {/*    <Button type="primary" className="small_button" icon="close"/>*/}
+                {/*</Popconfirm>*/}
+            </div>
         );
     }
 }

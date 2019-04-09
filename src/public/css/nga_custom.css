@@ -262,7 +262,7 @@ element.style {
 }
 
 .filter-panel {
-    margin-top: 4%;
+    margin-top: 4%!important;
     margin-bottom: 1%;
 }
 
@@ -274,7 +274,6 @@ element.style {
 .filter-panel {
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
-    margin: 0
 }
 
 .filter-label {
