@@ -46,7 +46,7 @@ export class ListExercise extends React.Component<Props, State, {}> {
 
     public render() {
         return (
-            <div className="row offset-1">
+            <div>
                 {this.showListExercise()}
             </div>
         );

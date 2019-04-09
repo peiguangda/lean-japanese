@@ -121,20 +121,6 @@ body {
   border-radius: 5px !important;
   transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out !important; }
 
-.small_button {
-  margin: 1.5px;
-  border: none !important;
-  color: #fff !important;
-  background: #e74e84 !important;
-  cursor: pointer !important;
-  padding: 7px 20px !important;
-  display: inline-block !important;
-  outline: 0 !important;
-  font-size: 14px !important;
-  font-size: .875rem !important;
-  transition: all .3s ease-in-out !important;
-  font-weight: 500 !important; }
-
 .viewer {
   width: 0.5em;
   margin: 8px; }
@@ -455,5 +441,40 @@ body {
 
 .button-warning {
   font-size: 127%; }
+
+.squares {
+  width: 10px;
+  height: 10px; }
+
+.red {
+  background-color: #e34758;
+  fill: #e34758 !important;
+  stroke: #e34758 !important; }
+
+.dark_blue {
+  background-color: #095085;
+  fill: #095085 !important;
+  stroke: #095085 !important; }
+
+.blue {
+  background-color: #5ed3d8;
+  fill: #5ed3d8 !important;
+  stroke: #5ed3d8 !important; }
+
+.dark_red {
+  background-color: #8b103e;
+  fill: #8b103e !important;
+  stroke: #8b103e !important; }
+
+.yellow {
+  background-color: #fc9b2c;
+  fill: #fc9b2c !important;
+  stroke: #fc9b2c !important; }
+
+.border-exercise {
+  margin: 1%;
+  border: 1px solid #dae1e6;
+  border-radius: 10px 10px 10px 10px;
+  background-color: #e9ebee; }
 
 /*# sourceMappingURL=custom.css.map */
