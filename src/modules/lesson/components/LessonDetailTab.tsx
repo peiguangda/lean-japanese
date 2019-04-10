@@ -1,12 +1,49 @@
 import * as React from "react";
 import {Fragment} from "react";
-import {Card, Icon, Progress, Tabs} from "antd";
 import {HorizontalGridLines, LineMarkSeries, RadialChart, VerticalGridLines, XAxis, XYPlot, YAxis} from 'react-vis';
 import '../../../../node_modules/react-vis/dist/style.css';
-
 var moment = require('moment');
+import {Card, Icon, Progress, Tabs, Select, Button, Tooltip, Rate, Input, Table} from "antd";
+import {Link} from "react-router-dom";
 
 const TabPane = Tabs.TabPane;
+
+const columns = [
+    {
+        title: 'STT',
+        dataIndex: 'stt',
+        key: 'stt',
+    },
+    {
+        title: 'Tên',
+        dataIndex: 'name',
+        key: 'name',
+    }, {
+        title: 'Thời Gian',
+        dataIndex: 'time',
+        key: 'time',
+    }, {
+        title: 'Tỷ lệ hoàn thành ',
+        dataIndex: 'type',
+        key: 'type',
+    }];
+    const dataSource = [{
+        stt: '1',
+        name: 'Quỳnh Nga',
+        time: '9/4/2019',
+        type: '30%'
+      }, {
+        stt: '2',
+        name: 'Quang Đại',
+        time: '10/4/2019',
+        type: '40%'
+      }];
+
+const Option = Select.Option;
+
+function handleChange(value) {
+  console.log(`selected ${value}`);
+}
 
 export interface Props {
 }
@@ -133,15 +170,116 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                 title={basic_info}
                                 headStyle={{borderLeft: '2px solid #1890ff'}}
                             >
-                                <p>Card content</p>
-                                <p>Card content</p>
-                                <p>Card content</p>
+                                <div className= "row-info-panel">
+                                    <label>Tổng số câu hỏi</label>
+                                    <div>50 câu</div>
+                                </div>
+                                <div className= "row-info-panel">
+                                    <label>Số câu hỏi mỗi lần</label>
+                                    <div>
+                                        <Select defaultValue="40 câu" style={{ width: 90 }} onChange={handleChange}>
+                                            <Option value="30 câu">40 câu</Option>
+                                            <Option value="30 câu">30 câu</Option>
+                                            <Option value="20 câu">20 câu</Option>
+                                            <Option value="10 câu">10 câu</Option>
+                                        </Select>
+                                    </div>
+                                </div>
+                                <div className= "row-info-panel">
+                                    <label>Thời gian làm bài</label>
+                                    <div>Không giới hạn</div>
+                                </div>
+                                <div className= "row-info-panel">
+                                    <label>Số lần làm</label>
+                                    <div>0 lần</div>
+                                </div>
+                                <div className= "row-info-panel">
+                                    <label>Hiện đáp án</label>
+                                    <div>
+                                        <Select defaultValue="Hiện đáp án" style={{ width: 130 }} onChange={handleChange}>
+                                            <Option value="Hiện đáp án">Hiện đáp án</Option>
+                                            <Option value="Để sau">Để sau</Option>
+                                        </Select>
+                                    </div>
+                                </div>
+                                <div className= "row-info-panel">
+                                    <label>Số lần làm lại</label>
+                                    <div>Không giới hạn</div>
+                                </div>
+                                <div className= "row-info-panel">
+                                    <Button type="primary">Làm bài</Button>
+                                    <div>
+                                        <Select defaultValue="Số câu hỏi(40)" style={{ width: 140 }} onChange={handleChange}>
+                                            <Option value="0">Số câu hỏi(40)</Option>
+                                            <Option value="1">Số câu hỏi(40)</Option>
+                                            <Option value="2">Câu trả lời(0)</Option>
+                                            <Option value="3">Trả lời sai(0)</Option>
+                                            <Option value="4">Trả lời đúng(0)</Option>
+                                        </Select>
+                                    </div>
+                                </div>
                             </Card>
                         </div>
                     </div>
                 </TabPane>
-                <TabPane tab={result_tab} key="2">Content of Tab Pane 2</TabPane>
-                <TabPane tab={comment_tab} key="3">Content of Tab Pane 3</TabPane>
+                <TabPane tab={result_tab} key="2">
+                    <div className="container">
+                        <div className="this_is_block_panel_main">
+                            <Table columns={columns} dataSource={dataSource}/>
+                        </div>
+                    </div>
+                </TabPane>
+                <TabPane tab={comment_tab} key="3">
+                <div className="row reset-row-col">
+                    <div className="col-xs-12 col-sm-12 reset-row-col padding_right_with_col-12">
+                        <div className="this_is_block_panel_main_parent">
+                            <div className="this_is_block_panel_main">
+                                <div className="this_is_header_block_panel">
+                                    <div className="this_is_header_left_block_panel">
+                                        <div className="this_is_block_title">Bình luận
+                                        </div>
+                                    </div>
+                                    <div className="this_is_header_right_block_panel"></div>
+                                </div>
+                                <div className="this_is_content_block_panel">
+                                    <div className="body_panel_rating_of_viewer_panel">
+                                        <Input placeholder="Đăng cái gì đó..."
+                                             suffix={
+                                                    <Tooltip title="Extra information">
+                                                        <Icon type="upload"
+                                                            style={{color: 'rgba(0,0,0,.45)'}}/>
+                                                        <Icon type="paper-clip"></Icon>
+                                                    </Tooltip>
+                                                    }/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="row reset-row-col">
+                    <div className="col-xs-12 col-sm-12 reset-row-col padding_right_with_col-12">
+                        <div className="this_is_block_panel_main_parent">
+                            <div className="this_is_block_panel_main1">
+                            <div className="row">
+                                <Icon type="smile" theme="filled" className="set_icon" />
+                                <div className="col-11">
+                                    <div className="row">
+                                        <Link to="/users/1" className="set_comment1">Quỳnh Nga</Link>
+                                        <p className="set_comment1">Bài học rất bổ ích</p>
+                                    </div>
+                                    <div className="row">
+                                       <Link to="/users/1" className="set_comment3">Thích</Link>
+                                       <Link to="/users/1" className="set_comment3">Trả lời</Link>
+                                       <p className="set_comment2">18 hours ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </TabPane>
             </Tabs>
         );
     }
