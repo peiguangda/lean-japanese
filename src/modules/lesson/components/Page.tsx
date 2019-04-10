@@ -5,7 +5,7 @@ import {BackTop, Button, Card, Icon, Input, Layout, PageHeader, Popover, Tabs} f
 import {LessonEntity} from "../../../common/types/lesson";
 import {Loader} from "../../loader/components/loader";
 import {ApiEntity} from "../../../common/types";
-import {ListExerciseContainter} from "./exercise/container";
+import {ListExerciseContainer} from "./exercise/container";
 import {ExerciseModal} from "../../modal/exercise/components/ExerciseModal";
 import {NavigationBarContainter} from "../../navigation_bar/container";
 import {ListLessonHeader} from "./ListLessonHeader";
@@ -129,7 +129,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                             title={question_info}
                             headStyle={{borderLeft: '2px solid #1890ff'}}
                         >
-                            <ListExerciseContainter children={params}/>
+                            <ListExerciseContainer children={params}/>
                         </Card>
                     </div>
                 </div>
@@ -142,7 +142,10 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                     visible={visible}
                     title={"Tạo câu hỏi"}
                     createExercise={this.props.createExercise}
+                    action="create"
                     topic_id={this.props.match.params.id}
+                    exercise={null}
+                    editExercise={null}
                 />
                 <Footer style={{textAlign: 'center'}}>
                     Easy Japanese Design ©2019 Created by HEDSPI

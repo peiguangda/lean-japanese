@@ -18,7 +18,7 @@ const mapDispatchToProps = (dispatch) => ({
     createExercise: parameters => dispatch(createExerciseAction(parameters)),
 });
 
-export const LessonDetailContainter = connect(
+export const LessonDetailContainer = connect(
     mapStateToProps,
     mapDispatchToProps
 )(LessonDetail);

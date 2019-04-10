@@ -41,6 +41,7 @@ export class QuestionContent extends React.Component<Props, State, {}> {
     };
     public addAnswer = (exercise) => {
         let {list_answer} = exercise;
+        console.log("eeeaaaaaaa", list_answer);
         if (!list_answer) list_answer = []; //check list_answer ko ton tai thi khoi tao no
         list_answer.push("");
         exercise.list_answer = list_answer;
@@ -143,44 +144,43 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                         </div>
 
                         {/*----------------answer--------------------*/}
-                        <div className="col-md-6">
+                        <div className="col-md-5 ml-2">
                             <div className="row">
-                                <div className="col-md-10">
-                                    <ButtonCustom
-                                        current_added_answer={null}
-                                        removeAnswer={null}
-                                        addAnswer={() => this.addAnswer(exercise)}
-                                        title={"Đáp án đúng"}
-                                        type={"answer"}
-                                        correct={true}
-                                        changeAnswerStatus={this.changeAnswerStatus}
-                                        exercise={exercise}
-                                        onChangeExercise={this.onChangeExercise}
-                                    />
-                                </div>
-                                <div className="col-md-10">
-                                    <ButtonCustom
-                                        current_added_answer={null}
-                                        removeAnswer={null}
-                                        addAnswer={null}
-                                        title={"Url sound"}
-                                        type={"sound_url_answer"}
-                                        correct={true}
-                                        changeAnswerStatus={this.changeAnswerStatus}
-                                        exercise={exercise}
-                                        onChangeExercise={this.onChangeExercise}
-                                    />
-                                </div>
-                                <ListAnswer
-                                    number={list_answer ? list_answer.length : 0}
-                                    deleteAnswer={this.deleteAnswer}
+                                <ButtonCustom
+                                    current_added_answer={null}
+                                    removeAnswer={null}
+                                    addAnswer={() => this.addAnswer(exercise)}
+                                    title={"Đáp án đúng"}
+                                    type={"answer"}
+                                    correct={true}
+                                    changeAnswerStatus={this.changeAnswerStatus}
                                     exercise={exercise}
                                     onChangeExercise={this.onChangeExercise}
-                                    changeAnswerStatus={this.changeAnswerStatus}
                                 />
                             </div>
+                            <div className="row">
+                                <ButtonCustom
+                                    current_added_answer={null}
+                                    removeAnswer={null}
+                                    addAnswer={null}
+                                    title={"Url sound"}
+                                    type={"sound_url_answer"}
+                                    correct={true}
+                                    changeAnswerStatus={this.changeAnswerStatus}
+                                    exercise={exercise}
+                                    onChangeExercise={this.onChangeExercise}
+                                />
+                            </div>
+                            <ListAnswer
+                                number={list_answer ? list_answer.length : 0}
+                                deleteAnswer={this.deleteAnswer}
+                                exercise={exercise}
+                                onChangeExercise={this.onChangeExercise}
+                                changeAnswerStatus={this.changeAnswerStatus}
+                            />
                         </div>
                     </div>
+                    {/*</div>*/}
                 </Content>
             </Fragment>
         );

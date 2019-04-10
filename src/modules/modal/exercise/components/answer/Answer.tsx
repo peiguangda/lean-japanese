@@ -39,19 +39,21 @@ export class Answer extends React.Component<Props, State, {}> {
         let {title, type, correct, exercise, current_added_answer} = this.props;
         return (
             <Fragment>
-                <div className="col-md-10">
-                    <ButtonCustom
-                        current_added_answer={current_added_answer}
-                        removeAnswer={this.deleteAnswer}
-                        addAnswer={null}
-                        title={title}
-                        type={type}
-                        correct={correct}
-                        changeAnswerStatus={this.props.changeAnswerStatus}
-                        exercise={exercise}
-                        onChangeExercise={this.props.onChangeExercise}
-                    />
-                </div>
+                {/*<div className="col-md-10">*/}
+                    <div className="row">
+                        <ButtonCustom
+                            current_added_answer={current_added_answer}
+                            removeAnswer={this.deleteAnswer}
+                            addAnswer={null}
+                            title={title}
+                            type={type}
+                            correct={correct}
+                            changeAnswerStatus={this.props.changeAnswerStatus}
+                            exercise={exercise}
+                            onChangeExercise={this.props.onChangeExercise}
+                        />
+                    </div>
+                {/*</div>*/}
             </Fragment>
         );
     }
