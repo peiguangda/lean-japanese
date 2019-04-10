@@ -39,7 +39,7 @@ export class Answer extends React.Component<Props, State, {}> {
         let {title, type, correct, exercise, current_added_answer} = this.props;
         return (
             <Fragment>
-                <div className="col-md-10">
+                <div className="row">
                     <ButtonCustom
                         current_added_answer={current_added_answer}
                         removeAnswer={this.deleteAnswer}
