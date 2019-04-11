@@ -15,7 +15,7 @@ const mapDispatchToProps = (dispatch) => ({
     fetchCourse: (parameters) => dispatch(fetchCourseAction(parameters)),
 });
 
-export const CourseDetailContainter = connect(
+export const CourseDetailContainer = connect(
     mapStateToProps,
     mapDispatchToProps
 )(CourseDetail);

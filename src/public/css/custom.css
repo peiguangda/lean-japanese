@@ -440,6 +440,9 @@ body {
   .icon-parent-lesson-detail-header:hover {
     background-color: #c6d8fd; }
 
+.lesson-current {
+  background-color: #c6d8fd; }
+
 .button-warning {
   font-size: 127%; }
 
@@ -477,5 +480,17 @@ body {
   border: 1px solid #dae1e6;
   border-radius: 10px 10px 10px 10px;
   background-color: #e9ebee; }
+
+.detail-statistic {
+  font-size: 125% !important; }
+
+.color_blue {
+  color: #1d8efb; }
+
+.ex-min-height {
+  min-height: 155px; }
+
+.link_to {
+  text-decoration: none !important; }
 
 /*# sourceMappingURL=custom.css.map */

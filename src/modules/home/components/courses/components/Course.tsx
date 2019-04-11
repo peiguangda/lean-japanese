@@ -18,6 +18,17 @@ export interface State {
 }
 
 export class Course extends React.Component<Props, State, {}> {
+    public showModal = () => {
+        this.setState({
+            visible: true
+        })
+    };
+    public closeModal = () => {
+        this.setState({
+            visible: false
+        })
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -29,25 +40,13 @@ export class Course extends React.Component<Props, State, {}> {
         // Call api get list data
     }
 
-    public showModal = () => {
-        this.setState({
-            visible: true
-        })
-    };
-
-    public closeModal = () => {
-        this.setState({
-            visible: false
-        })
-    };
-
     public render() {
         let {course} = this.props;
         let {visible} = this.state;
         return (
             <Fragment>
                 <Button type="primary" icon="plus" className="right-corder-container" onClick={this.showModal}/>
-                <Link className="col-md-4 col-lg-4" to={course ? `/course/${course.id}` : '/'}>
+                <Link className="col-md-4 col-lg-4 link_to" to={course ? `/course/${course.id}` : '/'}>
                     <Card
                         className="course_list"
                         hoverable

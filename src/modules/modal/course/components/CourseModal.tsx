@@ -35,41 +35,6 @@ export interface State {
 
 export class CourseModal extends React.Component<Props, State, {}> {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false,
-            editorState: EditorState.createEmpty(),
-            course: new class implements CourseEntity {
-                actionType: string;
-                android_url: string;
-                avatar: string;
-                code: string;
-                cost: string;
-                created_at: number;
-                day_to_open_lesson: number;
-                description: string;
-                end_date: string;
-                id: number;
-                index: number;
-                language: string;
-                lesson_num: number;
-                member_num: number;
-                name: string;
-                owner_name: string;
-                password: string;
-                short_description: string;
-                status: number;
-                time_expire: number;
-                updated_at: number;
-                user_id: number;
-            }
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-    }
-
     onEditorStateChange: Function = (editorState) => {
         let descript = draftToHtml(convertToRaw(editorState.getCurrentContent()));
         this.setState({
@@ -99,25 +64,6 @@ export class CourseModal extends React.Component<Props, State, {}> {
             });
         this.props.closeModal();
     };
-
-    public beforeUpload(file) {
-        const isImage = (file.type === "image/jpeg" || file.type === "image/png");
-        if (!isImage) {
-            message.error("You can only upload JPG & PNG file!");
-        }
-        const isLt2M = file.size / 1024 / 1024 < 2; //check file < 2MB
-        if (!isLt2M) {
-            message.error("Image must smaller than 2MB!");
-        }
-        return isImage && isLt2M;
-    }
-
-    public getBase64(img, callback) {
-        const reader = new FileReader();
-        reader.addEventListener("load", () => callback(reader.result));
-        reader.readAsDataURL(img);
-    }
-
     public handleChange = (info) => {
         if (info.file.status === "uploading") {
             var now = new Date().getMilliseconds();
@@ -151,7 +97,6 @@ export class CourseModal extends React.Component<Props, State, {}> {
             return;
         }
     };
-
     public emitNameEmpty = () => {
         this.setState(prevState => ({
             course: {
@@ -247,6 +192,59 @@ export class CourseModal extends React.Component<Props, State, {}> {
         if (status == 3) return "Deleted";
         if (status == 4) return "Open";
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false,
+            editorState: EditorState.createEmpty(),
+            course: new class implements CourseEntity {
+                actionType: string;
+                android_url: string;
+                avatar: string;
+                code: string;
+                cost: string;
+                created_at: number;
+                day_to_open_lesson: number;
+                description: string;
+                end_date: string;
+                id: number;
+                index: number;
+                language: string;
+                lesson_num: number;
+                member_num: number;
+                name: string;
+                owner_name: string;
+                password: string;
+                short_description: string;
+                status: number;
+                time_expire: number;
+                updated_at: number;
+                user_id: number;
+            }
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+    }
+
+    public beforeUpload(file) {
+        const isImage = (file.type === "image/jpeg" || file.type === "image/png");
+        if (!isImage) {
+            message.error("You can only upload JPG & PNG file!");
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2; //check file < 2MB
+        if (!isLt2M) {
+            message.error("Image must smaller than 2MB!");
+        }
+        return isImage && isLt2M;
+    }
+
+    public getBase64(img, callback) {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => callback(reader.result));
+        reader.readAsDataURL(img);
+    }
 
     public render() {
         const {editorState} = this.state;

@@ -28,11 +28,6 @@ export interface State {
 const initialState = {};
 
 export class QuestionContent extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-        this.state = initialState;
-    }
-
     public handleAddInputRow = (e) => {
         console.log("e", e);
     };
@@ -87,6 +82,11 @@ export class QuestionContent extends React.Component<Props, State, {}> {
     public onChangeExercise = (exercise) => {
         this.updateExercise({exercise: exercise, current_question: this.props.current_question});
     };
+
+    constructor(props) {
+        super(props);
+        this.state = initialState;
+    }
 
     public render() {
         let {exercise} = this.props;
@@ -180,7 +180,6 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                             />
                         </div>
                     </div>
-                    {/*</div>*/}
                 </Content>
             </Fragment>
         );

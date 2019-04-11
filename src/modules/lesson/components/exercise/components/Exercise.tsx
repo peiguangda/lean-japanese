@@ -1,7 +1,6 @@
 import * as React from "react";
 import {message} from 'antd';
 import {ExerciseEntity} from "../../../../../common/types/exercise";
-import {toArray} from "../../../../../helpers/Function";
 
 export interface Props {
     exercise: ExerciseEntity;
@@ -21,6 +20,15 @@ export interface State {
 }
 
 export class Exercise extends React.Component<Props, State, {}> {
+    public showListAnswer = () => {
+        let {exercise} = this.props;
+        let {list_answer, list_correct_answer} = exercise;
+        if (list_answer) return list_answer.map((answer, index) => {
+            return <p
+                className={`row ${(list_correct_answer && list_correct_answer.indexOf(index) > -1) ? "color_blue" : ""}`}>・{answer}</p>;
+        })
+    }
+
     constructor(props) {
         super(props);
 
@@ -34,23 +42,15 @@ export class Exercise extends React.Component<Props, State, {}> {
         message.error('Click on No');
     }
 
-    public showListAnswer = () => {
-        let {exercise} = this.props;
-        let {list_answer, list_correct_answer} = exercise;
-        if (list_answer) return toArray(list_answer).map((answer, index) => {
-            return <p className="row">{answer}</p>;
-        })
-    }
-
     public render() {
         let {exercise, index} = this.props;
         return (
-            <div className="row border-exercise" onClick={() => this.props.showModal(exercise)}>
+            <div className="row border-exercise ex-min-height" onClick={() => this.props.showModal(exercise)}>
                 <div className="col-md-6 mt-3">
                     {`Câu ${index + 1} : ${exercise.front_text}`}
                 </div>
                 <div className="col-md-5 mt-3 ml-3">
-                    <p className="row">{exercise.back_text}</p>
+                    <p className={`row color_blue`}>・{exercise.back_text}</p>
                     {exercise.list_answer ? this.showListAnswer() : ""}
                 </div>
 

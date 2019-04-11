@@ -51,6 +51,15 @@ export class NavigationBar extends React.Component<Props, State, {}> {
             visible: false
         });
     };
+    public getProfile = () => {
+        this.props.getProfile({}).then(res => {
+            if (res && res.status == "success") {
+                this.setState({
+                    logined: true
+                })
+            }
+        });
+    };
     private handleMenuClick = (e) => {
         if (e.key == 1) console.log("thong tin ca nhan");
         if (e.key == 2) this.logout();
@@ -65,16 +74,6 @@ export class NavigationBar extends React.Component<Props, State, {}> {
             logined: false
         }
     }
-
-    public getProfile = () => {
-        this.props.getProfile({}).then(res => {
-            if (res && res.status == "success") {
-                this.setState({
-                    logined: true
-                })
-            }
-        });
-    };
 
     public componentDidMount() {
         if (Cookie.getAccessToken()) {
@@ -106,7 +105,7 @@ export class NavigationBar extends React.Component<Props, State, {}> {
                     className="menu-header"
                 >
                     <Menu.Item key="mail" className="home_navigation">
-                        <Link className="logo-header" to="/"><Icon type="home"/>Easy Japanese</Link>
+                        <Link className="logo-header link_to" to="/"><Icon type="home"/>Easy Japanese</Link>
                     </Menu.Item>
                     <Menu.Item key="search" className="search_navigation">
                         <Search

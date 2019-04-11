@@ -34,35 +34,6 @@ export interface State {
 
 export class ButtonCustom extends React.Component<Props, State, {}> {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            text: "",
-            visible: false,
-            listImageSearch: [],
-            page: 1,
-            searchValue: "",
-            search_question_text_area_type: ""
-        }
-    }
-
-    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        let {type, exercise, current_added_answer} = nextProps;
-        let value;
-        if (type && type == "sound_url_question") {
-            value = exercise.front_sound;
-        }
-        if (type && type == "sound_url_answer") {
-            value = exercise.back_sound;
-        }
-        if (type == "question") value = exercise.front_text;
-        if (type == "added_answer") value = exercise.list_answer[current_added_answer];
-        if (type == "answer") value = exercise.back_text;
-        this.setState({
-            text: value
-        })
-    }
-
     public addAnswer = () => {
         this.props.addAnswer();
     };
@@ -130,26 +101,22 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
         if (type == "answer") exercise.back_text = value;
         this.onChangeExercise(exercise);
     };
-
     public showModal = (type) => {
         this.setState({
             visible: true,
             search_question_text_area_type: type
         });
     };
-
     public handleOk = () => {
         this.setState({
             visible: false,
         });
     };
-
     public handleCancel = () => {
         this.setState({
             visible: false,
         });
     };
-
     public search = (value, page) => {
         imageSearch.search(value, {size: 'medium', page: page})
             .then(images => {
@@ -162,15 +129,6 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
                 });
             });
     };
-
-    public onSearchFromGoogle(value) {
-        this.setState({
-            searchValue: value,
-            page: 1
-        });
-        this.search(value, this.state.page);
-    }
-
     public onClickImage = (image) => {
         let {exercise} = this.props;
         let url = image.target.src;
@@ -179,7 +137,6 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
         if (this.state.search_question_text_area_type == "answer") exercise.back_image = url;
         this.onChangeExercise(exercise);
     };
-
     public showListImageResult = () => {
         let {listImageSearch} = this.state;
         return listImageSearch.map((url, index) => {
@@ -189,7 +146,6 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
 
         })
     };
-
     public onNextPage = () => {
         let {page, searchValue} = this.state;
         page = page + 1;
@@ -198,7 +154,6 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
             page: page
         })
     };
-
     public onPrevPage = () => {
         let {page, searchValue} = this.state;
         console.log(page);
@@ -209,6 +164,43 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
             page: page
         })
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            text: "",
+            visible: false,
+            listImageSearch: [],
+            page: 1,
+            searchValue: "",
+            search_question_text_area_type: ""
+        }
+    }
+
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        let {type, exercise, current_added_answer} = nextProps;
+        let value;
+        if (type && type == "sound_url_question") {
+            value = exercise.front_sound;
+        }
+        if (type && type == "sound_url_answer") {
+            value = exercise.back_sound;
+        }
+        if (type == "question") value = exercise.front_text;
+        if (type == "added_answer") value = exercise.list_answer[current_added_answer];
+        if (type == "answer") value = exercise.back_text;
+        this.setState({
+            text: value
+        })
+    }
+
+    public onSearchFromGoogle(value) {
+        this.setState({
+            searchValue: value,
+            page: 1
+        });
+        this.search(value, this.state.page);
+    }
 
     public render() {
         let {title, type, correct, exercise, current_added_answer} = this.props;
