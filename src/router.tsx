@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {store} from './store';
 import {HomePageContainer} from './modules/home/container';
 import {CourseDetailContainter} from "./modules/course/container";
-import {LessonDetailContainter} from "./modules/lesson/container";
+import {LessonDetailContainer} from "./modules/lesson/container";
 import './public/css/custom.scss';
 import './public/css/nga_custom.css';
 
@@ -15,7 +15,7 @@ export const AppRouter: React.StatelessComponent<{}> = () => {
                 <Switch>
                     <Route exact path="/" component={HomePageContainer}/>
                     <Route exact path="/course/:id" component={CourseDetailContainter}/>
-                    <Route exact path="/lesson/:id" component={LessonDetailContainter}/>
+                    <Route exact path="/lesson/:id" component={LessonDetailContainer}/>
                 </Switch>
             </BrowserRouter>
         </Provider>

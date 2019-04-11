@@ -189,15 +189,16 @@ body {
   border: 1px solid #ced4da;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.05);
   transition: all ease-in-out 0.3s;
-  border-radius: 5px; }
+  border-radius: 5px;
+  position: relative; }
 
 .button-close {
   float: right !important;
   background-color: white !important;
   border-radius: 40px !important;
   position: absolute !important;
-  top: 25% !important;
-  right: 0 !important;
+  top: -14% !important;
+  right: -2% !important;
   height: 20px !important;
   width: 20px !important;
   padding: 0px 0px 1px 0px !important;

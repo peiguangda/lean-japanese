@@ -3,6 +3,7 @@ import {Exercise} from './Exercise';
 import {ExerciseEntity} from "../../../../../common/types/exercise";
 import {message} from "antd";
 import {toArray} from "../../../../../helpers/Function";
+import {ExerciseEditModal} from "../../../../modal/exercise/components/ExerciseEditModal";
 
 export interface Props {
     listExercise: ExerciseEntity[];
@@ -10,12 +11,52 @@ export interface Props {
     fetchListExercise(parameters): void;
 
     deleteExercise(parameters): Promise<any>;
+
+    editExercise(parameters): Promise<any>;
 }
 
 export interface State {
+    visible: boolean
+    editExercise: ExerciseEntity;
 }
 
 export class ListExercise extends React.Component<Props, State, {}> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            visible: false,
+            editExercise: new class implements ExerciseEntity {
+                actionType: string;
+                back_hint: string;
+                back_image: string;
+                back_sound: string;
+                back_text: string;
+                code: string;
+                course_id: number;
+                difficulty_level: number;
+                front_hint: string;
+                front_image: string;
+                front_sound: string;
+                front_text: string;
+                has_child: number;
+                id: string;
+                list_answer: Array<string>;
+                list_correct_answer: Array<number>;
+                order_index: number;
+                parent_id: number;
+                shuffle_answer: number;
+                status: number;
+                topic_id: number;
+                user_id: number;
+            }
+        }
+    }
+
+    componentWillMount() {
+        let {children} = this.props;
+        this.props.fetchListExercise({topic_id: children["id"]});
+    }
+
     public _deleteExercise = params => {
         this.props.deleteExercise({id: params.exercise.id})
             .then(response => {
@@ -30,24 +71,61 @@ export class ListExercise extends React.Component<Props, State, {}> {
         listExercise = toArray(listExercise);
         if (listExercise && listExercise.length) {
             return listExercise.map((item, index) => {
-                return <Exercise exercise={item} key={index} deleteExercise={this._deleteExercise}/>;
+                return <Exercise
+                    exercise={item}
+                    index={index}
+                    deleteExercise={this._deleteExercise}
+                    fetchListExercise={this.props.fetchListExercise}
+                    editExercise={this.props.editExercise}
+                    showModal={this.showModal}
+                />;
             });
         }
     };
 
-    constructor(props) {
-        super(props);
+    public _editExercise = params => {
+        console.log("bbbbbbbbbbbbb", params);
+        this.props.editExercise(params)
+            .then(response => {
+                console.log("res", response);
+                if (response && response.status == "success") {
+                    message.success('Successful!');
+                    this.props.fetchListExercise({topic_id: params.topic_id});
+                }
+            })
     }
 
-    componentWillMount() {
-        let {children} = this.props;
-        this.props.fetchListExercise({topic_id: children["id"]});
-    }
+    public showModal = (parameters) => {
+        this.setState({
+            visible: true,
+            editExercise: parameters
+        });
+    };
+
+    public closeModal = () => {
+        this.setState({
+            visible: false
+        });
+    };
 
     public render() {
+        let {children, listExercise} = this.props;
+        let {visible, editExercise} = this.state;
+        let list = [];
+        list.push(editExercise);
+
         return (
             <div>
                 {this.showListExercise()}
+                <ExerciseEditModal
+                    closeModal={this.closeModal}
+                    visible={visible}
+                    title={"Sửa câu hỏi"}
+                    action="edit"
+                    editExercise={this._editExercise}
+                    topic_id={children["id"]}
+                    exercise={list}
+                />
             </div>
         );
     }
