@@ -66,12 +66,13 @@ export const editLessonAction = parameters => dispatch => {
 };
 
 export const fetchLessonAction = parameters => dispatch => {
-    dispatch(requestAxios(request.showLesson(parameters)))
+    return dispatch(requestAxios(request.showLesson(parameters)))
         .then(response => {
             dispatch({
                 type: FETCH_LESSON,
                 payload: response.data
             });
+            return response;
         })
         .catch(error => {
             dispatch({

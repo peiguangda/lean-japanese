@@ -40,10 +40,13 @@ export interface Props {
     lesson: LessonEntity;
     props: any,
     api: ApiEntity;
+    listLesson: Array<LessonEntity>;
 
-    fetchLesson(parameters): void;
+    fetchLesson(parameters): Promise<any>;
 
     createExercise(parameters): Promise<any>;
+
+    fetchListLesson(parameters): void;
 }
 
 export interface State {
@@ -51,6 +54,32 @@ export interface State {
 }
 
 export class LessonDetail extends React.Component<Props, State, {}> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            visible: false,
+        }
+    }
+
+    componentWillMount() {
+        this.initLesson(this.props.match.params.id);
+    }
+
+    public initLesson = (id) => {
+        this.props.fetchLesson({id: id})
+            .then(res => {
+                if (res && res.status == "success") {
+                    let lesson = res.data;
+                    this.props.fetchListLesson({course_id: lesson.course_id, parent_id: lesson.parent_id});
+                }
+            })
+    }
+
+    public changeLesson = (id) => {
+        console.log("aaaaaaaa");
+        this.initLesson(id);
+    }
+
     public showModal = () => {
         this.setState({
             visible: true
@@ -73,19 +102,8 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         this.showModal();
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            visible: false,
-        }
-    }
-
-    componentWillMount() {
-        this.props.fetchLesson({id: this.props.match.params.id});
-    }
-
     public render() {
-        let {lesson, api} = this.props;
+        let {lesson, api, listLesson} = this.props;
         let {match: {params}} = this.props;
         let {visible} = this.state;
         const content = (
@@ -117,10 +135,10 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                 />
                 <div className="pr-5 pl-5">
                     {/*-------------------------list lesson cùng cấp-------------------------*/}
-                    <ListLessonHeader/>
+                    <ListLessonHeader listLesson={listLesson} lesson={lesson} changeLesson={this.changeLesson}/>
                     <div className="row">
                         {/*-------------------------Lesson detail tab pane-------------------------*/}
-                        <LessonDetailTab/>
+                        <LessonDetailTab lesson={lesson}/>
                     </div>
                     <div className="row">
                         <Card

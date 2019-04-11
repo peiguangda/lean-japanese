@@ -4,7 +4,6 @@ import {Button, Card, Layout, Modal} from "antd";
 import {ExerciseEntity} from "../../../../common/types/exercise";
 import {ListQuestion} from "./question/ListQuestion";
 import {QuestionContent} from "./QuestionContent";
-import {toArray} from "../../../../helpers/Function";
 
 const {
     Sider,
@@ -52,6 +51,28 @@ const initExercise = new class implements ExerciseEntity {
 };
 
 export class ExerciseEditModal extends React.Component<Props, State, {}> {
+    public handleCancel = (e) => {
+        console.log("cancel");
+        this.props.closeModal();
+    };
+    public handleOk = (e) => {
+        let {exercise} = this.state;
+        this.props.editExercise(exercise[0]);
+        this.props.closeModal();
+    };
+    public onchangeSetting = () => {
+        let {isShowSetting} = this.state;
+        this.setState({
+            isShowSetting: !isShowSetting
+        })
+    };
+    public onUpdateExercise = (parameters) => {
+        let {exercise} = parameters;
+        console.log("huhu", exercise);
+        this.state.exercise[0] = exercise;
+        this.forceUpdate();
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -66,37 +87,10 @@ export class ExerciseEditModal extends React.Component<Props, State, {}> {
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         let {exercise} = nextProps;
-        exercise[0].list_answer = toArray(exercise[0].list_answer);
-        exercise[0].list_correct_answer = toArray(exercise[0].list_correct_answer);
         this.setState({
             exercise: exercise
         })
-        console.log("mmmmm", this.state.exercise);
     }
-
-    public handleCancel = (e) => {
-        console.log("cancel");
-        this.props.closeModal();
-    };
-    public handleOk = (e) => {
-        let {exercise} = this.state;
-        this.props.editExercise(exercise[0]);
-        this.props.closeModal();
-    };
-
-    public onchangeSetting = () => {
-        let {isShowSetting} = this.state;
-        this.setState({
-            isShowSetting: !isShowSetting
-        })
-    };
-
-    public onUpdateExercise = (parameters) => {
-        let {exercise} = parameters;
-        console.log("huhu", exercise);
-        this.state.exercise[0] = exercise;
-        this.forceUpdate();
-    };
 
     public render() {
         let {isShowSetting, exercise} = this.state;

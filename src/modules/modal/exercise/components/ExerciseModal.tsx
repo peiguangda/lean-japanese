@@ -57,19 +57,6 @@ const initExercise = new class implements ExerciseEntity {
 };
 
 export class ExerciseModal extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            current_question: 0,
-            isShowSetting: false,
-            exercise: []
-        }
-    }
-
-    componentWillMount(): void {
-        this.state.exercise.push({...initExercise, topic_id: this.props.topic_id});
-    }
-
     public showModal = () => {
         this.props.showModal();
     };
@@ -123,6 +110,19 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
     public changeAnswerStatus = () => {
 
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            current_question: 0,
+            isShowSetting: false,
+            exercise: []
+        }
+    }
+
+    componentWillMount(): void {
+        this.state.exercise.push({...initExercise, topic_id: this.props.topic_id});
+    }
 
     public render() {
         let {isShowSetting, exercise, current_question} = this.state;

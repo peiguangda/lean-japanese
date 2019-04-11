@@ -262,7 +262,7 @@ element.style {
 }
 
 .filter-panel {
-    margin-top: 4%!important;
+    margin-top: 4% !important;
     margin-bottom: 1%;
 }
 
@@ -465,6 +465,7 @@ element.style {
 .gwt-HTML {
     padding: 0 0px;
 }
+
 .row-info-panel {
     display: flex;
     align-items: center;
@@ -472,44 +473,53 @@ element.style {
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
     padding-right: 5px;
-    text-align: right;
+    text-align: left;
 }
+
 .row-info-panel label {
     margin-bottom: 0;
     margin-right: 5px;
     color: #333;
 }
-.text_font{
+
+.text_font {
     font-size: 15px;
 }
+
 .text-though-line-center {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10px 0;
 }
-.pie_chart{
+
+.pie_chart {
     display: flex;
     align-items: flex-start;
 }
+
 .pie-chart .item-label-pie-chart {
     cursor: pointer;
     display: flex;
     align-items: center;
     padding: 3px 0;
 }
-.col-6 .fix{
+
+.col-6 .fix {
     margin-left: 40%;
 }
-.chart_fix{
-    display: block; 
-    width: 90%; 
+
+.chart_fix {
+    display: block;
+    width: 90%;
     height: 90%;
 }
-.col-6 .left{
+
+.col-6 .left {
     margin-top: 20%;
     color: #333;
 }
+
 .text-though-line-center:before {
     margin-right: 10px;
     content: "";
@@ -517,6 +527,7 @@ element.style {
     height: 1px;
     background: #ddd;
 }
+
 .text-though-line-center:after {
     margin-left: 10px;
     content: "";
@@ -524,16 +535,19 @@ element.style {
     height: 1px;
     background: #ddd;
 }
-.square{
+
+.square {
     width: 5px;
     height: 5px;
     color: red;
 }
+
 .ODD {
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
 }
+
 .comment-item-panel {
     display: flex;
     align-items: flex-start;
@@ -541,37 +555,45 @@ element.style {
     padding: 5px 0;
     margin: 5px 0;
 }
-.set_avar{
+
+.set_avar {
     width: 40px;
 }
+
 .AGB {
     padding-left: 10px;
     width: 100%;
 }
+
 .userCommentPanel {
     position: relative;
     display: flex;
     align-items: center;
 }
+
 .this_is_block_panel_main1 {
     padding: 10px;
     padding-bottom: 0;
     overflow: hidden;
     background: white;
 }
-.set_comment1{
+
+.set_comment1 {
     margin-left: 2%;
     color: darkblue;
 }
-.set_comment2{
+
+.set_comment2 {
     margin-left: 2%;
     font-size: 12px;
     color: #495057;
 }
-.set_comment3{
+
+.set_comment3 {
     margin-left: 2%;
     font-size: 12px;
 }
-.set_icon{
+
+.set_icon {
     margin-left: 2%;
 }
