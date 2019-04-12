@@ -1,13 +1,13 @@
 import * as React from "react";
 import {Fragment} from "react";
 import {
+    FlexibleXYPlot,
     HorizontalGridLines,
     LineMarkSeries,
-    LineSeries,
+    makeVisFlexible,
     RadialChart,
     VerticalGridLines,
     XAxis,
-    XYPlot,
     YAxis
 } from 'react-vis';
 import '../../../../node_modules/react-vis/dist/style.css';
@@ -16,8 +16,8 @@ import {Link} from "react-router-dom";
 import {LessonEntity} from "../../../common/types/lesson";
 
 var moment = require('moment');
-
 const TabPane = Tabs.TabPane;
+const FlexibleRadialChart = makeVisFlexible(RadialChart)
 
 const columns = [
     {
@@ -77,7 +77,8 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
 
     public render() {
         let {lesson} = this.props;
-        const now = moment().format("MMM Do YY");
+        const now = moment(new Date('01/2/2018')).format("MMM Do YY");
+        console.log("nao", now);
         const result_tab = <Fragment><Icon type="info-circle" theme="twoTone"/>Kết quả</Fragment>;
         const comment_tab = <Fragment><Icon type="book" theme="twoTone"/>Bình luận</Fragment>;
         const question_tab = <Fragment><Icon type="question-circle" theme="twoTone"/>Câu hỏi</Fragment>;
@@ -98,81 +99,68 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             {angle: 5, className: 'blue'},
             {angle: 3, className: 'dark_red'},
             {angle: 5, className: 'yellow'}];
-        const MARGIN = {
-            left: 5,
-            right: 5,
-            bottom: 10,
-            top: 10
-        };
-        const data = [{x: new Date('01/01/2018'), y: 75},
-            {x: new Date('01/2/2018'), y: 60},
-            {x: new Date('01/3/2018'), y: 80},
-            {x: new Date('01/4/2018'), y: 90}];
-        const date = [new Date('01/01/2018'),
-            new Date('01/2/2018'),
-            new Date('01/3/2018'),
-            new Date('01/4/2018')];
+        const data = [{x: moment(new Date('01/1/2018')).format("MMM Do"), y: 75},
+            {x: moment(new Date('01/2/2018')).format("MMM Do"), y: 60},
+            {x: moment(new Date('01/3/2018')).format("MMM Do"), y: 80},
+            {x: moment(new Date('01/4/2018')).format("MMM Do"), y: 90}];
         return (
             <Tabs defaultActiveKey="1" className="lesson-content w-100">
                 <TabPane tab={question_tab} key="1">
                     <div className="row">
-                        <div className="col-md-5 ml-5">
-                            {/*--------------------------biểu đồ thống kê bài tập---------------------------*/}
-                            <Card
-                                className="lesson-detail-card"
-                                title={statistic_studycase}
-                                headStyle={{borderLeft: '2px solid #1890ff'}}
-                            >
-                                <div className="row w-100 mb-2 justify-content-center">Tiến độ bài tập</div>
-                                <div className="row justify-content-center">
-                                    <Progress type="circle" percent={30} width={80}/>
-                                </div>
-                                <div className="row w-100 mt-3 detail-statistic justify-content-center">Thống kê chi
-                                    tiết
-                                </div>
-                                <div className="row">
-                                    <RadialChart
+                        {/*--------------------------biểu đồ thống kê bài tập---------------------------*/}
+                        <Card
+                            className="lesson-detail-card col-md-5 ml-5 mr-3"
+                            title={statistic_studycase}
+                            headStyle={{borderLeft: '2px solid #1890ff'}}
+                        >
+                            <div className="row w-100 mb-2 justify-content-center">Tiến độ bài tập</div>
+                            <div className="row justify-content-center">
+                                <Progress type="circle" percent={30} width={80}/>
+                            </div>
+                            <div className="row w-100 mt-3 detail-statistic justify-content-center">Thống kê chi
+                                tiết
+                            </div>
+                            <div className="row">
+                                <div className={"col-md-6"}>
+                                    <FlexibleRadialChart
                                         data={myData}
-                                        width={250}
-                                        className={"col-md-6"}
-                                        height={250}/>
-                                    <div className="col-md-5 ml-2 mt-5">
-                                        <div className="row">
-                                            <div className="mt-1 squares red"></div>
-                                            <div className="col-md-10">Câu hỏi chưa trả lời (40)</div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="mt-1 squares dark_blue"></div>
-                                            <div className="col-md-10">Trả lời sai (0)</div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="mt-1 squares blue"></div>
-                                            <div className="col-md-10">Trả lời đúng 1 lần (0)</div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="mt-1 squares dark_red"></div>
-                                            <div className="col-md-10">Trả lời đúng 2 lần (0)</div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="mt-1 squares yellow"></div>
-                                            <div className="col-md-10">Câu trả lời đã thuộc (0)</div>
-                                        </div>
+                                        showLabels
+                                        height={300}/>
+                                </div>
+                                <div className="col-md-5 ml-2 mt-5">
+                                    <div className="row">
+                                        <div className="mt-1 squares red"></div>
+                                        <div className="col-md-10">Câu hỏi chưa trả lời (40)</div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="mt-1 squares dark_blue"></div>
+                                        <div className="col-md-10">Trả lời sai (0)</div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="mt-1 squares blue"></div>
+                                        <div className="col-md-10">Trả lời đúng 1 lần (0)</div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="mt-1 squares dark_red"></div>
+                                        <div className="col-md-10">Trả lời đúng 2 lần (0)</div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="mt-1 squares yellow"></div>
+                                        <div className="col-md-10">Câu trả lời đã thuộc (0)</div>
                                     </div>
                                 </div>
-
-                            </Card>
-                        </div>
+                            </div>
+                        </Card>
                         {/*--------------------------biểu đồ Thống kê kỹ năng---------------------------*/}
                         <Card
                             className="lesson-detail-card col-md-3 mr-3 w-100 h-100"
                             headStyle={{borderLeft: '2px solid #1890ff'}}
                             title={statistic_skill}
                         >
-                            <XYPlot margin={MARGIN} width={300} height={400} xType="time">
+                            <FlexibleXYPlot xType="ordinal" height={400} className="xyplot-custom mt-5 mb-5 ml-2 mr-2">
                                 <VerticalGridLines/>
                                 <HorizontalGridLines/>
-                                <XAxis top={date[0]} hideLine tickValues={date} title="Ngày tháng"/>
-                                <XAxis tickFormat={v => `${v}`} tickLabelAngle={-90}/>
+                                <XAxis title="Ngày tháng" tickLabelAngle={-45}/>
                                 <YAxis title="Số câu trả lời đúng"/>
                                 <LineMarkSeries
                                     style={{
@@ -182,7 +170,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                     markStyle={{stroke: 'blue'}}
                                     data={data}
                                 />
-                            </XYPlot>
+                            </FlexibleXYPlot>
                         </Card>
                         {/*--------------------------Thông tin chung---------------------------*/}
                         <Card

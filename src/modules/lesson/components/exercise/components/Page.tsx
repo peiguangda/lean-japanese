@@ -7,6 +7,8 @@ import {ExerciseEditModal} from "../../../../modal/exercise/components/ExerciseE
 
 export interface Props {
     listExercise: ExerciseEntity[];
+    props: any;
+    params: any;
 
     fetchListExercise(parameters): void;
 
@@ -21,6 +23,48 @@ export interface State {
 }
 
 export class ListExercise extends React.Component<Props, State, {}> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            visible: false,
+            editExercise: new class implements ExerciseEntity {
+                actionType: string;
+                back_hint: string;
+                back_image: string;
+                back_sound: string;
+                back_text: string;
+                code: string;
+                course_id: number;
+                difficulty_level: number;
+                front_hint: string;
+                front_image: string;
+                front_sound: string;
+                front_text: string;
+                has_child: number;
+                id: string;
+                list_answer: Array<string>;
+                list_correct_answer: Array<number>;
+                order_index: number;
+                parent_id: number;
+                shuffle_answer: number;
+                status: number;
+                topic_id: number;
+                user_id: number;
+            }
+        }
+    }
+
+    componentWillMount() {
+        let {props} = this.props;
+        this.props.fetchListExercise({topic_id: props.params.id});
+    }
+
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        let {props} = this.props;
+        if (nextProps.params.id != props.params.id)
+            this.props.fetchListExercise({topic_id: nextProps.params.id});
+    }
+
     public _deleteExercise = params => {
         this.props.deleteExercise({id: params.exercise.id})
             .then(response => {
@@ -68,44 +112,8 @@ export class ListExercise extends React.Component<Props, State, {}> {
         }
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            visible: false,
-            editExercise: new class implements ExerciseEntity {
-                actionType: string;
-                back_hint: string;
-                back_image: string;
-                back_sound: string;
-                back_text: string;
-                code: string;
-                course_id: number;
-                difficulty_level: number;
-                front_hint: string;
-                front_image: string;
-                front_sound: string;
-                front_text: string;
-                has_child: number;
-                id: string;
-                list_answer: Array<string>;
-                list_correct_answer: Array<number>;
-                order_index: number;
-                parent_id: number;
-                shuffle_answer: number;
-                status: number;
-                topic_id: number;
-                user_id: number;
-            }
-        }
-    }
-
-    componentWillMount() {
-        let {children} = this.props;
-        this.props.fetchListExercise({topic_id: children["id"]});
-    }
-
     public render() {
-        let {children, listExercise} = this.props;
+        let {children, listExercise, props} = this.props;
         let {visible, editExercise} = this.state;
         let list = [];
         list.push(editExercise);
@@ -119,7 +127,7 @@ export class ListExercise extends React.Component<Props, State, {}> {
                     title={"Sửa câu hỏi"}
                     action="edit"
                     editExercise={this._editExercise}
-                    topic_id={children["id"]}
+                    topic_id={props.params.id}
                     exercise={list}
                 />
             </div>

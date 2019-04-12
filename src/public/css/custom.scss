@@ -504,6 +504,7 @@ body {
 
 .icon-parent-lesson-detail-header {
   border-radius: 10%;
+
   &:hover {
     background-color: #c6d8fd;
   }
@@ -573,4 +574,9 @@ body {
 
 .link_to {
   text-decoration: none !important;
+}
+
+.xyplot-custom {
+  min-width: 300px;
+  min-height: 400px;
 }

@@ -2,11 +2,11 @@ import * as React from "react";
 import {Fragment} from "react";
 import {Icon, Tooltip} from "antd";
 import {LessonEntity} from "../../../common/types/lesson";
-import {Link} from "react-router-dom";
 
 export interface Props {
     listLesson: Array<LessonEntity>;
     lesson: LessonEntity;
+    history: any;
 
     changeLesson(id): void;
 }
@@ -26,19 +26,18 @@ export class ListLessonHeader extends React.Component<Props, State, {}> {
     public changeLesson = (id) => {
         console.log("change lesson", id);
         this.props.changeLesson(id);
+        this.props.history.push(`/lesson/${id}`);
     }
 
     public showListLesson = () => {
         let {lesson, listLesson} = this.props;
         if (listLesson && listLesson.length) {
             return listLesson.map((value, index) => {
-                return <div className="col-md-1 mt-2 text-center">
+                return <div className="col-md-1 mt-2 text-center" onClick={() => this.changeLesson(value.id)}>
                     <Tooltip placement="top" title={value.name}>
-                        <Link to={`/lesson/${value.id}`} className="link_to">
-                            <h2 className={`icon-parent-lesson-detail-header ${lesson.id == value.id ? "lesson-current" : ""}`}>
-                                <Icon type="folder-open" theme="twoTone"/>
-                            </h2>
-                        </Link>
+                        <h2 className={`icon-parent-lesson-detail-header ${lesson.id == value.id ? "lesson-current" : ""}`}>
+                            <Icon type="folder-open" theme="twoTone"/>
+                        </h2>
                     </Tooltip>
                 </div>
             })

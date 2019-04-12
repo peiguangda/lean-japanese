@@ -103,7 +103,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     };
 
     public render() {
-        let {lesson, api, listLesson} = this.props;
+        let {lesson, api, listLesson, props} = this.props;
         let {match: {params}} = this.props;
         let {visible} = this.state;
         const content = (
@@ -135,7 +135,8 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                 />
                 <div className="pr-5 pl-5">
                     {/*-------------------------list lesson cùng cấp-------------------------*/}
-                    <ListLessonHeader listLesson={listLesson} lesson={lesson} changeLesson={this.changeLesson}/>
+                    <ListLessonHeader listLesson={listLesson} lesson={lesson} changeLesson={this.changeLesson}
+                                      history={this.props.props.history}/>
                     <div className="row">
                         {/*-------------------------Lesson detail tab pane-------------------------*/}
                         <LessonDetailTab lesson={lesson}/>
@@ -147,7 +148,14 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                             title={question_info}
                             headStyle={{borderLeft: '2px solid #1890ff'}}
                         >
-                            <ListExerciseContainer children={params}/>
+                            <ListExerciseContainer
+                                params={props.match.params}
+                                location={props.location}
+                                route={null}
+                                routeParams={null}
+                                router={null}
+                                routes={null}
+                            />
                         </Card>
                     </div>
                 </div>
