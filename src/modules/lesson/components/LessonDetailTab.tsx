@@ -58,6 +58,7 @@ function handleChange(value) {
 
 export interface Props {
     lesson: LessonEntity;
+    props: any;
 }
 
 export interface State {
@@ -76,9 +77,9 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {lesson} = this.props;
+        let {lesson, props} = this.props;
         const now = moment(new Date('01/2/2018')).format("MMM Do YY");
-        console.log("nao", now);
+        console.log("nao", props);
         const result_tab = <Fragment><Icon type="info-circle" theme="twoTone"/>Kết quả</Fragment>;
         const comment_tab = <Fragment><Icon type="book" theme="twoTone"/>Bình luận</Fragment>;
         const question_tab = <Fragment><Icon type="question-circle" theme="twoTone"/>Câu hỏi</Fragment>;
@@ -109,7 +110,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                     <div className="row">
                         {/*--------------------------biểu đồ thống kê bài tập---------------------------*/}
                         <Card
-                            className="lesson-detail-card col-md-5 ml-5 mr-3"
+                            className="lesson-detail-card col-md-5 ml-5 mr-2"
                             title={statistic_studycase}
                             headStyle={{borderLeft: '2px solid #1890ff'}}
                         >
@@ -153,7 +154,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                         </Card>
                         {/*--------------------------biểu đồ Thống kê kỹ năng---------------------------*/}
                         <Card
-                            className="lesson-detail-card col-md-3 mr-3 w-100 h-100"
+                            className="lesson-detail-card col-md-3 mr-2 w-100 h-100"
                             headStyle={{borderLeft: '2px solid #1890ff'}}
                             title={statistic_skill}
                         >
@@ -213,7 +214,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                 <div className="col-md-5 float-left">Không giới hạn</div>
                             </div>
                             <div className="row-info-panel row">
-                                <Button type="primary" className="col-md-6">Làm bài</Button>
+                                <Button type="primary" className="col-md-6" href={`${props.location.pathname}/exam`}>Làm bài</Button>
                                 <Select defaultValue="Số câu hỏi(40)" style={{width: 140}}
                                         onChange={handleChange} className="col-md-5 float-left">
                                     <Option value="0">Số câu hỏi(40)</Option>

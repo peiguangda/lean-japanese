@@ -139,7 +139,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                       history={this.props.props.history}/>
                     <div className="row">
                         {/*-------------------------Lesson detail tab pane-------------------------*/}
-                        <LessonDetailTab lesson={lesson}/>
+                        <LessonDetailTab lesson={lesson} props={props}/>
                     </div>
                     <div className="row">
                         <Card
@@ -159,8 +159,6 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                         </Card>
                     </div>
                 </div>
-                <div className="row">a</div>
-                <div className="row">a</div>
                 {api.loadings > 0 ? <Loader/> : ""}
                 <ExerciseModal
                     closeModal={this.closeModal}
