@@ -1,7 +1,7 @@
-node_modules
+/node_modules
 tsc
-dist
-.idea/
+/dist
+/.idea/
 src/public/css/custom.css.map
 src/public/css/login_form.css
 src/public/css/login_form.css.map
