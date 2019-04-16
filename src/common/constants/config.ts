@@ -1,6 +1,6 @@
 export const apiConfig = {
-    'url': 'http://localhost:8080',
-    'url-api': 'https://easy-japanese-api-peiguangda.c9users.io',
+    'url': 'http://easy-japan-api.herokuapp.com',
+    'url-api': 'https://easy-japan-api.herokuapp.com',
     'version': '1.0',
 };
 

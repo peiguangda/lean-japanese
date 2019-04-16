@@ -1,9 +1,15 @@
 {
-  "name": "USER-MANAGER",
+  "name": "Easy-Japanese",
+  "engines": {
+    "npm": "6.x",
+    "node": "8.15.1"
+  },
   "version": "1.0.0",
   "description": "User manager demo app",
   "scripts": {
-    "start": "webpack-dev-server",
+    "heroku-postbuild": "npm install && npm run build",
+    "devserver": "webpack-dev-server",
+    "start": "node index.js",
     "build": "webpack",
     "test": "jest --colors --config ./jest.config.js"
   },
@@ -28,6 +34,7 @@
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "exceljs": "^1.9.1",
+    "express": "^4.16.4",
     "firebase": "^5.9.0",
     "google-images": "^2.1.0",
     "jest": "^23.0.1",
@@ -35,6 +42,7 @@
     "lc-form-validation": "^1.0.0",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
+    "path": "^0.12.7",
     "qs": "^6.5.2",
     "react": "^16.4.0",
     "react-bootstrap-sweetalert": "^4.4.1",
