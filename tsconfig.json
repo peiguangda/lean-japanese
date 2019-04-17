@@ -11,7 +11,8 @@
     "jsx": "react",
     "noLib": false,
     "suppressImplicitAnyIndexErrors": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+//    "allowSyntheticDefaultImports": true
   },
   "compileOnSave": false,
   "exclude": [

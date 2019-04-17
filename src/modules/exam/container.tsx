@@ -2,18 +2,19 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {State} from '../../reducers/reducers';
 import {Exam} from "./components/Page";
-import {fetchLessonAction} from "../../reducers/lesson";
 import {RouteComponentProps} from "react-router";
+import {fetchListExerciseAction} from "../../reducers/exercise";
 
 
 const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => ({
     lesson: state.lesson,
     api: state.api,
     props: props,
+    listExercise: state.listExercise,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchLesson: parameters => dispatch(fetchLessonAction(parameters)),
+    fetchListExercise: parameters => dispatch(fetchListExerciseAction(parameters)),
 });
 
 export const ExamContainer = connect(
