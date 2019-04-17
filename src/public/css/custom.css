@@ -493,4 +493,60 @@ body {
 .link_to {
   text-decoration: none !important; }
 
+.xyplot-custom {
+  min-width: 300px;
+  min-height: 400px; }
+
+.list-exam {
+  border: 1px solid #e9ebee;
+  border-radius: 5px 5px 5px 5px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3) !important;
+  transition: all 2.3s ease-in-out !important;
+  background-color: white; }
+
+.fill-answer {
+  border: 1px solid #e9ebee;
+  border-radius: 5px 5px 5px 5px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3) !important;
+  transition: all 2.3s ease-in-out !important;
+  background-color: white;
+  position: sticky !important;
+  top: 9%; }
+
+.locker {
+  overflow-y: scroll;
+  max-height: 500px; }
+  .locker::-webkit-scrollbar-track {
+    margin-top: 2%;
+    background: #f1f1f1; }
+  .locker::-webkit-scrollbar {
+    width: 5px; }
+  .locker::-webkit-scrollbar-thumb {
+    background: #888; }
+  .locker::-webkit-scrollbar-thumb:hover {
+    background: #555; }
+
+.exam-title {
+  font-size: smaller;
+  margin-bottom: 0px; }
+
+.exam-btn {
+  background-color: #1f1d5f;
+  color: white;
+  height: min-content;
+  width: min-content;
+  border-radius: 20px 20px 20px 20px; }
+  .exam-btn:hover {
+    background-color: #14165f; }
+
+.clock-gif-size {
+  width: 60px;
+  height: 60px; }
+
+.custom-container {
+  display: flex !important;
+  justify-content: space-around;
+  align-items: flex-start;
+  height: 100%; }
+
 /*# sourceMappingURL=custom.css.map */

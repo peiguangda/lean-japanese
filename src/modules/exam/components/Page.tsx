@@ -1,11 +1,12 @@
 import * as React from "react";
 import {Fragment} from "react";
 import {Helmet} from "react-helmet";
-import {BackTop, Input, Layout, PageHeader, Tabs} from 'antd';
+import {BackTop, Input, Layout, PageHeader, Radio, Tabs} from 'antd';
 import {LessonEntity} from "../../../common/types/lesson";
 import {Loader} from "../../loader/components/loader";
 import {ApiEntity} from "../../../common/types";
 import {NavigationBarContainter} from "../../navigation_bar/container";
+import {Question} from "./Question";
 
 const TabPane = Tabs.TabPane;
 
@@ -14,6 +15,7 @@ const {
 } = Layout;
 
 const {TextArea} = Input;
+const RadioGroup = Radio.Group;
 
 const routes = [
     {
@@ -41,14 +43,14 @@ export interface Props {
 }
 
 export interface State {
-    visible: boolean;
+    value: number;
 }
 
 export class Exam extends React.Component<Props, State, {}> {
     constructor(props) {
         super(props);
         this.state = {
-            visible: false,
+            value: 1,
         }
     }
 
@@ -66,32 +68,12 @@ export class Exam extends React.Component<Props, State, {}> {
             })
     }
 
-    public changeLesson = (id) => {
-        console.log("aaaaaaaa");
-        this.initLesson(id);
+    public onChange = (e) => {
+        console.log('radio checked', e.target.value);
+        this.setState({
+            value: e.target.value,
+        });
     }
-
-    public showModal = () => {
-        this.setState({
-            visible: true
-        });
-    };
-    public closeModal = () => {
-        this.setState({
-            visible: false
-        });
-    };
-    public handleCancel = (e) => {
-        this.closeModal();
-    };
-    public handleOk = (e) => {
-        this.setState({
-            visible: false,
-        });
-    };
-    private handleClickCreateQuestion = () => {
-        this.showModal();
-    };
 
     public render() {
         let {lesson, api, props} = this.props;
@@ -102,30 +84,54 @@ export class Exam extends React.Component<Props, State, {}> {
                 <Helmet title={"Lesson"}/>
                 <NavigationBarContainter/>
                 {/*-------------------------page header-------------------------*/}
-                <PageHeader
-                    className="mt-5"
-                    title=""
-                    breadcrumb={{routes}}
-                />
-                {api.loadings > 0 ? <Loader/> : ""}
-                <div className="row ml-5 mr-1">
-                    <div className="col-md-10 list-exam">
-                        <div className="row ml-5 mt-4 mr-1">
-                            list cau hoi
+                <div className="container">
+                    <PageHeader
+                        className="mt-5"
+                        title=""
+                        breadcrumb={{routes}}
+                    />
+                    {api.loadings > 0 ? <Loader/> : ""}
+                    <div className="row ml-5 mr-1 custom-container">
+                        <div className="col-md-9">
+                            <Question props={props}/>
+                            <Question props={props}/>
+                            <Question props={props}/>
+                            <Question props={props}/>
+                        </div>
+                        <div className="col-md-3 mt-3 fill-answer">
+                            <div className="row">
+                                <img src="https://media.giphy.com/media/2zoCrihrueMUVOZlTx/giphy.gif"
+                                     className="col-md-6 float-right clock-gif-size"/>
+                                <div className="col-md-6 float-left">time</div>
+                            </div>
+                            <div className="row locker">
+                                <div className="col">
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                    <p className="row">aaa</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="col-md-2 list-exam">
-                        <div className="row">
-                            dong ho
-                        </div>
-                        <div className="row">
-                            abcd
-                        </div>
-                    </div>
+                    <Footer style={{textAlign: 'center'}}>
+                        Easy Japanese Design ©2019 Created by HEDSPI
+                    </Footer>
                 </div>
-                <Footer style={{textAlign: 'center'}}>
-                    Easy Japanese Design ©2019 Created by HEDSPI
-                </Footer>
                 <BackTop/>
             </Fragment>
         );
