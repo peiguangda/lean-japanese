@@ -1,11 +1,15 @@
 import * as React from "react";
 import {Fragment} from "react";
-import {Button, Input, Radio, Tooltip} from 'antd';
+import {Button, Radio, Tooltip} from 'antd';
+import {ExerciseEntity} from "../../../common/types/exercise";
 
 const RadioGroup = Radio.Group;
 
 export interface Props {
     props: any,
+    exercise: ExerciseEntity;
+    index: number;
+    lengthExercise: number;
 }
 
 export interface State {
@@ -16,7 +20,7 @@ export class Question extends React.Component<Props, State, {}> {
     constructor(props) {
         super(props);
         this.state = {
-            value: 1,
+            value: -2,
         }
     }
 
@@ -30,30 +34,42 @@ export class Question extends React.Component<Props, State, {}> {
         });
     }
 
-    public render() {
-        let {props} = this.props;
+    public isAnswerCorrect = (index) => {
+        let {exercise} = this.props;
+        let {list_answer, list_correct_answer} = exercise;
+        return (list_correct_answer && list_correct_answer.indexOf(index) > -1) ? true : false;
+    }
+
+    public showListAnswer = () => {
         const radioStyle = {
             display: 'block',
             height: '30px',
             lineHeight: '30px',
         };
+        let {exercise} = this.props;
+        let {list_answer, list_correct_answer} = exercise;
+        if (list_answer) return list_answer.map((answer, index) => {
+            return <Radio style={radioStyle} value={index}>{answer}</Radio>;
+        })
+    }
 
+    public render() {
+        let {props, exercise, index, lengthExercise} = this.props;
+        const radioStyle = {
+            display: 'block',
+            height: '30px',
+            lineHeight: '30px',
+        };
         return (
             <Fragment>
-                <p className="row ml-1 exam-title">Câu 1/40 - Lần cuối trả lời sai</p>
+                <p className="row ml-1 exam-title">{`Câu ${index + 1}/${lengthExercise} - Lần cuối trả lời sai`}</p>
                 <div className="row mr-1 mb-5 list-exam">
                     <div className="col w-100 ml-3">
-                        <p className="row mt-3">いくら さがしても、ここに おいたはずの さいふが （ ）。</p>
+                        <p className="row mt-3">{exercise.front_text}</p>
                         <div className="row">
                             <RadioGroup onChange={this.onChange} value={this.state.value}>
-                                <Radio style={radioStyle} value={1}>Option A</Radio>
-                                <Radio style={radioStyle} value={2}>Option B</Radio>
-                                <Radio style={radioStyle} value={3}>Option C</Radio>
-                                <Radio style={radioStyle} value={4}>
-                                    More...
-                                    {this.state.value === 4 ?
-                                        <Input style={{width: 100, marginLeft: 10}}/> : null}
-                                </Radio>
+                                <Radio style={radioStyle} value={-1}>{exercise.back_text}</Radio>
+                                {this.showListAnswer()}
                             </RadioGroup>
                         </div>
                         <div className="row float-right m-2">
