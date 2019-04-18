@@ -239,7 +239,6 @@ export class LessonModal extends React.Component<Props, State, {}> {
 
     public render() {
         const {editorState} = this.state;
-        // console.log("edittor state", editorState);
         let {loading, lesson: {name, short_description, description, start_time, end_time, avatar, status}} = this.state;
         const suffixLesson = name ? <Icon type="close-circle" onClick={this.emitNameEmpty}/> : null;
         const suffixName = short_description ? <Icon type="close-circle" onClick={this.emitDescriptEmpty}/> : null;

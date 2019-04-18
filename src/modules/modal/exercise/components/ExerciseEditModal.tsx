@@ -52,7 +52,6 @@ const initExercise = new class implements ExerciseEntity {
 
 export class ExerciseEditModal extends React.Component<Props, State, {}> {
     public handleCancel = (e) => {
-        console.log("cancel");
         this.props.closeModal();
     };
     public handleOk = (e) => {
@@ -68,7 +67,6 @@ export class ExerciseEditModal extends React.Component<Props, State, {}> {
     };
     public onUpdateExercise = (parameters) => {
         let {exercise} = parameters;
-        console.log("huhu", exercise);
         this.state.exercise[0] = exercise;
         this.forceUpdate();
     };

@@ -1,13 +1,19 @@
 import * as React from "react";
 import {Fragment} from "react";
 import {Helmet} from "react-helmet";
-import {BackTop, Button, Layout, PageHeader} from 'antd';
+import {Anchor, BackTop, Button, Layout, Modal, PageHeader} from 'antd';
 import {Loader} from "../../loader/components/loader";
 import {ApiEntity} from "../../../common/types";
 import {NavigationBarContainter} from "../../navigation_bar/container";
 import {Question} from "./Question";
 import {ExerciseEntity} from "../../../common/types/exercise";
 import {convert} from "../../../helpers/Function";
+import {UserEntity} from "../../../common/types/user";
+import {remove} from 'lodash';
+
+const confirm = Modal.confirm;
+
+const {Link} = Anchor;
 
 const {
     Footer
@@ -33,6 +39,7 @@ export interface Props {
     params: any;
     props: any,
     api: ApiEntity;
+    currentUser: UserEntity;
     listExercise: Array<ExerciseEntity>;
 
     fetchListExercise(parameters): void;
@@ -40,73 +47,141 @@ export interface Props {
 
 export interface State {
     value: number;
+    listChoose: Array<any>;
 }
 
 export class Exam extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: 1,
+    public updateListChoose = (parameters) => {
+        let {listChoose} = this.state;
+        let index = parameters.index;
+        let listAnswer = parameters.listAnswer;
+        //truong hop answer cua cau hoi da ton tai trong array
+        let objectAnswer = listChoose.find(object => object.index === index);
+        if (objectAnswer) {
+            objectAnswer.listAnswer = listAnswer;
+            //update objectAnswer vao listChoose
+            listChoose = listChoose.map((object, num) => {
+                if (object.index === index) return objectAnswer;
+                return object;
+            })
+        } else {
+            //answer chua ton tai
+            objectAnswer = {index: index, listAnswer: listAnswer};
+            listChoose.push(objectAnswer);
         }
-    }
-
-    componentWillMount() {
-        let {props} = this.props;
-        console.log(props);
-        this.props.fetchListExercise({topic_id: props.match.params.id});
-    }
-
-    public onChange = (e) => {
-        console.log('radio checked', e.target.value);
         this.setState({
-            value: e.target.value,
-        });
+            listChoose: listChoose
+        })
     }
-
     public showListQuestion = () => {
         let {listExercise, props} = this.props;
+        let {listChoose} = this.state;
         listExercise = convert(listExercise);
         let lengthExercise = listExercise.length;
         if (listExercise && listExercise.length) {
             return listExercise.map((ex, index) => {
-                console.log("ex", ex);
+                let objectAnswer = listChoose.find(object => object.index === index);
+                console.log("objectAnswer", objectAnswer);
                 return <Question
                     props={props}
                     exercise={ex}
                     index={index}
                     lengthExercise={lengthExercise}
+                    listAnswer={objectAnswer ? objectAnswer.listAnswer : []}
+                    updateListChoose={this.updateListChoose}
                 />
             })
         }
     }
-
     public getValue = (index) => {
         return String.fromCharCode(65 + index);
     }
-
-    public showAnswer = (exercise) => {
-        let result = [];
+    public onChooseAnswer = (answer, index) => {
+        let {listExercise, props, currentUser} = this.props;
+        let {listChoose} = this.state;
+        //object: {user_id: 1, chose: [{index: 1, answer: [1,2]}, {index: 2, answer: 1}]}
+        let objectAnswer = listChoose.find(object => object.index === index);
+        //truong hop answer cua cau hoi da ton tai trong array
+        if (objectAnswer) {
+            let listAnswer = objectAnswer.listAnswer;
+            //neu cau tra loi da ton tai trong ds cau tra loi -> xoa
+            if (listAnswer.indexOf(answer) > -1) listAnswer = remove(listAnswer, (value) => {
+                return value != answer;
+            })
+            //neu cau tra loi chua ton tai trong ds cau tra loi -> them vao ds cau tra loi
+            else listAnswer.push(answer);
+            objectAnswer.listAnswer = listAnswer;
+            //update objectAnswer vao listChoose
+            listChoose = listChoose.map((object, num) => {
+                if (object.index === index) return objectAnswer;
+                return object;
+            })
+        } else {
+            //answer chua ton tai
+            objectAnswer = {index: index, listAnswer: [answer]};
+            listChoose.push(objectAnswer);
+        }
+        this.setState({
+            listChoose: listChoose
+        })
+        console.log("aaaaaaa", this.state.listChoose);
+    }
+    public showAnswer = (exercise, index, selectedAnswer) => {
+        let result = [], listAnswer;
+        if (selectedAnswer) listAnswer = selectedAnswer.listAnswer;
         let {list_answer, list_correct_answer} = exercise;
-        if (list_answer && list_answer.length) for (let i = 0; i < list_answer.length + 1; i++) {
-            result.push(<Button className="col-md-2 answer-btn" key={i}>{this.getValue(i)}</Button>);
+        if (list_answer) for (let i = 0; i < list_answer.length + 1; i++) {
+            result.push(<Link href={`#${index}`} title={<Button
+                className={`col-md-2 answer-btn ${listAnswer ? listAnswer.indexOf(i) > -1 ? 'choose-correct' : '' : ''}`}
+                key={i}
+                onClick={() => this.onChooseAnswer(i, index)}>{this.getValue(i)}</Button>}></Link>);
         }
         return result;
     }
-
     public showListAnswer = () => {
+        let {listChoose} = this.state;
         let {listExercise, props} = this.props;
         listExercise = convert(listExercise);
         if (listExercise && listExercise.length) {
             return listExercise.map((ex, index) => {
-                console.log("ex", ex);
+                let selectedAnswer = listChoose.find(object => object.index === index);
                 return <Fragment>
-                    <div className="row answer-row">
-                        <div className="col-md-2 question-number">{index + 1}</div>
-                        {this.showAnswer(ex)}
-                    </div>
+                    <Anchor affix={false}>
+                        <div className="row answer-row">
+                            <div className="col-md-2 question-number">{index + 1}</div>
+                            {this.showAnswer(ex, index, selectedAnswer)}
+                        </div>
+                    </Anchor>
                 </Fragment>
             })
         }
+    }
+
+    public onSubmitExam = () => {
+        console.log("submit", this.state.listChoose);
+        confirm({
+            title: 'Bạn có muốn nộp bài?',
+            content: 'làm nhanh thế',
+            onOk() {
+                console.log('OK');
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: 1,
+            listChoose: []
+        }
+    }
+
+    componentWillMount() {
+        let {props} = this.props;
+        this.props.fetchListExercise({topic_id: props.match.params.id});
     }
 
     public render() {
@@ -134,7 +209,7 @@ export class Exam extends React.Component<Props, State, {}> {
                                      className="col-md-6 float-right clock-gif-size"/>
                                 <div className="col-md-6 float-left mt-3">10:00</div>
                             </div>
-                            <div className="row locker">
+                            <div className="row">
                                 <div className="col">
                                     <div className="row answer-count-bar">
                                         <div className="col-md-2">TT</div>
@@ -143,12 +218,16 @@ export class Exam extends React.Component<Props, State, {}> {
                                         <div className="col-md-2">0</div>
                                         <div className="col-md-2">0</div>
                                     </div>
-                                    {this.showListAnswer()}
+                                    <div className="row locker">
+                                        <div className="col">
+                                            {this.showListAnswer()}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="row btn-submit-exam">
+                            <Button className="row btn-submit-exam" onClick={this.onSubmitExam}>
                                 Nộp bài
-                            </div>
+                            </Button>
                         </div>
                     </div>
                     <Footer style={{textAlign: 'center'}}>

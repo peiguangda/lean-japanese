@@ -45,7 +45,7 @@
   width: 100% !important;
   z-index: 999;
   transition: all 0.3s ease-in-out !important;
-  background-color: #15165f !important;
+  background-color: #3461a5!important;
   min-height: 48px !important;
   padding: 3px 0 !important;
   top: 0;
@@ -591,11 +591,11 @@ body {
 .list-exam {
   @include shadow();
   background-color: white;
+  min-height: 220px;
 }
 
 @mixin scroll() {
   overflow-y: scroll;
-  max-height: 600px;
 
   &::-webkit-scrollbar-track {
     margin-top: 2%;
@@ -624,7 +624,8 @@ body {
 
 .locker {
   @include scroll();
-  min-height: 500px;
+  min-height: 400px;
+  max-height: 500px;
   margin-bottom: 20% !important;
 }
 
@@ -634,14 +635,15 @@ body {
 }
 
 .exam-btn {
-  background-color: #1f1d5f;
+  background-color: #1d8efb;
   color: white;
   height: min-content;
   width: min-content;
   border-radius: 20px 20px 20px 20px;
 
   &:hover {
-    background-color: #14165f;
+    background-color: #18285f;
+    color: white;
   }
 }
 
@@ -659,7 +661,7 @@ body {
 
 .answer-count-bar {
   height: 40px;
-  background-color: #18285f;
+  background-color: #3461a5;
   justify-content: center;
   color: white;
   padding-top: 3%;
@@ -667,7 +669,7 @@ body {
 
 .answer-row {
   padding-top: 3%;
-  justify-content: center;
+  justify-content: left;
   border-bottom: 1px solid #888888;
   color: #18285f;
 }
@@ -686,7 +688,8 @@ body {
 }
 
 .question-number {
-  color: #000;
+  color: #666;
+  font-family: auto;
   font-size: 20px;
   margin-top: 4%;
 }
@@ -697,8 +700,57 @@ body {
   bottom: 1px;
   border-radius: 5px 5px 5px 5px;
   justify-content: center;
-  background-color: #18285f;
+  background-color: #1d8efb;
   height: 40px;
   color: white;
   padding-top: 3%;
+  &:hover {
+    background-color: #18285f;
+    color: white;
+  }
+}
+
+.list-support-btn {
+  bottom: 0px;
+  position: absolute;
+  right: 10px;
+}
+
+.choose-incorrect {
+  background-color: red;
+  color: white;
+}
+
+.choose-correct {
+  background-color: #218724;
+  color: white;
+
+  &:hover {
+    background-color: #218724;
+    color: white;
+  }
+
+  &:active {
+    background-color: #218724;
+    color: white;
+  }
+
+  &:focus {
+    background-color: #218724;
+    color: white;
+  }
+}
+
+.ant-anchor-link {
+  padding: 0px !important;
+}
+
+.ant-anchor-wrapper {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  overflow: unset !important;
+}
+
+.ant-anchor-ink {
+  height: unset;
 }

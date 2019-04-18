@@ -11,6 +11,7 @@ const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => 
     api: state.api,
     props: props,
     listExercise: state.listExercise,
+    currentUser: state.currentUser
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -32,7 +32,6 @@ export class NavigationBar extends React.Component<Props, State, {}> {
     };
     public logout = () => {
         this.props.logout({}).then(res => {
-            console.log(res);
             if (res && res.status == "success") {
                 message.info("Bạn đã đăng xuất!");
                 this.setState({

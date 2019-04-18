@@ -24,8 +24,6 @@ export interface State {
 export class LoginModal extends React.Component<Props & { form: WrappedFormUtils }, State, {}> {
     public handleCancel = (e) => {
         this.props.closeModal();
-        console.log("Cancel");
-
     };
     public handleOk = () => {
         console.log("Ok");

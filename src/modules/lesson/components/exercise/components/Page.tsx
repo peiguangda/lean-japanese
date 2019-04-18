@@ -23,6 +23,52 @@ export interface State {
 }
 
 export class ListExercise extends React.Component<Props, State, {}> {
+    public _deleteExercise = params => {
+        this.props.deleteExercise({id: params.exercise.id})
+            .then(response => {
+                if (response && response.status == "success") {
+                    message.success('Successful!');
+                    this.props.fetchListExercise({topic_id: params.exercise.topic_id});
+                }
+            })
+    };
+    public _editExercise = params => {
+        this.props.editExercise(params)
+            .then(response => {
+                if (response && response.status == "success") {
+                    message.success('Successful!');
+                    this.props.fetchListExercise({topic_id: params.topic_id});
+                }
+            })
+    }
+    public showModal = (parameters) => {
+        this.setState({
+            visible: true,
+            editExercise: parameters
+        });
+    };
+    public closeModal = () => {
+        this.setState({
+            visible: false
+        });
+    };
+    private showListExercise = () => {
+        let {listExercise} = this.props;
+        listExercise = convert(listExercise);
+        if (listExercise && listExercise.length) {
+            return listExercise.map((item, index) => {
+                return <Exercise
+                    exercise={item}
+                    index={index}
+                    deleteExercise={this._deleteExercise}
+                    fetchListExercise={this.props.fetchListExercise}
+                    editExercise={this.props.editExercise}
+                    showModal={this.showModal}
+                />;
+            });
+        }
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -64,53 +110,6 @@ export class ListExercise extends React.Component<Props, State, {}> {
         if (nextProps.params.id != props.params.id)
             this.props.fetchListExercise({topic_id: nextProps.params.id});
     }
-
-    public _deleteExercise = params => {
-        this.props.deleteExercise({id: params.exercise.id})
-            .then(response => {
-                if (response && response.status == "success") {
-                    message.success('Successful!');
-                    this.props.fetchListExercise({topic_id: params.exercise.topic_id});
-                }
-            })
-    };
-    public _editExercise = params => {
-        this.props.editExercise(params)
-            .then(response => {
-                console.log("res", response);
-                if (response && response.status == "success") {
-                    message.success('Successful!');
-                    this.props.fetchListExercise({topic_id: params.topic_id});
-                }
-            })
-    }
-    public showModal = (parameters) => {
-        this.setState({
-            visible: true,
-            editExercise: parameters
-        });
-    };
-    public closeModal = () => {
-        this.setState({
-            visible: false
-        });
-    };
-    private showListExercise = () => {
-        let {listExercise} = this.props;
-        listExercise = convert(listExercise);
-        if (listExercise && listExercise.length) {
-            return listExercise.map((item, index) => {
-                return <Exercise
-                    exercise={item}
-                    index={index}
-                    deleteExercise={this._deleteExercise}
-                    fetchListExercise={this.props.fetchListExercise}
-                    editExercise={this.props.editExercise}
-                    showModal={this.showModal}
-                />;
-            });
-        }
-    };
 
     public render() {
         let {children, listExercise, props} = this.props;

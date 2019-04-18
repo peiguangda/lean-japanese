@@ -16,19 +16,11 @@ export interface State {
 
 
 export class ListLessonHeader extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-    }
-
-    public componentWillMount() {
-    }
-
     public changeLesson = (id) => {
         console.log("change lesson", id);
         this.props.changeLesson(id);
         this.props.history.push(`/lesson/${id}`);
     }
-
     public showListLesson = () => {
         let {lesson, listLesson} = this.props;
         if (listLesson && listLesson.length) {
@@ -42,6 +34,13 @@ export class ListLessonHeader extends React.Component<Props, State, {}> {
                 </div>
             })
         }
+    }
+
+    constructor(props) {
+        super(props);
+    }
+
+    public componentWillMount() {
     }
 
     public render() {
