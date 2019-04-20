@@ -57,7 +57,6 @@ export class CourseModal extends React.Component<Props, State, {}> {
         let {course} = this.state;
         this.props.createCourse(course)
             .then(res => {
-                console.log("res", res);
                 if (res && res.status == "success") {
                     message.success("Tạo khóa học thành công!");
                 } else message.error("Xảy ra lỗi!");
@@ -141,7 +140,6 @@ export class CourseModal extends React.Component<Props, State, {}> {
         }));
     };
     public onChangeCost = (e) => {
-        console.log(e);
         let {value} = e.target;
         this.setState(prevState => ({
             course: {
@@ -248,7 +246,6 @@ export class CourseModal extends React.Component<Props, State, {}> {
 
     public render() {
         const {editorState} = this.state;
-        // console.log("edittor state", editorState);
         let {loading, course: {name, short_description, password, cost, avatar, status, end_date, day_to_open_lesson}} = this.state;
         // let costt = parseInt(cost, 10);
         const suffixLesson = name ? <Icon type="close-circle" onClick={this.emitNameEmpty}/> : null;

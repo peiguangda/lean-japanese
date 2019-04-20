@@ -138,11 +138,11 @@ const routes = [
         breadcrumbName: 'Home',
     },
     {
-        path: 'course/1',
+        path: '/course/1',
         breadcrumbName: 'Course',
     },
     {
-        path: 'lesson/1',
+        path: '/lesson/1',
         breadcrumbName: 'Lesson',
     },
 ];
@@ -187,7 +187,6 @@ export class CourseDetail extends React.Component<Props, State, {}> {
 
     public componentWillMount() {
         const {params} = this.props.props.match;
-        console.log(this.props.props.match);
         this.props.fetchCourse(params); // get course detail
     }
 

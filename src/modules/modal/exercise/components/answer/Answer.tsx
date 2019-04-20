@@ -27,9 +27,6 @@ export class Answer extends React.Component<Props, State, {}> {
     public deleteAnswer = (parameters) => {
         this.props.deleteAnswer(parameters);
     };
-    public changeAnswerStatus = () => {
-        console.log("thay doi trang thai answer")
-    };
 
     constructor(props) {
         super(props);

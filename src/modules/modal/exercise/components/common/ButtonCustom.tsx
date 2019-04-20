@@ -156,7 +156,6 @@ export class ButtonCustom extends React.Component<Props, State, {}> {
     };
     public onPrevPage = () => {
         let {page, searchValue} = this.state;
-        console.log(page);
         if (page == 1) return;
         page = page - 1;
         this.search(searchValue, page);

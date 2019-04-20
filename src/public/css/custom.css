@@ -38,7 +38,7 @@
   width: 100% !important;
   z-index: 999;
   transition: all 0.3s ease-in-out !important;
-  background-color: #15165f !important;
+  background-color: #3461a5 !important;
   min-height: 48px !important;
   padding: 3px 0 !important;
   top: 0;
@@ -502,7 +502,8 @@ body {
   border-radius: 5px 5px 5px 5px;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3) !important;
   transition: all 2.3s ease-in-out !important;
-  background-color: white; }
+  background-color: white;
+  min-height: 220px; }
 
 .fill-answer {
   border: 1px solid #e9ebee;
@@ -515,8 +516,8 @@ body {
 
 .locker {
   overflow-y: scroll;
-  max-height: 600px;
-  min-height: 500px;
+  min-height: 400px;
+  max-height: 500px;
   margin-bottom: 20% !important; }
   .locker::-webkit-scrollbar-track {
     margin-top: 2%;
@@ -533,13 +534,14 @@ body {
   margin-bottom: 0px; }
 
 .exam-btn {
-  background-color: #1f1d5f;
+  background-color: #1d8efb;
   color: white;
   height: min-content;
   width: min-content;
   border-radius: 20px 20px 20px 20px; }
   .exam-btn:hover {
-    background-color: #14165f; }
+    background-color: #18285f;
+    color: white; }
 
 .clock-gif-size {
   width: 60px;
@@ -553,14 +555,14 @@ body {
 
 .answer-count-bar {
   height: 40px;
-  background-color: #18285f;
+  background-color: #3461a5;
   justify-content: center;
   color: white;
   padding-top: 3%; }
 
 .answer-row {
   padding-top: 3%;
-  justify-content: center;
+  justify-content: left;
   border-bottom: 1px solid #888888;
   color: #18285f; }
 
@@ -577,7 +579,8 @@ body {
   text-align: center; }
 
 .question-number {
-  color: #000;
+  color: #666;
+  font-family: auto;
   font-size: 20px;
   margin-top: 4%; }
 
@@ -587,9 +590,45 @@ body {
   bottom: 1px;
   border-radius: 5px 5px 5px 5px;
   justify-content: center;
-  background-color: #18285f;
+  background-color: #1d8efb;
   height: 40px;
   color: white;
   padding-top: 3%; }
+  .btn-submit-exam:hover {
+    background-color: #18285f;
+    color: white; }
+
+.list-support-btn {
+  bottom: 0px;
+  position: absolute;
+  right: 10px; }
+
+.choose-incorrect {
+  background-color: red;
+  color: white; }
+
+.choose-correct {
+  background-color: #218724;
+  color: white; }
+  .choose-correct:hover {
+    background-color: #218724;
+    color: white; }
+  .choose-correct:active {
+    background-color: #218724;
+    color: white; }
+  .choose-correct:focus {
+    background-color: #218724;
+    color: white; }
+
+.ant-anchor-link {
+  padding: 0px !important; }
+
+.ant-anchor-wrapper {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  overflow: unset !important; }
+
+.ant-anchor-ink {
+  height: unset; }
 
 /*# sourceMappingURL=custom.css.map */

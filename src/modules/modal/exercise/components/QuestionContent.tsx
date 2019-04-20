@@ -28,15 +28,8 @@ export interface State {
 const initialState = {};
 
 export class QuestionContent extends React.Component<Props, State, {}> {
-    public handleAddInputRow = (e) => {
-        console.log("e", e);
-    };
-    public onchangeSetting = () => {
-        this.props.onchangeSetting();
-    };
     public addAnswer = (exercise) => {
         let {list_answer} = exercise;
-        console.log("eeeaaaaaaa", list_answer);
         if (!list_answer) list_answer = []; //check list_answer ko ton tai thi khoi tao no
         list_answer.push("");
         exercise.list_answer = list_answer;

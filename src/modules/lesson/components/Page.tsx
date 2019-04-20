@@ -54,17 +54,6 @@ export interface State {
 }
 
 export class LessonDetail extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            visible: false,
-        }
-    }
-
-    componentWillMount() {
-        this.initLesson(this.props.match.params.id);
-    }
-
     public initLesson = (id) => {
         this.props.fetchLesson({id: id})
             .then(res => {
@@ -74,12 +63,9 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                 }
             })
     }
-
     public changeLesson = (id) => {
-        console.log("aaaaaaaa");
         this.initLesson(id);
     }
-
     public showModal = () => {
         this.setState({
             visible: true
@@ -101,6 +87,17 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     private handleClickCreateQuestion = () => {
         this.showModal();
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            visible: false,
+        }
+    }
+
+    componentWillMount() {
+        this.initLesson(this.props.match.params.id);
+    }
 
     public render() {
         let {lesson, api, listLesson, props} = this.props;

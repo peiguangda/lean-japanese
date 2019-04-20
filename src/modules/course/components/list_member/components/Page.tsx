@@ -68,7 +68,6 @@ export class ListMember extends React.Component<Props, State, {}> {
 
     public render() {
         let {listMem} = this.props;
-        console.log("listMem", listMem);
         return (
             <Fragment>
                 <Table columns={user_columns} dataSource={dataSource}/>

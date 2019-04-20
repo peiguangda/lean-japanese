@@ -41,8 +41,6 @@ export interface State {
 
 export class ListLesson extends React.Component<Props, State, {}> {
     public onChangeStatusLesson = (event, item) => {
-        console.log("change", event);
-        console.log("item", item);
     };
     onSelect = () => {
         console.log('Trigger Select');
@@ -110,7 +108,6 @@ export class ListLesson extends React.Component<Props, State, {}> {
             })
     };
     public addAction = (event, item) => {
-        console.log("add", item);
         event.stopPropagation();
         this._showModal();
         this.setState({
@@ -120,12 +117,10 @@ export class ListLesson extends React.Component<Props, State, {}> {
     };
 
     public openLesson = (event, item) => {
-        console.log("open", item);
         event.stopPropagation();
     };
 
     public editAction = (event, item) => {
-        console.log("edit");
         event.stopPropagation();
         this.setState({
             lesson: item,
@@ -134,7 +129,6 @@ export class ListLesson extends React.Component<Props, State, {}> {
         this._showModal();
     };
     public deleteAction = (event, item) => {
-        console.log("delete");
         event.stopPropagation();
     };
     public showChildren = (item) => {

@@ -61,7 +61,6 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
         this.props.showModal();
     };
     public handleCancel = (e) => {
-        console.log("cancel");
         this.props.closeModal();
     };
     public handleOk = (e) => {

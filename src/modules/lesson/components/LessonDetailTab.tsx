@@ -53,7 +53,6 @@ const dataSource = [{
 const Option = Select.Option;
 
 function handleChange(value) {
-    console.log(`selected ${value}`);
 }
 
 export interface Props {
@@ -79,7 +78,6 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
     public render() {
         let {lesson, props} = this.props;
         const now = moment(new Date('01/2/2018')).format("MMM Do YY");
-        console.log("nao", props);
         const result_tab = <Fragment><Icon type="info-circle" theme="twoTone"/>Kết quả</Fragment>;
         const comment_tab = <Fragment><Icon type="book" theme="twoTone"/>Bình luận</Fragment>;
         const question_tab = <Fragment><Icon type="question-circle" theme="twoTone"/>Câu hỏi</Fragment>;
@@ -214,7 +212,8 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                 <div className="col-md-5 float-left">Không giới hạn</div>
                             </div>
                             <div className="row-info-panel row">
-                                <Button type="primary" className="col-md-6" href={`${props.location.pathname}/exam`}>Làm bài</Button>
+                                <Button type="primary" className="col-md-6" href={`${props.location.pathname}/exam`}>Làm
+                                    bài</Button>
                                 <Select defaultValue="Số câu hỏi(40)" style={{width: 140}}
                                         onChange={handleChange} className="col-md-5 float-left">
                                     <Option value="0">Số câu hỏi(40)</Option>
