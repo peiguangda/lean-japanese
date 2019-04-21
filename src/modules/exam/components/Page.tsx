@@ -81,7 +81,6 @@ export class Exam extends React.Component<Props, State, {}> {
         if (listExercise && listExercise.length) {
             return listExercise.map((ex, index) => {
                 let objectAnswer = listChoose.find(object => object.index === index);
-                console.log("objectAnswer", objectAnswer);
                 return <Question
                     props={props}
                     exercise={ex}
@@ -158,10 +157,18 @@ export class Exam extends React.Component<Props, State, {}> {
     }
 
     public onSubmitExam = () => {
-        console.log("submit", this.state.listChoose);
+        let {listChoose} = this.state;
+        let {listExercise} = this.props;
+        // console.log("submit", listChoose);
+        // console.log("aa", listExercise);
+        listChoose.map((element, index) => {
+            console.log("a", element.listAnswer);
+            console.log("b", element.listAnswer === listExercise[element.index].list_correct_answer);
+            console.log("c", listExercise[element.index].list_correct_answer);
+        })
         confirm({
             title: 'Bạn có muốn nộp bài?',
-            content: 'làm nhanh thế',
+            content: '',
             onOk() {
                 console.log('OK');
             },
