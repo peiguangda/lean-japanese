@@ -8,8 +8,8 @@ import {NavigationBarContainter} from "../../navigation_bar/container";
 import {Question} from "./Question";
 import {ExerciseEntity} from "../../../common/types/exercise";
 import {convert} from "../../../helpers/Function";
-import {UserEntity} from "../../../common/types/user";
 import {remove} from 'lodash';
+import {CardProgressEntity} from "../../../common/types/card_progress";
 
 const confirm = Modal.confirm;
 
@@ -39,10 +39,12 @@ export interface Props {
     params: any;
     props: any,
     api: ApiEntity;
-    currentUser: UserEntity;
     listExercise: Array<ExerciseEntity>;
+    listCardProgress: Array<CardProgressEntity>;
 
     fetchListExercise(parameters): void;
+
+    fetchListCardProgress(parameters): void;
 }
 
 export interface State {
@@ -81,7 +83,6 @@ export class Exam extends React.Component<Props, State, {}> {
         if (listExercise && listExercise.length) {
             return listExercise.map((ex, index) => {
                 let objectAnswer = listChoose.find(object => object.index === index);
-                console.log("objectAnswer", objectAnswer);
                 return <Question
                     props={props}
                     exercise={ex}
@@ -97,7 +98,6 @@ export class Exam extends React.Component<Props, State, {}> {
         return String.fromCharCode(65 + index);
     }
     public onChooseAnswer = (answer, index) => {
-        let {listExercise, props, currentUser} = this.props;
         let {listChoose} = this.state;
         //object: {user_id: 1, chose: [{index: 1, answer: [1,2]}, {index: 2, answer: 1}]}
         let objectAnswer = listChoose.find(object => object.index === index);
@@ -158,10 +158,24 @@ export class Exam extends React.Component<Props, State, {}> {
     }
 
     public onSubmitExam = () => {
-        console.log("submit", this.state.listChoose);
+        let {listChoose} = this.state;
+        let {listExercise, listCardProgress} = this.props;
+        listChoose = listChoose.map((element, index) => {
+            let listCorrectAnswer = listExercise[element.index].list_correct_answer;
+            if (listCorrectAnswer) listCorrectAnswer.push(0);
+            let isCorrect = JSON.stringify(element.listAnswer.sort()) == JSON.stringify(listCorrectAnswer.sort());
+            console.log(isCorrect);
+            element.correct = isCorrect;
+            return element;
+        })
+        console.log("listChoose", listChoose);
+        //duyet tung cau trong listCardProgress,truong hop boxnum = 0,3: chua tra loi hoac tra loi sai => neu lan nay tra loi dung => boxnum = 1, ko thi giu nguyen
+        //truong hop boxnum = 1 tra loi dung thi boxnum = 2, sai thi quay ve 3
+        //truong hop boxnum = 2 sai thi quay ve 3
+        //progress = (soluong_box_num_1 = 1 * 0.5 + soluong_box_num_2 )/tong so cau *100%
         confirm({
             title: 'Bạn có muốn nộp bài?',
-            content: 'làm nhanh thế',
+            content: '',
             onOk() {
                 console.log('OK');
             },
@@ -182,11 +196,13 @@ export class Exam extends React.Component<Props, State, {}> {
     componentWillMount() {
         let {props} = this.props;
         this.props.fetchListExercise({topic_id: props.match.params.id});
+        this.props.fetchListCardProgress({topic_id: props.match.params.id});
     }
 
     public render() {
-        let {api, props, listExercise} = this.props;
+        let {api, props, listExercise, listCardProgress} = this.props;
         let {match: {params}} = this.props;
+        console.log("listCardProgress", listCardProgress);
         return (
             <Fragment>
                 <Helmet title={"Lesson"}/>
