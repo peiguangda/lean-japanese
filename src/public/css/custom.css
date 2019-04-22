@@ -558,6 +558,7 @@ body {
   background-color: #3461a5;
   justify-content: center;
   color: white;
+  border-radius: 3%;
   padding-top: 3%; }
 
 .answer-row {
@@ -575,6 +576,7 @@ body {
   margin: 2%;
   color: #666;
   outline: none;
+  padding-right: 22px !important;
   height: 40px;
   text-align: center; }
 
@@ -596,6 +598,9 @@ body {
   padding-top: 3%; }
   .btn-submit-exam:hover {
     background-color: #18285f;
+    color: white; }
+  .btn-submit-exam:active, .btn-submit-exam:focus {
+    background-color: #1d8efb;
     color: white; }
 
 .list-support-btn {
@@ -630,5 +635,13 @@ body {
 
 .ant-anchor-ink {
   height: unset; }
+
+.ant-back-top-content {
+  background-color: #3461a5 !important; }
+  .ant-back-top-content:hover {
+    background-color: #1821a5 !important; }
+
+.search_layout {
+  justify-content: center; }
 
 /*# sourceMappingURL=custom.css.map */

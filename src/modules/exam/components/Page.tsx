@@ -7,9 +7,9 @@ import {ApiEntity} from "../../../common/types";
 import {NavigationBarContainter} from "../../navigation_bar/container";
 import {Question} from "./Question";
 import {ExerciseEntity} from "../../../common/types/exercise";
-import {convert} from "../../../helpers/Function";
-import {UserEntity} from "../../../common/types/user";
+import {convert, toArray} from "../../../helpers/Function";
 import {remove} from 'lodash';
+import {CardProgressEntity} from "../../../common/types/card_progress";
 
 const confirm = Modal.confirm;
 
@@ -39,10 +39,12 @@ export interface Props {
     params: any;
     props: any,
     api: ApiEntity;
-    currentUser: UserEntity;
     listExercise: Array<ExerciseEntity>;
+    listCardProgress: Array<CardProgressEntity>;
 
     fetchListExercise(parameters): void;
+
+    fetchListCardProgress(parameters): void;
 }
 
 export interface State {
@@ -81,7 +83,6 @@ export class Exam extends React.Component<Props, State, {}> {
         if (listExercise && listExercise.length) {
             return listExercise.map((ex, index) => {
                 let objectAnswer = listChoose.find(object => object.index === index);
-                console.log("objectAnswer", objectAnswer);
                 return <Question
                     props={props}
                     exercise={ex}
@@ -97,7 +98,6 @@ export class Exam extends React.Component<Props, State, {}> {
         return String.fromCharCode(65 + index);
     }
     public onChooseAnswer = (answer, index) => {
-        let {listExercise, props, currentUser} = this.props;
         let {listChoose} = this.state;
         //object: {user_id: 1, chose: [{index: 1, answer: [1,2]}, {index: 2, answer: 1}]}
         let objectAnswer = listChoose.find(object => object.index === index);
@@ -124,7 +124,6 @@ export class Exam extends React.Component<Props, State, {}> {
         this.setState({
             listChoose: listChoose
         })
-        console.log("aaaaaaa", this.state.listChoose);
     }
     public showAnswer = (exercise, index, selectedAnswer) => {
         let result = [], listAnswer;
@@ -158,11 +157,73 @@ export class Exam extends React.Component<Props, State, {}> {
     }
 
     public onSubmitExam = () => {
-        console.log("submit", this.state.listChoose);
+        let {listChoose} = this.state;
+        let {listExercise, listCardProgress} = this.props;
+        let count = (number) => {
+            let countNum = 0;
+            listCardProgress && listCardProgress.map((cardProgress, index) => {
+                if (cardProgress.box_num == number) countNum++;
+            })
+            return countNum;
+        }
+        let checkAnswer = (listChoose, listExercise) => {
+            listChoose = listChoose.map((element, index) => {
+                let listCorrectAnswer = listExercise[element.index].list_correct_answer;
+                if (listCorrectAnswer) listCorrectAnswer.push(0);
+                let isCorrect = JSON.stringify(element.listAnswer.sort()) == JSON.stringify(listCorrectAnswer.sort());
+                console.log(isCorrect);
+                element.correct = isCorrect;
+                element.id = listExercise[element.index].id;
+                return element;
+            })
+        }
         confirm({
             title: 'Bạn có muốn nộp bài?',
-            content: 'làm nhanh thế',
+            content: '',
             onOk() {
+                listCardProgress = toArray(listCardProgress);
+                checkAnswer(listChoose, listExercise);
+                //duyet tung cau trong listCardProgress,truong hop boxnum = 0,3: chua tra loi hoac tra loi sai => neu lan nay tra loi dung => boxnum = 1, ko thi giu nguyen
+                //truong hop boxnum = 1 tra loi dung thi boxnum = 2, sai thi quay ve 3
+                //truong hop boxnum = 2 sai thi quay ve 3
+                //progress = (soluong_box_num_1 = 1 * 0.5 + soluong_box_num_2 )/tong so cau *100%
+                if (listCardProgress && listCardProgress.length) {
+                    listCardProgress.map((cardProgress, index) => {
+                        switch (cardProgress.box_num) {
+                            case 0:
+                            case 3:
+                                listChoose.map((element, key) => {
+                                    if (element.id == cardProgress.card_id) {
+                                        if (element.correct) {
+                                            cardProgress.box_num = 1;
+                                        } else cardProgress.box_num = 3;
+                                    }
+                                });
+                                break;
+                            case 1:
+                            case 2:
+                                listChoose.map((element, key) => {
+                                    if (element.id == cardProgress.card_id) {
+                                        if (element.correct) {
+                                            cardProgress.box_num = 2;
+                                        } else cardProgress.box_num = 3;
+                                    }
+                                });
+                                break;
+                            default:
+                                break;
+                        }
+                        return cardProgress;
+                    })
+                }
+                console.log("listCardProgress", listCardProgress);
+                //tinh toan progress
+                let countBoxNum1 = count(1);
+                let countBoxNum2 = count(2);
+                console.log("countBoxNum1", countBoxNum1);
+                console.log("countBoxNum2", countBoxNum2);
+                //update list Card Progress
+                //redirect to trang lesson detail
                 console.log('OK');
             },
             onCancel() {
@@ -182,11 +243,13 @@ export class Exam extends React.Component<Props, State, {}> {
     componentWillMount() {
         let {props} = this.props;
         this.props.fetchListExercise({topic_id: props.match.params.id});
+        this.props.fetchListCardProgress({topic_id: props.match.params.id});
     }
 
     public render() {
-        let {api, props, listExercise} = this.props;
+        let {api, props, listExercise, listCardProgress} = this.props;
         let {match: {params}} = this.props;
+
         return (
             <Fragment>
                 <Helmet title={"Lesson"}/>
