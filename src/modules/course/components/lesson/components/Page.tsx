@@ -259,6 +259,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
                 total_card_num: number;
                 user_id: number;
                 user_name: string;
+                video_url: string;
             }
         }
     }

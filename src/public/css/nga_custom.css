@@ -597,3 +597,8 @@ element.style {
 .set_icon {
     margin-left: 2%;
 }
+.set_video {
+    width: 60%;
+    height: 400px;
+    margin-left: 20%;
+}

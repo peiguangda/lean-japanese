@@ -165,6 +165,23 @@ export class LessonModal extends React.Component<Props, State, {}> {
             }
         }));
     };
+    public emitVideoEmpty = () => {
+        this.setState(prevState => ({
+            lesson: {
+                ...prevState.lesson,
+                video_url: ''
+            }
+        }));
+    };
+    public onChangeVideo = (e) => {
+        let {value} = e.target;
+        this.setState(prevState => ({
+            lesson: {
+                ...prevState.lesson,
+                video_url: value
+            }
+        }));
+    };
     public getStatus = status => {
         if (!status) {
             this.setDetaultStatusValue();
@@ -207,6 +224,7 @@ export class LessonModal extends React.Component<Props, State, {}> {
                 total_card_num: number;
                 user_id: number;
                 user_name: string;
+                video_url: string;
             }
         }
     }
@@ -239,9 +257,10 @@ export class LessonModal extends React.Component<Props, State, {}> {
 
     public render() {
         const {editorState} = this.state;
-        let {loading, lesson: {name, short_description, description, start_time, end_time, avatar, status}} = this.state;
+        let {loading, lesson: {name, short_description, video_url, description, start_time, end_time, avatar, status}} = this.state;
         const suffixLesson = name ? <Icon type="close-circle" onClick={this.emitNameEmpty}/> : null;
         const suffixName = short_description ? <Icon type="close-circle" onClick={this.emitDescriptEmpty}/> : null;
+        const suffixVideo = video_url ? <Icon type="close-circle" onClick={this.emitVideoEmpty}/> : null;
         const uploadButton = (
             <div>
                 <Icon type={loading ? "loading" : "plus"}/>
@@ -277,6 +296,15 @@ export class LessonModal extends React.Component<Props, State, {}> {
                                     prefix={<Icon type="form"
                                                   style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
                                     suffix={suffixName}  //set icon if having text in box
+                                />
+                                <Input
+                                    className={"input_body"}
+                                    placeholder="Video Link"
+                                    value={video_url}
+                                    onChange={this.onChangeVideo}
+                                    prefix={<Icon type="form"
+                                                  style={{color: 'rgba(0,0,0,.25)'}}/>} //set icon prefix the input
+                                    suffix={suffixVideo}  //set icon if having text in box
                                 />
                             </Input.Group>
                             <div className="row">
