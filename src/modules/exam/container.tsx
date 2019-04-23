@@ -4,7 +4,7 @@ import {State} from '../../reducers/reducers';
 import {Exam} from "./components/Page";
 import {RouteComponentProps} from "react-router";
 import {fetchListExerciseAction} from "../../reducers/exercise";
-import {fetchCardProgressAction} from "../../reducers/card_progress";
+import {editCardProgressAction, fetchCardProgressAction} from "../../reducers/card_progress";
 
 
 const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => ({
@@ -18,6 +18,7 @@ const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => 
 const mapDispatchToProps = (dispatch) => ({
     fetchListExercise: parameters => dispatch(fetchListExerciseAction(parameters)),
     fetchListCardProgress: parameters => dispatch(fetchCardProgressAction(parameters)),
+    editCardProgress: parameters => dispatch(editCardProgressAction(parameters)),
 });
 
 export const ExamContainer = connect(

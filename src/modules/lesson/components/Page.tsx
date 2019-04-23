@@ -10,6 +10,7 @@ import {ExerciseModal} from "../../modal/exercise/components/ExerciseModal";
 import {NavigationBarContainter} from "../../navigation_bar/container";
 import {ListLessonHeader} from "./ListLessonHeader";
 import {LessonDetailTab} from "./LessonDetailTab";
+import {CardProgressEntity} from "../../../common/types/card_progress";
 
 const TabPane = Tabs.TabPane;
 
@@ -41,12 +42,15 @@ export interface Props {
     props: any,
     api: ApiEntity;
     listLesson: Array<LessonEntity>;
+    listCardProgress: Array<CardProgressEntity>;
 
     fetchLesson(parameters): Promise<any>;
 
     createExercise(parameters): Promise<any>;
 
     fetchListLesson(parameters): void;
+
+    fetchListCardProgress(parameters): void;
 }
 
 export interface State {
@@ -96,11 +100,13 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     }
 
     componentWillMount() {
+        let {props} = this.props;
         this.initLesson(this.props.match.params.id);
+        this.props.fetchListCardProgress({topic_id: props.match.params.id});
     }
 
     public render() {
-        let {lesson, api, listLesson, props} = this.props;
+        let {lesson, api, listLesson, props, listCardProgress} = this.props;
         let {match: {params}} = this.props;
         let {visible} = this.state;
         const content = (
@@ -136,12 +142,12 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                       history={this.props.props.history}/>
                     <div className="row">
                         {/*-------------------------Lesson detail tab pane-------------------------*/}
-                        <LessonDetailTab lesson={lesson} props={props}/>
+                        <LessonDetailTab lesson={lesson} props={props} listCardProgress={listCardProgress}/>
                     </div>
                     <div className="row">
                         <Card
                             extra={question_info_button}
-                            className="lesson-detail-card w-100 mt-4"
+                            className="w-100 mt-4"
                             title={question_info}
                             headStyle={{borderLeft: '2px solid #1890ff'}}
                         >

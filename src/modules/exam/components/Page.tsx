@@ -45,6 +45,8 @@ export interface Props {
     fetchListExercise(parameters): void;
 
     fetchListCardProgress(parameters): void;
+
+    editCardProgress(parameters): Promise<any>;
 }
 
 export interface State {
@@ -158,31 +160,40 @@ export class Exam extends React.Component<Props, State, {}> {
 
     public onSubmitExam = () => {
         let {listChoose} = this.state;
-        let {listExercise, listCardProgress} = this.props;
+        let {listExercise, listCardProgress, editCardProgress, props} = this.props;
         let count = (number) => {
             let countNum = 0;
             listCardProgress && listCardProgress.map((cardProgress, index) => {
                 if (cardProgress.box_num == number) countNum++;
-            })
+            });
             return countNum;
-        }
+        };
+        console.log("e)", listExercise);
         let checkAnswer = (listChoose, listExercise) => {
             listChoose = listChoose.map((element, index) => {
-                let listCorrectAnswer = listExercise[element.index].list_correct_answer;
+                let listCorrectAnswer = {...listExercise[element.index]}.list_correct_answer;
+                listCorrectAnswer = listCorrectAnswer && listCorrectAnswer.map((element, index) => {
+                    element += 1;
+                    return element;
+                });
                 if (listCorrectAnswer) listCorrectAnswer.push(0);
+                console.log("element.listAnswer.sort()", element.listAnswer.sort());
+                console.log("listCorrectAnswer.sort()", listCorrectAnswer.sort());
                 let isCorrect = JSON.stringify(element.listAnswer.sort()) == JSON.stringify(listCorrectAnswer.sort());
                 console.log(isCorrect);
                 element.correct = isCorrect;
                 element.id = listExercise[element.index].id;
                 return element;
             })
-        }
+        };
         confirm({
             title: 'Bạn có muốn nộp bài?',
             content: '',
             onOk() {
                 listCardProgress = toArray(listCardProgress);
                 checkAnswer(listChoose, listExercise);
+                console.log("e)", listExercise);
+                console.log("listChoose", listChoose);
                 //duyet tung cau trong listCardProgress,truong hop boxnum = 0,3: chua tra loi hoac tra loi sai => neu lan nay tra loi dung => boxnum = 1, ko thi giu nguyen
                 //truong hop boxnum = 1 tra loi dung thi boxnum = 2, sai thi quay ve 3
                 //truong hop boxnum = 2 sai thi quay ve 3
@@ -193,24 +204,27 @@ export class Exam extends React.Component<Props, State, {}> {
                             case 0:
                             case 3:
                                 listChoose.map((element, key) => {
-                                    if (element.id == cardProgress.card_id) {
-                                        if (element.correct) {
-                                            cardProgress.box_num = 1;
-                                        } else cardProgress.box_num = 3;
-                                    }
+                                    if (element.id == cardProgress.card_id && element.correct) {
+                                        cardProgress.box_num = 1;
+                                    } else cardProgress.box_num = 3;
                                 });
                                 break;
                             case 1:
+                                listChoose.map((element, key) => {
+                                    if (element.id == cardProgress.card_id && element.correct) {
+                                        cardProgress.box_num = 2;
+                                    } else cardProgress.box_num = 3;
+                                });
+                                break;
                             case 2:
                                 listChoose.map((element, key) => {
-                                    if (element.id == cardProgress.card_id) {
-                                        if (element.correct) {
-                                            cardProgress.box_num = 2;
-                                        } else cardProgress.box_num = 3;
-                                    }
+                                    if (element.id == cardProgress.card_id && element.correct) {
+                                        cardProgress.box_num = 4;
+                                    } else cardProgress.box_num = 3;
                                 });
                                 break;
                             default:
+                                cardProgress.box_num = 3;
                                 break;
                         }
                         return cardProgress;
@@ -223,7 +237,14 @@ export class Exam extends React.Component<Props, State, {}> {
                 console.log("countBoxNum1", countBoxNum1);
                 console.log("countBoxNum2", countBoxNum2);
                 //update list Card Progress
+                editCardProgress({id: 1, card_progress: listCardProgress})
+                    .then(res => {
+                        console.log("Res", res);
+                    })
                 //redirect to trang lesson detail
+                console.log(props);
+                console.log(props.history);
+                props.history.push(`/lesson/${props.match.params.id}`);
                 console.log('OK');
             },
             onCancel() {
