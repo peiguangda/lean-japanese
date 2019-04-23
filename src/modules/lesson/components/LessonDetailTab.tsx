@@ -14,6 +14,8 @@ import '../../../../node_modules/react-vis/dist/style.css';
 import {Button, Card, Icon, Input, Progress, Select, Table, Tabs, Tooltip} from "antd";
 import {Link} from "react-router-dom";
 import {LessonEntity} from "../../../common/types/lesson";
+import {CardProgressEntity} from "../../../common/types/card_progress";
+import {toArray} from "../../../helpers/Function";
 
 var moment = require('moment');
 const TabPane = Tabs.TabPane;
@@ -58,6 +60,7 @@ function handleChange(value) {
 export interface Props {
     lesson: LessonEntity;
     props: any;
+    listCardProgress: Array<CardProgressEntity>;
 }
 
 export interface State {
@@ -76,28 +79,44 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {lesson, props} = this.props;
+        let {lesson, props, listCardProgress} = this.props;
+        listCardProgress = toArray(listCardProgress);
+        console.log("listCardProgress", listCardProgress);
+        let count = (number) => {
+            let countNum = 0;
+            listCardProgress && listCardProgress.map((cardProgress, index) => {
+                if (cardProgress.box_num == number) countNum++;
+            });
+            return countNum;
+        };
+        let countBoxNum0 = count(0);
+        let countBoxNum1 = count(1);
+        let countBoxNum2 = count(2);
+        let countBoxNum3 = count(3);
+        let countBoxNum4 = count(4);
         const now = moment(new Date('01/2/2018')).format("MMM Do YY");
         const result_tab = <Fragment><Icon type="info-circle" theme="twoTone"/>Kết quả</Fragment>;
         const comment_tab = <Fragment><Icon type="book" theme="twoTone"/>Bình luận</Fragment>;
         const question_tab = <Fragment><Icon type="question-circle" theme="twoTone"/>Câu hỏi</Fragment>;
 
 
-        const statistic_studycase = <Fragment><Icon type="reconciliation" theme="twoTone" twoToneColor="#eb2f96"
-                                                    className="mr-2"/>Thống
-            kê Bài tập</Fragment>;
-        const statistic_skill = <Fragment><Icon type="thunderbolt" theme="twoTone" twoToneColor="#eb2f96"
-                                                className="mr-2"/>Thống kê kỹ
-            năng</Fragment>;
-        const basic_info = <Fragment><Icon type="profile" theme="twoTone" twoToneColor="#eb2f96" className="mr-2"/>Thông
-            tin
-            chung</Fragment>;
+        const statistic_studycase = <Fragment>
+            <Icon type="reconciliation" theme="twoTone" twoToneColor="#eb2f96" className="mr-2"/>
+            Thống kê Bài tập
+        </Fragment>;
+        const statistic_skill = <Fragment>
+            <Icon type="thunderbolt" theme="twoTone" twoToneColor="#eb2f96" className="mr-2"/>
+            Thống kê kỹ năng
+        </Fragment>;
+        const basic_info = <Fragment><Icon type="profile" theme="twoTone" twoToneColor="#eb2f96" className="mr-2"/>
+            Thông tin chung
+        </Fragment>;
         const myData = [
-            {angle: 1, className: 'red'},
-            {angle: 2, className: 'dark_blue'},
-            {angle: 5, className: 'blue'},
-            {angle: 3, className: 'dark_red'},
-            {angle: 5, className: 'yellow'}];
+            {angle: countBoxNum0, className: 'red'},
+            {angle: countBoxNum3, className: 'dark_blue'},
+            {angle: countBoxNum1, className: 'blue'},
+            {angle: countBoxNum2, className: 'dark_red'},
+            {angle: countBoxNum4, className: 'yellow'}];
         const data = [{x: moment(new Date('01/1/2018')).format("MMM Do"), y: 75},
             {x: moment(new Date('01/2/2018')).format("MMM Do"), y: 60},
             {x: moment(new Date('01/3/2018')).format("MMM Do"), y: 80},
@@ -114,38 +133,39 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                         >
                             <div className="row w-100 mb-2 justify-content-center">Tiến độ bài tập</div>
                             <div className="row justify-content-center">
-                                <Progress type="circle" percent={30} width={80}/>
+                                <Progress type="circle" percent={30} width={60} status="active"/>
                             </div>
-                            <div className="row w-100 mt-3 detail-statistic justify-content-center">Thống kê chi
-                                tiết
+                            <div className="row w-100 mt-3 detail-statistic justify-content-center">
+                                Thống kê chi tiết
                             </div>
                             <div className="row">
                                 <div className={"col-md-6"}>
                                     <FlexibleRadialChart
                                         data={myData}
                                         showLabels
-                                        height={300}/>
+                                        // animation={true}
+                                        height={250}/>
                                 </div>
                                 <div className="col-md-5 ml-2 mt-5">
                                     <div className="row">
                                         <div className="mt-1 squares red"></div>
-                                        <div className="col-md-10">Câu hỏi chưa trả lời (40)</div>
+                                        <div className="col-md-10">Câu hỏi chưa trả lời ({countBoxNum0})</div>
                                     </div>
                                     <div className="row">
                                         <div className="mt-1 squares dark_blue"></div>
-                                        <div className="col-md-10">Trả lời sai (0)</div>
+                                        <div className="col-md-10">Trả lời sai ({countBoxNum3})</div>
                                     </div>
                                     <div className="row">
                                         <div className="mt-1 squares blue"></div>
-                                        <div className="col-md-10">Trả lời đúng 1 lần (0)</div>
+                                        <div className="col-md-10">Trả lời đúng 1 lần ({countBoxNum1})</div>
                                     </div>
                                     <div className="row">
                                         <div className="mt-1 squares dark_red"></div>
-                                        <div className="col-md-10">Trả lời đúng 2 lần (0)</div>
+                                        <div className="col-md-10">Trả lời đúng 2 lần ({countBoxNum2})</div>
                                     </div>
                                     <div className="row">
                                         <div className="mt-1 squares yellow"></div>
-                                        <div className="col-md-10">Câu trả lời đã thuộc (0)</div>
+                                        <div className="col-md-10">Câu trả lời đã thuộc ({countBoxNum4})</div>
                                     </div>
                                 </div>
                             </div>
@@ -156,7 +176,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                             headStyle={{borderLeft: '2px solid #1890ff'}}
                             title={statistic_skill}
                         >
-                            <FlexibleXYPlot xType="ordinal" height={400} className="xyplot-custom mt-5 mb-5 ml-2 mr-2">
+                            <FlexibleXYPlot xType="ordinal" height={300} className="xyplot-custom mt-5 mb-5 ml-2 mr-2">
                                 <VerticalGridLines/>
                                 <HorizontalGridLines/>
                                 <XAxis title="Ngày tháng" tickLabelAngle={-45}/>
@@ -165,6 +185,10 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                     style={{
                                         strokeWidth: '2px'
                                     }}
+                                    animation
+                                    colorType={'category'}
+                                    stroke={'#ddd'}
+                                    strokeWidth={2}
                                     lineStyle={{stroke: 'red'}}
                                     markStyle={{stroke: 'blue'}}
                                     data={data}
@@ -212,7 +236,8 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                 <div className="col-md-5 float-left">Không giới hạn</div>
                             </div>
                             <div className="row-info-panel row">
-                                <Button type="primary" className="col-md-6" href={`${props.location.pathname}/exam`}>Làm
+                                <Button type="primary" className="col-md-6" id="btn-do-ex"
+                                        href={`${props.location.pathname}/exam`}>Làm
                                     bài</Button>
                                 <Select defaultValue="Số câu hỏi(40)" style={{width: 140}}
                                         onChange={handleChange} className="col-md-5 float-left">

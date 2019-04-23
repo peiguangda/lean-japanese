@@ -5,7 +5,9 @@ import {requestAxios} from "../redux/api";
 export const FETCH_CARD_PROGRESS = "card_progress/FETCH_CARD_PROGRESS";
 export const FETCH_CARD_PROGRESS_ERROR = "card_progress/FETCH_CARD_PROGRESS_ERROR";
 export const CREATE_CARD_PROGRESS = "card_progress/CREATE_CARD_PROGRESS";
-export const CREATE_CARD_PROGRESS_ERROR = "card_progress/CREATE_CARD_PROGRESS_ERROR";
+export const CREATE_CARD_PROGRESS_ERROR = "card_pss/CREATE_CARD_PROGRESS";
+export const EDIT_CARD_PROGRESS = "card_pss/EDIT_CARD_PROGRESS";
+export const EDIT_CARD_PROGRESS_ERROR = "card_progress/EDIT_CARD_PROGRESS_ERROR";
 
 export const fetchCardProgressAction = parameters => dispatch => {
     dispatch(requestAxios(request.getCardProgresses(parameters)))
@@ -36,6 +38,24 @@ export const createCardProgressAction = parameters => dispatch => {
         .catch(error => {
             dispatch({
                 type: CREATE_CARD_PROGRESS_ERROR,
+                payload: {},
+                responseError: error
+            });
+        });
+};
+
+export const editCardProgressAction = parameters => dispatch => {
+    return dispatch(requestAxios(request.editCardProgress(parameters)))
+        .then(response => {
+            dispatch({
+                type: EDIT_CARD_PROGRESS,
+                payload: response
+            });
+            return response;
+        })
+        .catch(error => {
+            dispatch({
+                type: EDIT_CARD_PROGRESS_ERROR,
                 payload: {},
                 responseError: error
             });

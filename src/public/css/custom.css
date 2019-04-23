@@ -427,12 +427,13 @@ body {
 .lesson-list-header {
   background-color: white;
   border-bottom: 2px solid #dcdee0;
-  height: 63px;
+  height: 55px;
   border-radius: 5px 5px 5px 5px; }
 
 .lesson-detail-card {
+  max-height: 500px;
   border: 1px solid #e9ebee;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.3) !important;
   transition: all .3s ease-in-out !important; }
 
 .icon-parent-lesson-detail-header {
@@ -479,7 +480,7 @@ body {
   margin: 1%;
   border: 1px solid #dae1e6;
   border-radius: 10px 10px 10px 10px;
-  background-color: #e9ebee; }
+  background-color: #ffffff; }
 
 .detail-statistic {
   font-size: 125% !important; }
@@ -643,5 +644,10 @@ body {
 
 .search_layout {
   justify-content: center; }
+
+#btn-do-ex span {
+  position: absolute;
+  top: 5%;
+  right: 30%; }
 
 /*# sourceMappingURL=custom.css.map */

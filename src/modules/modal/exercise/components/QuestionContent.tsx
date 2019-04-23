@@ -101,7 +101,6 @@ export class QuestionContent extends React.Component<Props, State, {}> {
                                     changeAnswerStatus={this.changeAnswerStatus}
                                     exercise={exercise}
                                     onChangeExercise={this.onChangeExercise}
-
                                 />
                             </div>
                             <div className="row">
