@@ -98,7 +98,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
         const result_tab = <Fragment><Icon type="info-circle" theme="twoTone"/>Kết quả</Fragment>;
         const comment_tab = <Fragment><Icon type="book" theme="twoTone"/>Bình luận</Fragment>;
         const question_tab = <Fragment><Icon type="question-circle" theme="twoTone"/>Câu hỏi</Fragment>;
-
+        const video_tab = <Fragment><Icon type="eye" theme="twoTone"/>Video</Fragment>;
 
         const statistic_studycase = <Fragment>
             <Icon type="reconciliation" theme="twoTone" twoToneColor="#eb2f96" className="mr-2"/>
@@ -123,7 +123,12 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             {x: moment(new Date('01/4/2018')).format("MMM Do"), y: 90}];
         return (
             <Tabs defaultActiveKey="1" className="lesson-content w-100">
-                <TabPane tab={question_tab} key="1">
+                 <TabPane tab={video_tab} key="1">
+                    <div className="container">
+                    <div className= "set_video" dangerouslySetInnerHTML={{ __html: lesson.description }} />
+                    </div>
+                </TabPane>
+                <TabPane tab={question_tab} key="2">
                     <div className="row">
                         {/*--------------------------biểu đồ thống kê bài tập---------------------------*/}
                         <Card
@@ -251,14 +256,14 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                         </Card>
                     </div>
                 </TabPane>
-                <TabPane tab={result_tab} key="2">
+                <TabPane tab={result_tab} key="3">
                     <div className="container">
                         <div className="this_is_block_panel_main">
                             <Table columns={columns} dataSource={dataSource}/>
                         </div>
                     </div>
                 </TabPane>
-                <TabPane tab={comment_tab} key="3">
+                <TabPane tab={comment_tab} key="4">
                     <div className="row reset-row-col">
                         <div className="col-xs-12 col-sm-12 reset-row-col padding_right_with_col-12">
                             <div className="this_is_block_panel_main_parent">
