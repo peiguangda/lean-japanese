@@ -724,7 +724,7 @@ body {
 }
 
 .choose-incorrect {
-  background-color: red;
+  background-color: #f15731 !important;
   color: white;
 }
 
@@ -778,5 +778,13 @@ body {
     position: absolute;
     top: 5%;
     right: 30%;
+  }
+}
+
+#btn-review {
+  span {
+    position: absolute;
+    top: 5%;
+    right: 41%;
   }
 }

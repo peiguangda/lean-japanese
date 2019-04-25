@@ -60,6 +60,7 @@ function handleChange(value) {
 export interface Props {
     lesson: LessonEntity;
     props: any;
+    isJustDoExam: boolean;
     listCardProgress: Array<CardProgressEntity>;
 }
 
@@ -79,9 +80,8 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {lesson, props, listCardProgress} = this.props;
+        let {lesson, props, listCardProgress, isJustDoExam} = this.props;
         listCardProgress = toArray(listCardProgress);
-        console.log("listCardProgress", listCardProgress);
         let count = (number) => {
             let countNum = 0;
             listCardProgress && listCardProgress.map((cardProgress, index) => {
@@ -89,16 +89,25 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             });
             return countNum;
         };
+        //can update luon vao db
+        let lesson_progress = () => {
+            let progress = 0;
+            listCardProgress && listCardProgress.map((cardProgress, index) => {
+                progress += cardProgress.progress;
+            });
+            return progress / listCardProgress.length;
+        };
         let countBoxNum0 = count(0);
         let countBoxNum1 = count(1);
         let countBoxNum2 = count(2);
         let countBoxNum3 = count(3);
         let countBoxNum4 = count(4);
+        let progress = lesson_progress();
         const now = moment(new Date('01/2/2018')).format("MMM Do YY");
         const result_tab = <Fragment><Icon type="info-circle" theme="twoTone"/>Kết quả</Fragment>;
         const comment_tab = <Fragment><Icon type="book" theme="twoTone"/>Bình luận</Fragment>;
         const question_tab = <Fragment><Icon type="question-circle" theme="twoTone"/>Câu hỏi</Fragment>;
-        const video_tab = <Fragment><Icon type="eye" theme="twoTone"/>Video</Fragment>;
+        const video_tab = <Fragment><Icon type="fund" theme="twoTone"/>Video</Fragment>;
 
         const statistic_studycase = <Fragment>
             <Icon type="reconciliation" theme="twoTone" twoToneColor="#eb2f96" className="mr-2"/>
@@ -123,12 +132,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             {x: moment(new Date('01/4/2018')).format("MMM Do"), y: 90}];
         return (
             <Tabs defaultActiveKey="1" className="lesson-content w-100">
-                 <TabPane tab={video_tab} key="1">
-                    <div className="container">
-                    <div className= "set_video" dangerouslySetInnerHTML={{ __html: lesson.description }} />
-                    </div>
-                </TabPane>
-                <TabPane tab={question_tab} key="2">
+                <TabPane tab={question_tab} key="1">
                     <div className="row">
                         {/*--------------------------biểu đồ thống kê bài tập---------------------------*/}
                         <Card
@@ -138,7 +142,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                         >
                             <div className="row w-100 mb-2 justify-content-center">Tiến độ bài tập</div>
                             <div className="row justify-content-center">
-                                <Progress type="circle" percent={30} width={60} status="active"/>
+                                <Progress type="circle" percent={progress} width={60} status="active"/>
                             </div>
                             <div className="row w-100 mt-3 detail-statistic justify-content-center">
                                 Thống kê chi tiết
@@ -242,8 +246,10 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                             </div>
                             <div className="row-info-panel row">
                                 <Button type="primary" className="col-md-6" id="btn-do-ex"
-                                        href={`${props.location.pathname}/exam`}>Làm
-                                    bài</Button>
+                                        href={`${props.location.pathname}/exam`}
+                                        onClick={() => localStorage.setItem("isJustDoExam", "FALSE")}>
+                                    Làm bài
+                                </Button>
                                 <Select defaultValue="Số câu hỏi(40)" style={{width: 140}}
                                         onChange={handleChange} className="col-md-5 float-left">
                                     <Option value="0">Số câu hỏi(40)</Option>
@@ -253,7 +259,17 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                     <Option value="4">Trả lời đúng(0)</Option>
                                 </Select>
                             </div>
+                            {isJustDoExam ? <div className="row-info-panel row">
+                                <Button type="primary" className="w-100" id="btn-review"
+                                        href={`${props.location.pathname}/exam`}>Xem lại</Button>
+                            </div> : ""}
                         </Card>
+                    </div>
+                </TabPane>
+                {/*--------------------------video---------------------------*/}
+                <TabPane tab={video_tab} key="2">
+                    <div className="container">
+                        <div className="set_video" dangerouslySetInnerHTML={{__html: lesson.description}}/>
                     </div>
                 </TabPane>
                 <TabPane tab={result_tab} key="3">

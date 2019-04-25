@@ -11,6 +11,8 @@ export interface Props {
     index: number;
     lengthExercise: number;
     listAnswer: Array<number>;
+    isCorrect: boolean;
+    isReviewing: boolean;
 
     updateListChoose(parameters): void;
 }
@@ -39,14 +41,21 @@ export class Question extends React.Component<Props, State, {}> {
         return (list_correct_answer && list_correct_answer.indexOf(index) > -1) ? true : false;
     }
     public showListAnswer = () => {
-        let {exercise} = this.props;
-        let {listAnswer} = this.props;
-        let {list_answer, list_correct_answer} = exercise;
+        let {exercise, listAnswer, isReviewing, isCorrect} = this.props;
+        let {list_answer, list_correct_answer} = exercise, className = "";
         if (list_answer && list_answer.length) return list_answer.map((answer, index) => {
-            return <Col span={24}>
+            if (listAnswer && listAnswer.indexOf(index) > -1) {
+                if (isCorrect == false) className = 'choose-incorrect';
+                else if (isCorrect == true) className = 'choose-correct';
+                else className = "";
+            } else className = "";
+            if (list_correct_answer.indexOf(index) > -1 && isReviewing) className = 'choose-correct';
+            return <Col span={24}
+                        className={className}>
                 <Checkbox
-                    value={index + 1}
-                    checked={(listAnswer.indexOf(index + 1) > -1) ? true : false}>
+                    value={index}
+                    disabled={isReviewing}
+                    checked={(listAnswer.indexOf(index) > -1) ? true : false}>
                     {answer}
                 </Checkbox>
             </Col>
@@ -68,12 +77,6 @@ export class Question extends React.Component<Props, State, {}> {
                                                 onChange={(e) => this.onChangeCheckBox(e, index)}
                                                 value={listAnswer}>
                                     <Row>
-                                        <Col span={24}>
-                                            <Checkbox value={0}
-                                                      checked={(listAnswer.indexOf(0) > -1) ? true : false}>
-                                                {exercise.back_text}
-                                            </Checkbox>
-                                        </Col>
                                         {this.showListAnswer()}
                                     </Row>
                                 </Checkbox.Group>

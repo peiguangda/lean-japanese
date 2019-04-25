@@ -40,6 +40,7 @@ export interface Props {
     params: any;
     lesson: LessonEntity;
     props: any,
+    history: any,
     api: ApiEntity;
     listLesson: Array<LessonEntity>;
     listCardProgress: Array<CardProgressEntity>;
@@ -55,6 +56,7 @@ export interface Props {
 
 export interface State {
     visible: boolean;
+    isJustDoExam: boolean;
 }
 
 export class LessonDetail extends React.Component<Props, State, {}> {
@@ -96,19 +98,24 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         super(props);
         this.state = {
             visible: false,
+            isJustDoExam: false
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         let {props} = this.props;
         this.initLesson(this.props.match.params.id);
         this.props.fetchListCardProgress({topic_id: props.match.params.id});
+        let isJustDoExam = localStorage.getItem("isJustDoExam");
+        if (isJustDoExam) this.setState({
+            isJustDoExam: (isJustDoExam == "TRUE")
+        })
     }
 
     public render() {
         let {lesson, api, listLesson, props, listCardProgress} = this.props;
         let {match: {params}} = this.props;
-        let {visible} = this.state;
+        let {visible, isJustDoExam} = this.state;
         const content = (
             <div>
                 <p>Content</p>
@@ -142,7 +149,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                       history={this.props.props.history}/>
                     <div className="row">
                         {/*-------------------------Lesson detail tab pane-------------------------*/}
-                        <LessonDetailTab lesson={lesson} props={props} listCardProgress={listCardProgress}/>
+                        <LessonDetailTab lesson={lesson} props={props} listCardProgress={listCardProgress} isJustDoExam={isJustDoExam}/>
                     </div>
                     <div className="row">
                         <Card
