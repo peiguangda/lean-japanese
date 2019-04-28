@@ -83,12 +83,13 @@ export const fetchExerciseAction = parameters => dispatch => {
 };
 
 export const fetchListExerciseAction = parameters => dispatch => {
-    dispatch(requestAxios(request.getExercises(parameters)))
+    return dispatch(requestAxios(request.getExercises(parameters)))
         .then(response => {
             dispatch({
                 type: GET_LIST_EXERCISE,
                 payload: response.data
             });
+            return response;
         })
         .catch(error => {
             dispatch({

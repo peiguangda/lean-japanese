@@ -10,6 +10,7 @@ import {ExerciseEntity} from "../../../common/types/exercise";
 import {convert, toArray} from "../../../helpers/Function";
 import {remove} from 'lodash';
 import {CardProgressEntity} from "../../../common/types/card_progress";
+import {getCookie, setCookie} from "../../../helpers/Cookie.js"
 
 const confirm = Modal.confirm;
 
@@ -52,6 +53,7 @@ export interface Props {
 export interface State {
     value: number;
     listChoose: Array<any>;
+    isJustDoExam: boolean;
 }
 
 export class Exam extends React.Component<Props, State, {}> {
@@ -77,18 +79,58 @@ export class Exam extends React.Component<Props, State, {}> {
             listChoose: listChoose
         })
     }
+
+    public shuffle = (arr) => {
+        var i, j, temp;
+        for (i = arr.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+        return arr;
+    };
+
     public showListQuestion = () => {
         let {listExercise, props} = this.props;
-        let {listChoose} = this.state;
+        let {listChoose, isJustDoExam} = this.state;
+        listExercise = isJustDoExam ? JSON.parse(getCookie("listExercise")) : listExercise;
         listExercise = convert(listExercise);
         let lengthExercise = listExercise.length;
         if (listExercise && listExercise.length) {
             return listExercise.map((ex, index) => {
+                //doi vi tri dap an
+                if (ex.back_text) {
+                    let list_answer_prev;
+                    ex.list_answer.push(ex.back_text);
+                    ex.list_correct_answer.push(ex.list_answer.length - 1);
+                    ex.back_text = null;
+                    //review ko dc dao dap an
+                    if (!isJustDoExam) {
+                        list_answer_prev = [...ex.list_answer]; //copy index trc khi dao dap an
+                        this.shuffle(ex.list_answer);      //dao dap an
+                        //so sanh index sau khi dao vs trc khi dao, merge vao index list dap an dung
+                        list_answer_prev.map((element_prev, index) => {
+                            ex.list_answer.map((element_next, key) => {
+                                if (element_prev == element_next) {
+                                    let position = ex.list_correct_answer.indexOf(index);
+                                    if (position > -1) {
+                                        //index dap an dung = current_index + index sau khi dao - index trc khi dao
+                                        ex.list_correct_answer[position] = ex.list_correct_answer[position] + key - index;
+                                    }
+                                }
+                            })
+                        })
+                    }
+                }
+                //truyen list answer da chon vao de show cau hoi
                 let objectAnswer = listChoose.find(object => object.index === index);
                 return <Question
                     props={props}
                     exercise={ex}
                     index={index}
+                    isReviewing={isJustDoExam}
+                    isCorrect={objectAnswer ? objectAnswer.correct : null}
                     lengthExercise={lengthExercise}
                     listAnswer={objectAnswer ? objectAnswer.listAnswer : []}
                     updateListChoose={this.updateListChoose}
@@ -100,7 +142,8 @@ export class Exam extends React.Component<Props, State, {}> {
         return String.fromCharCode(65 + index);
     }
     public onChooseAnswer = (answer, index) => {
-        let {listChoose} = this.state;
+        let {listChoose, isJustDoExam} = this.state;
+        if (isJustDoExam) return;
         //object: {user_id: 1, chose: [{index: 1, answer: [1,2]}, {index: 2, answer: 1}]}
         let objectAnswer = listChoose.find(object => object.index === index);
         //truong hop answer cua cau hoi da ton tai trong array
@@ -128,20 +171,28 @@ export class Exam extends React.Component<Props, State, {}> {
         })
     }
     public showAnswer = (exercise, index, selectedAnswer) => {
-        let result = [], listAnswer;
+        let {isJustDoExam} = this.state;
+        let result = [], listAnswer, className = "";
         if (selectedAnswer) listAnswer = selectedAnswer.listAnswer;
         let {list_answer, list_correct_answer} = exercise;
-        if (list_answer) for (let i = 0; i < list_answer.length + 1; i++) {
+        if (list_answer) for (let i = 0; i < list_answer.length; i++) {
+            // console.log("lit anser", listAnswer, listAnswer.indexOf(0), listAnswer.indexOf(1), listAnswer.indexOf(2));
+            if (listAnswer && listAnswer.indexOf(i) > -1) {
+                if (selectedAnswer.correct == false) className = 'choose-incorrect';
+                else className = 'choose-correct';
+            } else className = "";
+            if (list_correct_answer.indexOf(i) > -1 && isJustDoExam) className = 'choose-correct';
             result.push(<Link href={`#${index}`} title={<Button
-                className={`col-md-2 answer-btn ${listAnswer ? listAnswer.indexOf(i) > -1 ? 'choose-correct' : '' : ''}`}
+                className={`col-md-2 answer-btn ${className}`}
                 key={i}
                 onClick={() => this.onChooseAnswer(i, index)}>{this.getValue(i)}</Button>}></Link>);
         }
         return result;
     }
     public showListAnswer = () => {
-        let {listChoose} = this.state;
+        let {listChoose, isJustDoExam} = this.state;
         let {listExercise, props} = this.props;
+        listExercise = isJustDoExam ? JSON.parse(getCookie("listExercise")) : listExercise;
         listExercise = convert(listExercise);
         if (listExercise && listExercise.length) {
             return listExercise.map((ex, index) => {
@@ -168,19 +219,10 @@ export class Exam extends React.Component<Props, State, {}> {
             });
             return countNum;
         };
-        console.log("e)", listExercise);
         let checkAnswer = (listChoose, listExercise) => {
             listChoose = listChoose.map((element, index) => {
                 let listCorrectAnswer = {...listExercise[element.index]}.list_correct_answer;
-                listCorrectAnswer = listCorrectAnswer && listCorrectAnswer.map((element, index) => {
-                    element += 1;
-                    return element;
-                });
-                if (listCorrectAnswer) listCorrectAnswer.push(0);
-                console.log("element.listAnswer.sort()", element.listAnswer.sort());
-                console.log("listCorrectAnswer.sort()", listCorrectAnswer.sort());
                 let isCorrect = JSON.stringify(element.listAnswer.sort()) == JSON.stringify(listCorrectAnswer.sort());
-                console.log(isCorrect);
                 element.correct = isCorrect;
                 element.id = listExercise[element.index].id;
                 return element;
@@ -192,8 +234,6 @@ export class Exam extends React.Component<Props, State, {}> {
             onOk() {
                 listCardProgress = toArray(listCardProgress);
                 checkAnswer(listChoose, listExercise);
-                console.log("e)", listExercise);
-                console.log("listChoose", listChoose);
                 //duyet tung cau trong listCardProgress,truong hop boxnum = 0,3: chua tra loi hoac tra loi sai => neu lan nay tra loi dung => boxnum = 1, ko thi giu nguyen
                 //truong hop boxnum = 1 tra loi dung thi boxnum = 2, sai thi quay ve 3
                 //truong hop boxnum = 2 sai thi quay ve 3
@@ -204,48 +244,64 @@ export class Exam extends React.Component<Props, State, {}> {
                             case 0:
                             case 3:
                                 listChoose.map((element, key) => {
-                                    if (element.id == cardProgress.card_id && element.correct) {
-                                        cardProgress.box_num = 1;
-                                    } else cardProgress.box_num = 3;
+                                    if (element.id == cardProgress.card_id) {
+                                        if (element.correct) {
+                                            cardProgress.box_num = 1;
+                                            cardProgress.progress = 33;
+                                        }
+                                        else {
+                                            cardProgress.box_num = 3;
+                                            cardProgress.progress = 0;
+                                        }
+                                    }
                                 });
                                 break;
                             case 1:
                                 listChoose.map((element, key) => {
-                                    if (element.id == cardProgress.card_id && element.correct) {
-                                        cardProgress.box_num = 2;
-                                    } else cardProgress.box_num = 3;
+                                    if (element.id == cardProgress.card_id) {
+                                        if (element.correct) {
+                                            cardProgress.box_num = 2;
+                                            cardProgress.progress = 66;
+                                        }
+                                        else {
+                                            cardProgress.box_num = 3;
+                                            cardProgress.progress = 0;
+                                        }
+                                    }
                                 });
                                 break;
                             case 2:
                                 listChoose.map((element, key) => {
-                                    if (element.id == cardProgress.card_id && element.correct) {
-                                        cardProgress.box_num = 4;
-                                    } else cardProgress.box_num = 3;
+                                    if (element.id == cardProgress.card_id) {
+                                        if (element.correct) {
+                                            cardProgress.box_num = 4;
+                                            cardProgress.progress = 100;
+                                        }
+                                        else {
+                                            cardProgress.box_num = 3;
+                                            cardProgress.progress = 0;
+                                        }
+                                    }
                                 });
                                 break;
                             default:
                                 cardProgress.box_num = 3;
+                                cardProgress.progress = 0;
                                 break;
                         }
                         return cardProgress;
                     })
                 }
-                console.log("listCardProgress", listCardProgress);
                 //tinh toan progress
-                let countBoxNum1 = count(1);
-                let countBoxNum2 = count(2);
-                console.log("countBoxNum1", countBoxNum1);
-                console.log("countBoxNum2", countBoxNum2);
                 //update list Card Progress
                 editCardProgress({id: 1, card_progress: listCardProgress})
                     .then(res => {
-                        console.log("Res", res);
-                    })
-                //redirect to trang lesson detail
-                console.log(props);
-                console.log(props.history);
-                props.history.push(`/lesson/${props.match.params.id}`);
-                console.log('OK');
+                        //redirect to trang lesson detail
+                        localStorage.setItem("isJustDoExam", "TRUE");
+                        setCookie("listExercise", listExercise);
+                        setCookie("listChoose", listChoose);
+                        props.history.push(`/lesson/${props.match.params.id}`);
+                    });
             },
             onCancel() {
                 console.log('Cancel');
@@ -257,7 +313,8 @@ export class Exam extends React.Component<Props, State, {}> {
         super(props);
         this.state = {
             value: 1,
-            listChoose: []
+            listChoose: (localStorage.getItem("isJustDoExam") == "TRUE") ? convert(JSON.parse(getCookie("listChoose"))) : [],
+            isJustDoExam: (localStorage.getItem("isJustDoExam") == "TRUE") ? true : false
         }
     }
 
@@ -267,10 +324,17 @@ export class Exam extends React.Component<Props, State, {}> {
         this.props.fetchListCardProgress({topic_id: props.match.params.id});
     }
 
+    componentDidMount() {
+        window.onbeforeunload = (event) => {
+            event.preventDefault();
+            return 'Bạn đang làm bài, có muốn thoát khi chưa nộp bài?';
+        };
+    }
+
     public render() {
         let {api, props, listExercise, listCardProgress} = this.props;
         let {match: {params}} = this.props;
-
+        let {isJustDoExam} = this.state;
         return (
             <Fragment>
                 <Helmet title={"Lesson"}/>
@@ -309,7 +373,9 @@ export class Exam extends React.Component<Props, State, {}> {
                                     </div>
                                 </div>
                             </div>
-                            <Button className="row btn-submit-exam" onClick={this.onSubmitExam}>
+                            <Button className="row btn-submit-exam"
+                                    disabled={isJustDoExam}
+                                    onClick={this.onSubmitExam}>
                                 Nộp bài
                             </Button>
                         </div>
