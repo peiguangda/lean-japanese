@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Fragment} from "react";
 import {Helmet} from "react-helmet";
-import {BackTop,message, Button, Card, Icon, Input, Layout, PageHeader, Popover, Tabs, Upload} from 'antd';
+import {BackTop, Button, Card, Icon, Input, Layout, message, PageHeader, Popover, Tabs, Upload} from 'antd';
 import {LessonEntity} from "../../../common/types/lesson";
 import {Loader} from "../../loader/components/loader";
 import {ApiEntity} from "../../../common/types";
@@ -12,8 +12,7 @@ import {ListLessonHeader} from "./ListLessonHeader";
 import {LessonDetailTab} from "./LessonDetailTab";
 import {CardProgressEntity} from "../../../common/types/card_progress";
 // var Excel = require('exceljs');
-import Excel from "exceljs/dist/es5/exceljs.browser";
-import * as XLSX from 'xlsx';
+import * as xlsx from 'xlsx';
 
 const TabPane = Tabs.TabPane;
 
@@ -107,36 +106,21 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     }
 
     public handleChange = (info) => {
-        console.log("info",info);
-        /* set up XMLHttpRequest */
-        // var url = "goi_n1_1.xlsx";
-        // var oReq = new XMLHttpRequest();
-        // oReq.open("GET", url, true);
-        // oReq.responseType = "arraybuffer";
-
-        // oReq.onload = function(e) {
-        // var arraybuffer = oReq.response;
-
-        // /* convert data to binary string */
-        // var data = new Uint8Array(arraybuffer);
-        // var arr = new Array();
-        // for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-        // var bstr = arr.join("");
-        var workbook = XLSX.readFile('goi_n1_1.xlsx');
-        var sheet_name_list = workbook.SheetNames;
-        console.log("aa",XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]));
-
-        /* Call XLSX */
-        //var workbook = XLSX.read(bstr, {type:"binary"});
-
-        /* DO SOMETHING WITH workbook HERE */
-        var first_sheet_name = workbook.SheetNames[0];
-        /* Get worksheet */
-        var worksheet = workbook.Sheets[first_sheet_name];
-        console.log(XLSX.utils.sheet_to_json(worksheet,{raw:true}));
-        
-
-        //oReq.send();
+        console.log("info", info);
+        const reader = new FileReader();
+        reader.onload = (evt) => { //evt = on_file_select event
+            /* Parse data */
+            const bstr = evt.target.result;
+            const wb = xlsx.read(bstr, {type: 'binary'});
+            /* Get first worksheet */
+            const wsname = wb.SheetNames[0];
+            const ws = wb.Sheets[wsname];
+            /* Convert array of arrays */
+            const data = xlsx.utils.sheet_to_json(ws, {header: 1});
+            /* Update state */
+            console.log("Data>>>" + data);
+        };
+        reader.readAsBinaryString(info.file.originFileObj);
     };
 
     constructor(props) {
@@ -171,15 +155,15 @@ export class LessonDetail extends React.Component<Props, State, {}> {
             hỏi</Fragment>;
         const question_info_button = <Fragment>
             <Upload
-                                        className=" p-1 m-1"
-                                        showUploadList={false}
-                                        beforeUpload={this.beforeUpload}
-                                        onChange={this.handleChange}
-                                    >
-                                        <Button>
-                                            <Icon type="upload" />Tạo từ file
-                                        </Button>
-                                    </Upload>
+                className=" p-1 m-1"
+                showUploadList={false}
+                beforeUpload={this.beforeUpload}
+                onChange={this.handleChange}
+            >
+                <Button>
+                    <Icon type="upload"/>Tạo từ file
+                </Button>
+            </Upload>
             <Button className=" p-1 m-1" icon="plus" onClick={this.handleClickCreateQuestion}>Tạo câu hỏi</Button>
             <Button className=" p-1 m-1">Sửa tất cả</Button>
             <Popover placement="bottomRight" content={content} trigger="click">
@@ -202,7 +186,8 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                       history={this.props.props.history}/>
                     <div className="row">
                         {/*-------------------------Lesson detail tab pane-------------------------*/}
-                        <LessonDetailTab lesson={lesson} props={props} listCardProgress={listCardProgress} isJustDoExam={isJustDoExam}/>
+                        <LessonDetailTab lesson={lesson} props={props} listCardProgress={listCardProgress}
+                                         isJustDoExam={isJustDoExam}/>
                     </div>
                     <div className="row">
                         <Card
