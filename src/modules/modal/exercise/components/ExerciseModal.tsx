@@ -182,3 +182,4 @@ export class ExerciseModal extends React.Component<Props, State, {}> {
         );
     }
 }
+
