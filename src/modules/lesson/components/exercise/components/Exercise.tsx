@@ -50,7 +50,7 @@ export class Exercise extends React.Component<Props, State, {}> {
                     {`Câu ${index + 1} : ${exercise.front_text}`}
                 </div>
                 <div className="col-md-5 mt-3 ml-3">
-                    <p className={`row color_blue`}>・{exercise.back_text}</p>
+                    {exercise.back_text != "" && <p className={`row color_blue`}>・{exercise.back_text}</p>}
                     {exercise.list_answer ? this.showListAnswer() : ""}
                 </div>
 
