@@ -304,7 +304,8 @@ body {
   right: 19px; }
 
 .home_layout {
-  margin-top: 3%; }
+  margin-top: 3%;
+  min-height: 500px; }
 
 .customPanelStyle {
   border-radius: 4px;

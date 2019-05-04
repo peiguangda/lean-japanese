@@ -63,7 +63,7 @@ export interface State {
 }
 
 export class Exercise implements ExerciseEntity {
-    actionType?: string;    
+    actionType?: string;
     id: string;
     user_id: number;
     course_id: number;
@@ -77,16 +77,17 @@ export class Exercise implements ExerciseEntity {
     shuffle_answer: number;
     front_text: string = "";
     front_image: string = "";
-    front_sound: string= "";
-    front_hint: string= "";
-    back_text: string= "";
-    back_image: string= "";
-    back_sound: string= "";
+    front_sound: string = "";
+    front_hint: string = "";
+    back_text: string = "";
+    back_image: string = "";
+    back_sound: string = "";
     back_hint: string = "";
     list_answer: string[] = [];
     list_correct_answer: number[] = [];
-    constructor() {  
-     } 
+
+    constructor() {
+    }
 }
 
 export class LessonDetail extends React.Component<Props, State, {}> {
@@ -134,67 +135,61 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     }
 
     public handleChange = (info) => {
-        var list_exercise = [];
-        console.log("info", info);
-        const reader = new FileReader();
-        reader.onload = (evt) => { //evt = on_file_select event
-            /* Parse data */
-            const bstr = evt.target.result;
-            const wb = xlsx.read(bstr, {type: 'binary'});
-            /* Get first worksheet */
-            const wsname = wb.SheetNames[0];
-            const ws = wb.Sheets[wsname];
-            /* Convert array of arrays */
-            const data = xlsx.utils.sheet_to_json(ws, {header: 1});
-            // console.log("Data>>>" + JSON.stringify(data));
-            for (var row in data){
-                var row_val = data[row];
-                // console.log("Data>>>" + JSON.stringify(row_val));
-                var question: Exercise = new Exercise();
-                var is_question = false;
-                for (var col in row_val){
-                    if (row_val[col] == "" || row_val[col] == "Question")
-                        break;
-                    // console.log(row_val[col].startsWith('#.'));
-                    // console.log(row_val[col]);
-                    if (row_val[col].startsWith('#.')){
-                        question.front_text = row_val[col].slice(2);
-                        is_question = true;
-                        console.log(question.front_text);
-
+        if (info.file.status === 'error') {
+            var list_exercise = [];
+            const reader = new FileReader();
+            reader.onload = (evt) => { //evt = on_file_select event
+                /* Parse data */
+                const bstr = evt.target.result;
+                const wb = xlsx.read(bstr, {type: 'binary'});
+                /* Get first worksheet */
+                const wsname = wb.SheetNames[0];
+                const ws = wb.Sheets[wsname];
+                /* Convert array of arrays */
+                const data = xlsx.utils.sheet_to_json(ws, {header: 1});
+                for (var row in data) {
+                    var row_val = data[row];
+                    var question: Exercise = new Exercise();
+                    var is_question = false;
+                    for (var col in row_val) {
+                        if (row_val[col] == "" || row_val[col] == "Question")
+                            break;
+                        if (row_val[col].startsWith('#.')) {
+                            question.front_text = row_val[col].slice(2);
+                            is_question = true;
+                        }
+                        else if (row_val[col].startsWith("$."))
+                            question.back_text = row_val[col].slice(2);
+                        else if (row_val[col].startsWith("$b."))
+                            question.back_hint = row_val[col].slice(3);
+                        else if (row_val[col].startsWith("#"))
+                            question.front_image = row_val[col].slice(1);
+                        else if (row_val[col].startsWith("#s."))
+                            question.front_sound = row_val[col].slice(3);
+                        else
+                            question.list_answer.push(row_val[col]);
                     }
-                    else if (row_val[col].startsWith("$."))
-                        question.back_text = row_val[col].slice(2);
-                    else if (row_val[col].startsWith("$b."))
-                        question.back_hint = row_val[col].slice(3);
-                    else if (row_val[col].startsWith("#"))
-                        question.front_image = row_val[col].slice(1);
-                    else if (row_val[col].startsWith("#s."))
-                        question.front_sound = row_val[col].slice(3);
-                    else
-                        question.list_answer.push(row_val[col]);
-                }
-                if (is_question == true){
-                    for (var i = 0; i <  question.list_answer.length; i++){
-                        if (question.list_answer[i].startsWith("*.")){
-                            question.list_answer[i] = question.list_answer[i].slice(2);
-                            question.list_correct_answer.push(i);
+                    if (is_question == true) {
+                        for (var i = 0; i < question.list_answer.length; i++) {
+                            if (question.list_answer[i].startsWith("*.")) {
+                                question.list_answer[i] = question.list_answer[i].slice(2);
+                                question.list_correct_answer.push(i);
+                            }
                         }
                     }
+                    if (is_question) {
+                        list_exercise.push({...question, topic_id: this.props.match.params.id});
+                    }
                 }
-                
-                if (is_question)
-                    console.log(JSON.stringify("question:" + question.front_text));
-                    console.log(JSON.stringify("answers:"+question.list_answer));
-                    console.log(JSON.stringify("correct answers:"+question.list_correct_answer));
-
-                    list_exercise.push(question);
-                
-            }
-            /* Update state */
-            // console.log("Data>>>" + JSON.stringify(data));
-        };
-        reader.readAsBinaryString(info.file.originFileObj);
+                /* Update state */
+                this.props.createExercise(list_exercise)
+                    .then(res => {
+                        if (res && res.status == "success") message.success("Tạo bài học từ thành công!");
+                        else message.error("Xảy ra lỗi!");
+                    });
+            };
+            reader.readAsBinaryString(info.file.originFileObj);
+        }
     };
 
     constructor(props) {
