@@ -320,7 +320,10 @@ export class Exam extends React.Component<Props, State, {}> {
 
     componentWillMount() {
         let {props} = this.props;
-        this.props.fetchListExercise({topic_id: props.match.params.id});
+        this.props.fetchListExercise({
+            topic_id: props.match.params.id,
+            setting_number_question_for_exam: localStorage.getItem("setting_number_question_for_exam")
+        });
         this.props.fetchListCardProgress({topic_id: props.match.params.id});
     }
 

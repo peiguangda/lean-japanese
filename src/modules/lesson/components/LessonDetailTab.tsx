@@ -54,9 +54,6 @@ const dataSource = [{
 
 const Option = Select.Option;
 
-function handleChange(value) {
-}
-
 export interface Props {
     lesson: LessonEntity;
     props: any;
@@ -66,14 +63,27 @@ export interface Props {
 
 export interface State {
     crosshairValues: Array<any>;
+    setting_number_question_for_exam: number;
 }
 
 export class LessonDetailTab extends React.Component<Props, State, {}> {
     constructor(props) {
         super(props);
         this.state = {
-            crosshairValues: []
+            crosshairValues: [],
+            setting_number_question_for_exam: 40
         };
+        localStorage.setItem("setting_number_question_for_exam", "40");
+    }
+
+    public handleChangeSettingNumQues = (value) => {
+        this.setState({
+            setting_number_question_for_exam: value
+        })
+        localStorage.setItem("setting_number_question_for_exam", value);
+    }
+
+    public handleChange = (value) => {
     }
 
     componentWillMount() {
@@ -81,6 +91,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
 
     public render() {
         let {lesson, props, listCardProgress, isJustDoExam} = this.props;
+        let {setting_number_question_for_exam} = this.state;
         listCardProgress = toArray(listCardProgress);
         let count = (number) => {
             let countNum = 0;
@@ -216,12 +227,13 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                             </div>
                             <div className="row-info-panel row">
                                 <label className="col-md-6">Số câu hỏi mỗi lần</label>
-                                <Select defaultValue="40 câu" style={{width: 90}} onChange={handleChange}
+                                <Select defaultValue="40" value={setting_number_question_for_exam} style={{width: 90}}
+                                        onChange={this.handleChangeSettingNumQues}
                                         className="col-md-5 float-left">
-                                    <Option value="40 câu">40 câu</Option>
-                                    <Option value="30 câu">30 câu</Option>
-                                    <Option value="20 câu">20 câu</Option>
-                                    <Option value="10 câu">10 câu</Option>
+                                    <Option value="40">40 câu</Option>
+                                    <Option value="30">30 câu</Option>
+                                    <Option value="20">20 câu</Option>
+                                    <Option value="10">10 câu</Option>
                                 </Select>
                             </div>
                             <div className="row-info-panel row">
@@ -234,7 +246,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                             </div>
                             <div className="row-info-panel row">
                                 <label className="col-md-6">Hiện đáp án</label>
-                                <Select defaultValue="Hiện đáp án" style={{width: 130}} onChange={handleChange}
+                                <Select defaultValue="Hiện đáp án" style={{width: 130}} onChange={this.handleChange}
                                         className="col-md-5 float-left">
                                     <Option value="Hiện đáp án">Hiện đáp án</Option>
                                     <Option value="Để sau">Để sau</Option>
@@ -251,7 +263,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                     Làm bài
                                 </Button>
                                 <Select defaultValue="Số câu hỏi(40)" style={{width: 140}}
-                                        onChange={handleChange} className="col-md-5 float-left">
+                                        onChange={this.handleChange} className="col-md-5 float-left">
                                     <Option value="0">Số câu hỏi(40)</Option>
                                     <Option value="1">Số câu hỏi(40)</Option>
                                     <Option value="2">Câu trả lời(0)</Option>
