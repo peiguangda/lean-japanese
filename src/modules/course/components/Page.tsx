@@ -25,6 +25,7 @@ import {NavigationBarContainter} from "../../navigation_bar/container";
 import {CourseEntity} from "../../../common/types/course";
 import {ListLessonContainter} from "./lesson/container";
 import {ListMemberContainter} from "./list_member/container";
+import {UserCourseEntity} from "../../../common/types/user_course";
 
 
 const TabPane = Tabs.TabPane;
@@ -125,8 +126,14 @@ export interface Props {
     props: any,
     course: CourseEntity;
     params: any;
+    match: any;
+    userCourse: UserCourseEntity;
 
     fetchCourse(parameters): void;
+
+    getUserCourse(parameters): void;
+
+    getProfile(parameters): Promise<any>;
 }
 
 export interface State {
@@ -185,9 +192,12 @@ export class CourseDetail extends React.Component<Props, State, {}> {
         super(props);
     }
 
-    public componentWillMount() {
+    public async componentWillMount() {
+        let user;
+        user = await this.props.getProfile({});
         const {params} = this.props.props.match;
         this.props.fetchCourse(params); // get course detail
+        this.props.getUserCourse({user_id: user.data.id, course_id: this.props.match.params.id});
     }
 
     public callback(key) {
@@ -195,7 +205,8 @@ export class CourseDetail extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {api, props, course} = this.props;
+        let {api, props, course, userCourse} = this.props;
+        console.log("usercousre", userCourse);
         return (
             <Fragment>
                 <Helmet title={"Course"}/>

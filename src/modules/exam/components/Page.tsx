@@ -11,6 +11,7 @@ import {convert, toArray} from "../../../helpers/Function";
 import {remove} from 'lodash';
 import {CardProgressEntity} from "../../../common/types/card_progress";
 import {getCookie, setCookie} from "../../../helpers/Cookie.js"
+import {UserCourseEntity} from "../../../common/types/user_course";
 
 const confirm = Modal.confirm;
 
@@ -42,18 +43,24 @@ export interface Props {
     api: ApiEntity;
     listExercise: Array<ExerciseEntity>;
     listCardProgress: Array<CardProgressEntity>;
+    userCourse: UserCourseEntity;
 
     fetchListExercise(parameters): void;
 
     fetchListCardProgress(parameters): void;
 
     editCardProgress(parameters): Promise<any>;
+
+    getUserCourse(parameters): void;
+
+    getProfile(parameters): Promise<any>;
 }
 
 export interface State {
     value: number;
     listChoose: Array<any>;
     isJustDoExam: boolean;
+    isShuffled: boolean;
 }
 
 export class Exam extends React.Component<Props, State, {}> {
@@ -93,35 +100,46 @@ export class Exam extends React.Component<Props, State, {}> {
 
     public showListQuestion = () => {
         let {listExercise, props} = this.props;
-        let {listChoose, isJustDoExam} = this.state;
-        listExercise = isJustDoExam ? JSON.parse(getCookie("listExercise")) : listExercise;
+        let {listChoose, isJustDoExam, isShuffled} = this.state;
+        listExercise = isJustDoExam ? JSON.parse(localStorage.getItem("listExercise")) : listExercise;
         listExercise = convert(listExercise);
         let lengthExercise = listExercise.length;
         if (listExercise && listExercise.length) {
             return listExercise.map((ex, index) => {
                 //doi vi tri dap an
+                let list_answer_prev;
                 if (ex.back_text) {
-                    let list_answer_prev;
                     ex.list_answer.push(ex.back_text);
                     ex.list_correct_answer.push(ex.list_answer.length - 1);
                     ex.back_text = null;
-                    //review ko dc dao dap an
-                    if (!isJustDoExam) {
-                        list_answer_prev = [...ex.list_answer]; //copy index trc khi dao dap an
-                        this.shuffle(ex.list_answer);      //dao dap an
-                        //so sanh index sau khi dao vs trc khi dao, merge vao index list dap an dung
-                        list_answer_prev.map((element_prev, index) => {
-                            ex.list_answer.map((element_next, key) => {
-                                if (element_prev == element_next) {
-                                    let position = ex.list_correct_answer.indexOf(index);
-                                    if (position > -1) {
-                                        //index dap an dung = current_index + index sau khi dao - index trc khi dao
-                                        ex.list_correct_answer[position] = ex.list_correct_answer[position] + key - index;
-                                    }
+                    console.log("push backtext to list answer");
+                }
+                //review ko dc dao dap an
+                if (!isJustDoExam && !isShuffled) {
+                    console.log("dao dap an");
+                    list_answer_prev = [...ex.list_answer]; //copy index trc khi dao dap an
+                    this.shuffle(ex.list_answer);      //dao dap an
+                    //so sanh index sau khi dao vs trc khi dao, merge vao index list dap an dung
+                    list_answer_prev.map((element_prev, index) => {
+                        ex.list_answer.map((element_next, key) => {
+                            // console.log("element_prev", element_prev);
+                            // console.log("element_next", element_next);
+                            // console.log("element_prev == element_next", element_prev == element_next);
+                            if (element_prev == element_next) {
+                                let position = ex.list_correct_answer.indexOf(index);
+                                // console.log("position", position);
+                                // console.log("index", index);
+                                // console.log("key", key);
+                                if (position > -1 && key > index) {
+                                    //index dap an dung = current_index + index sau khi dao - index trc khi dao
+                                    ex.list_correct_answer[position] = ex.list_correct_answer[position] + key - index;
                                 }
-                            })
+                            }
                         })
-                    }
+                    })
+                    this.setState({
+                        isShuffled: true
+                    })
                 }
                 //truyen list answer da chon vao de show cau hoi
                 let objectAnswer = listChoose.find(object => object.index === index);
@@ -192,7 +210,7 @@ export class Exam extends React.Component<Props, State, {}> {
     public showListAnswer = () => {
         let {listChoose, isJustDoExam} = this.state;
         let {listExercise, props} = this.props;
-        listExercise = isJustDoExam ? JSON.parse(getCookie("listExercise")) : listExercise;
+        listExercise = isJustDoExam ? JSON.parse(localStorage.getItem("listExercise")) : listExercise;
         listExercise = convert(listExercise);
         if (listExercise && listExercise.length) {
             return listExercise.map((ex, index) => {
@@ -298,7 +316,7 @@ export class Exam extends React.Component<Props, State, {}> {
                     .then(res => {
                         //redirect to trang lesson detail
                         localStorage.setItem("isJustDoExam", "TRUE");
-                        setCookie("listExercise", listExercise);
+                        localStorage.setItem("listExercise", JSON.stringify(listExercise));
                         setCookie("listChoose", listChoose);
                         props.history.push(`/lesson/${props.match.params.id}`);
                     });
@@ -307,6 +325,7 @@ export class Exam extends React.Component<Props, State, {}> {
                 console.log('Cancel');
             },
         });
+        setCookie("listExercise", listExercise);
     }
 
     constructor(props) {
@@ -314,16 +333,21 @@ export class Exam extends React.Component<Props, State, {}> {
         this.state = {
             value: 1,
             listChoose: (localStorage.getItem("isJustDoExam") == "TRUE") ? convert(JSON.parse(getCookie("listChoose"))) : [],
-            isJustDoExam: (localStorage.getItem("isJustDoExam") == "TRUE") ? true : false
+            isJustDoExam: (localStorage.getItem("isJustDoExam") == "TRUE") ? true : false,
+            isShuffled: false
         }
     }
 
-    componentWillMount() {
+    async componentWillMount() {
         let {props} = this.props;
-        this.props.fetchListExercise({
+        let user, exList;
+        user = await this.props.getProfile({});
+        exList = await this.props.fetchListExercise({
             topic_id: props.match.params.id,
             setting_number_question_for_exam: localStorage.getItem("setting_number_question_for_exam")
         });
+        console.log("exList", exList);
+        this.props.getUserCourse({user_id: user.data.id, course_id: exList.data[0].course_id});
         this.props.fetchListCardProgress({topic_id: props.match.params.id});
     }
 
@@ -335,9 +359,10 @@ export class Exam extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {api, props, listExercise, listCardProgress} = this.props;
+        let {api, props, listExercise, listCardProgress, userCourse} = this.props;
         let {match: {params}} = this.props;
         let {isJustDoExam} = this.state;
+        console.log("userCourse", userCourse);
         return (
             <Fragment>
                 <Helmet title={"Lesson"}/>
