@@ -14,6 +14,7 @@ import {LessonDetailTab} from "./LessonDetailTab";
 import {CardProgressEntity} from "../../../common/types/card_progress";
 // var Excel = require('exceljs');
 import * as xlsx from 'xlsx';
+import {UserCourseEntity} from "../../../common/types/user_course";
 
 const TabPane = Tabs.TabPane;
 
@@ -59,6 +60,7 @@ export interface Props {
     api: ApiEntity;
     listLesson: Array<LessonEntity>;
     listCardProgress: Array<CardProgressEntity>;
+    userCourse: UserCourseEntity;
 
     fetchLesson(parameters): Promise<any>;
 
@@ -67,6 +69,10 @@ export interface Props {
     fetchListLesson(parameters): void;
 
     fetchListCardProgress(parameters): void;
+
+    getUserCourse(parameters): void;
+
+    getProfile(parameters): Promise<any>;
 }
 
 export interface State {
@@ -106,15 +112,19 @@ export class Exercise implements ExerciseEntity {
 }
 
 export class LessonDetail extends React.Component<Props, State, {}> {
-    public initLesson = (id) => {
+    public async initLesson(id) {
+        let user, lesson;
+        user = await this.props.getProfile({});
         this.props.fetchLesson({id: id})
             .then(res => {
                 if (res && res.status == "success") {
-                    let lesson = res.data;
+                    lesson = res.data;
+                    this.props.getUserCourse({user_id: user.data.id, course_id: lesson.course_id});
                     this.props.fetchListLesson({course_id: lesson.course_id, parent_id: lesson.parent_id});
                 }
             })
     }
+
     public changeLesson = (id) => {
         this.initLesson(id);
     }
@@ -218,7 +228,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         let {props} = this.props;
         this.initLesson(this.props.match.params.id);
         this.props.fetchListCardProgress({topic_id: props.match.params.id});
@@ -241,9 +251,10 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {lesson, api, listLesson, props, listCardProgress} = this.props;
+        let {lesson, api, listLesson, props, listCardProgress, userCourse} = this.props;
         let {match: {params}} = this.props;
         let {visible, isJustDoExam} = this.state;
+        console.log("userCourse", userCourse);
         const content = (
             <div>
                 <Button type="link" className="JLC" onClick={() => this.setModal2Visible(true)}>Setting</Button>

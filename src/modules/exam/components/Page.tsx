@@ -11,6 +11,7 @@ import {convert, toArray} from "../../../helpers/Function";
 import {remove} from 'lodash';
 import {CardProgressEntity} from "../../../common/types/card_progress";
 import {getCookie, setCookie} from "../../../helpers/Cookie.js"
+import {UserCourseEntity} from "../../../common/types/user_course";
 
 const confirm = Modal.confirm;
 
@@ -42,12 +43,17 @@ export interface Props {
     api: ApiEntity;
     listExercise: Array<ExerciseEntity>;
     listCardProgress: Array<CardProgressEntity>;
+    userCourse: UserCourseEntity;
 
     fetchListExercise(parameters): void;
 
     fetchListCardProgress(parameters): void;
 
     editCardProgress(parameters): Promise<any>;
+
+    getUserCourse(parameters): void;
+
+    getProfile(parameters): Promise<any>;
 }
 
 export interface State {
@@ -332,12 +338,16 @@ export class Exam extends React.Component<Props, State, {}> {
         }
     }
 
-    componentWillMount() {
+    async componentWillMount() {
         let {props} = this.props;
-        this.props.fetchListExercise({
+        let user, exList;
+        user = await this.props.getProfile({});
+        exList = await this.props.fetchListExercise({
             topic_id: props.match.params.id,
             setting_number_question_for_exam: localStorage.getItem("setting_number_question_for_exam")
         });
+        console.log("exList", exList);
+        this.props.getUserCourse({user_id: user.data.id, course_id: exList.data[0].course_id});
         this.props.fetchListCardProgress({topic_id: props.match.params.id});
     }
 
@@ -349,9 +359,10 @@ export class Exam extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {api, props, listExercise, listCardProgress} = this.props;
+        let {api, props, listExercise, listCardProgress, userCourse} = this.props;
         let {match: {params}} = this.props;
         let {isJustDoExam} = this.state;
+        console.log("userCourse", userCourse);
         return (
             <Fragment>
                 <Helmet title={"Lesson"}/>
