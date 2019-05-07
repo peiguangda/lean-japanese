@@ -602,3 +602,38 @@ element.style {
     height: 100%;
     text-align: center;
 }
+.set_hint {
+
+    width: 98%;
+    margin: 0% 2% 0% 2%;
+    border-bottom: 1px solid;
+}
+.set_hint_td{
+   text-align: left;
+    width: 5%;
+    vertical-align: top;
+}
+.gwt-HTML {
+    padding: 0 0px;
+}
+.set_hint_color{
+    font-weight: bold;
+    color:red;
+}
+.set_hint_td_text{
+    text-align: left;
+     width: 80%;
+     vertical-align: top;
+}
+
+.JLC {
+    padding: 5px;
+    background-color: transparent;
+    border: none;
+    width: 90%;
+    border-bottom: 1px solid #cdcdcd;
+    margin: 2px 0;
+}
+.set_text{
+    text-align: center;
+}
