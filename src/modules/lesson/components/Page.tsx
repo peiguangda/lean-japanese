@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Fragment} from "react";
 import {Helmet} from "react-helmet";
-import {BackTop, Button, Card, Icon, Input, Layout, message, PageHeader, Popover, Tabs, Upload} from 'antd';
+import {BackTop, Button, Modal, Card,Menu, Dropdown, Icon, Input, Layout, message, PageHeader, Popover, Tabs, Upload} from 'antd';
 import {LessonEntity} from "../../../common/types/lesson";
 import {ExerciseEntity} from "../../../common/types/exercise";
 import {Loader} from "../../loader/components/loader";
@@ -38,6 +38,18 @@ const routes = [
     },
 ];
 
+function handleMenuClick(e) {
+    console.log('click', e);
+}
+
+const menu = (
+  <Menu onClick={handleMenuClick}>
+    <Menu.Item key="1">10 câu</Menu.Item>
+    <Menu.Item key="2">20 câu</Menu.Item>
+    <Menu.Item key="3">30 câu</Menu.Item>
+  </Menu>
+);
+
 export interface Props {
     match: any;
     params: any;
@@ -60,6 +72,9 @@ export interface Props {
 export interface State {
     visible: boolean;
     isJustDoExam: boolean;
+    modal1Visible: false,
+    modal2Visible: false,
+    modal3Visible: false,
 }
 
 export class Exercise implements ExerciseEntity {
@@ -196,7 +211,10 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         super(props);
         this.state = {
             visible: false,
-            isJustDoExam: false
+            isJustDoExam: false,
+            modal1Visible: false,
+            modal2Visible: false,
+            modal3Visible: false,
         }
     }
 
@@ -210,19 +228,199 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         })
     }
 
+    setModal1Visible(modal1Visible) {
+        this.setState({ modal1Visible });
+    }
+    
+    setModal2Visible(modal2Visible) {
+        this.setState({ modal2Visible });
+    }
+
+    setModal3Visible(modal3Visible) {
+        this.setState({ modal3Visible });
+    }
+
     public render() {
         let {lesson, api, listLesson, props, listCardProgress} = this.props;
         let {match: {params}} = this.props;
         let {visible, isJustDoExam} = this.state;
         const content = (
             <div>
-                <p>Content</p>
-                <p>Content</p>
+                <Button type="link" className="JLC" onClick={() => this.setModal2Visible(true)}>Setting</Button>
+                <Modal
+                    className="set_text"
+                    title="Cài Đặt Game"
+                    visible={this.state.modal2Visible}
+                    onOk={() => this.setModal2Visible(false)}
+                    onCancel={() => this.setModal2Visible(false)}
+                >
+                    <div>
+                        <tr>
+                            <td className="col-6">Số câu hỏi cho mỗi lần luyện tập</td>
+                            <td className='col-6'>
+                                <Dropdown overlay={menu}>
+                                    <Button>
+                                        Tất cả <Icon type="down" />
+                                    </Button>
+                                </Dropdown>
+                            </td>
+                        </tr>
+                    </div>
+                </Modal> 
+                <br></br>
+                <Button type="link" className="JLC" onClick={() => this.setModal3Visible(true)}>Xuất câu hỏi</Button>
+                <Modal
+                    className="set_text"
+                    title="Câu Hỏi"
+                    visible={this.state.modal3Visible}
+                    onOk={() => this.setModal3Visible(false)}
+                    onCancel={() => this.setModal3Visible(false)}
+                >
+                </Modal>
             </div>
         );
         const question_info = <Fragment><Icon type="question-circle" theme="twoTone" twoToneColor="#eb2f96"/>Câu
             hỏi</Fragment>;
         const question_info_button = <Fragment>
+            <Button type="dashed" shape="circle" icon="question" onClick={() => this.setModal1Visible(true)} ></Button>
+            <Modal
+                className="set_text"
+                title="Các ký hiệu cần nhớ để format."
+                visible={this.state.modal1Visible}
+                onOk={() => this.setModal1Visible(false)}
+                onCancel={() => this.setModal1Visible(false)}
+                >
+                    <div>
+                        <table className="set_hint">
+                        <tbody>
+                            <tr>
+                                <td className="set_hint_td">
+                                    <div className="gwt-HTML">
+                                        <strong className="set_hint_color">#.</strong>
+                                    </div>
+                                </td>
+                                <td className="set_hint_td_text">
+                                    <div className="gwt-HTML">
+                                        Trước mỗi câu hỏi
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        <table className="set_hint">
+                        <tbody>
+                            <tr>
+                                <td className="set_hint_td">
+                                    <div className="gwt-HTML">
+                                        <strong className="set_hint_color">*.</strong>
+                                    </div>
+                                </td>
+                                <td className="set_hint_td_text">
+                                    <div className="gwt-HTML">
+                                    Trước mỗi đáp án đúng
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        <table className="set_hint">
+                        <tbody>
+                            <tr>
+                                <td className="set_hint_td">
+                                    <div className="gwt-HTML">
+                                        <strong className="set_hint_color">$.</strong>
+                                    </div>
+                                </td>
+                                <td className="set_hint_td_text">
+                                    <div className="gwt-HTML">
+                                    Trước câu ví dụ hoặc giải thích cho câu hỏi
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        <table className="set_hint">
+                        <tbody>
+                            <tr>
+                                <td className="set_hint_td">
+                                    <div className="gwt-HTML">
+                                        <strong className="set_hint_color">$b.</strong>
+                                    </div>
+                                </td>
+                                <td className="set_hint_td_text">
+                                    <div className="gwt-HTML">
+                                    Trước giải thích cho đáp án
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        <table className="set_hint">
+                        <tbody>
+                            <tr>
+                                <td className="set_hint_td">
+                                    <div className="gwt-HTML">
+                                        <strong className="set_hint_color">#p.</strong>
+                                    </div>
+                                </td>
+                                <td className="set_hint_td_text">
+                                    <div className="gwt-HTML">
+                                    Trước mỗi đoạn paragraph
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        <table className="set_hint">
+                        <tbody>
+                            <tr>
+                                <td className="set_hint_td">
+                                    <div className="gwt-HTML">
+                                        <strong className="set_hint_color">#</strong>
+                                    </div>
+                                </td>
+                                <td className="set_hint_td_text">
+                                    <div className="gwt-HTML">
+                                        Trước mỗi hình ảnh
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        <table className="set_hint">
+                        <tbody>
+                            <tr>
+                                <td className="set_hint_td">
+                                    <div className="gwt-HTML">
+                                        <strong className="set_hint_color">#s.</strong>
+                                    </div>
+                                </td>
+                                <td className="set_hint_td_text">
+                                    <div className="gwt-HTML">
+                                    Trước mỗi file sound
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        <table className="set_hint">
+                        <tbody>
+                            <tr>
+                                <td className="set_hint_td">
+                                    <div className="gwt-HTML">
+                                        <strong className="set_hint_color"></strong>
+                                    </div>
+                                </td>
+                                <td className="set_hint_td_text">
+                                    <div className="gwt-HTML">
+                                    Đáp án sai thì ko có ký tự
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+            </Modal>
             <Upload
                 className=" p-1 m-1"
                 showUploadList={false}
