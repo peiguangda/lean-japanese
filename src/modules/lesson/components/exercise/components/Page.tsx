@@ -4,11 +4,13 @@ import {ExerciseEntity} from "../../../../../common/types/exercise";
 import {message} from "antd";
 import {convert} from "../../../../../helpers/Function";
 import {ExerciseEditModal} from "../../../../modal/exercise/components/ExerciseEditModal";
+import {UserCourseEntity} from "../../../../../common/types/user_course";
 
 export interface Props {
     listExercise: ExerciseEntity[];
     props: any;
     params: any;
+    userCourse: UserCourseEntity;
 
     fetchListExercise(parameters): void;
 
@@ -20,6 +22,7 @@ export interface Props {
 export interface State {
     visible: boolean
     editExercise: ExerciseEntity;
+    admin: boolean;
 }
 
 export class ListExercise extends React.Component<Props, State, {}> {
@@ -73,6 +76,7 @@ export class ListExercise extends React.Component<Props, State, {}> {
         super(props);
         this.state = {
             visible: false,
+            admin: this.props.userCourse[0] && this.props.userCourse[0].role_type == 1 ? true : false,
             editExercise: new class implements ExerciseEntity {
                 actionType: string;
                 back_hint: string;
@@ -109,6 +113,9 @@ export class ListExercise extends React.Component<Props, State, {}> {
         let {props} = this.props;
         if (nextProps.params.id != props.params.id)
             this.props.fetchListExercise({topic_id: nextProps.params.id});
+        this.setState({
+            admin: nextProps.userCourse[0] && nextProps.userCourse[0].role_type == 1 ? true : false
+        })
     }
 
     public render() {

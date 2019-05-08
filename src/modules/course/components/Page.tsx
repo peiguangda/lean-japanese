@@ -137,6 +137,8 @@ export interface Props {
 }
 
 export interface State {
+    admin: boolean;
+    visible: boolean;
 }
 
 const routes = [
@@ -174,8 +176,6 @@ const props = {
 
 export class CourseDetail extends React.Component<Props, State, {}> {
 
-    state = {visible: false};
-
     showModal = () => {
         this.setState({
             visible: true,
@@ -190,6 +190,10 @@ export class CourseDetail extends React.Component<Props, State, {}> {
 
     constructor(props) {
         super(props);
+        this.state = {
+            admin: this.props.userCourse[0] && this.props.userCourse[0].role_type == 1 ? true : false,
+            visible: false
+        }
     }
 
     public async componentWillMount() {
@@ -200,13 +204,19 @@ export class CourseDetail extends React.Component<Props, State, {}> {
         this.props.getUserCourse({user_id: user.data.id, course_id: this.props.match.params.id});
     }
 
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        this.setState({
+            admin: nextProps.userCourse[0] && nextProps.userCourse[0].role_type == 1 ? true : false
+        })
+    }
+
     public callback(key) {
         console.log(key);
     }
 
     public render() {
+        let {admin} = this.state;
         let {api, props, course, userCourse} = this.props;
-        console.log("usercousre", userCourse);
         return (
             <Fragment>
                 <Helmet title={"Course"}/>
@@ -249,7 +259,8 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                 {/*-------------------document-------------------------*/}
                                 <TabPane tab="Tài liệu" key="2">
                                     <Table columns={columns}/>
-                                    <Button type="primary" onClick={this.showModal} block>+Tải lên</Button>
+                                    {admin ?
+                                        <Button type="primary" onClick={this.showModal} block>+Tải lên</Button> : ""}
                                     <Modal
                                         className="title"
                                         title="Tải tài liệu"
@@ -407,6 +418,8 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                         <Icon type="pound" className="col-md-2"/>
                                         <p className="col-md-10">Học phí: {course.cost ? course.cost : 0}</p>
                                     </div>
+                                    {Object.keys(userCourse).length === 0 ?
+                                        <Button type="primary" className="row w-100 m-1">Tham gia</Button> : ""}
                                 </Card>
                             </div>
                             <div className="row mt-5">

@@ -1,7 +1,22 @@
 import * as React from "react";
 import {Fragment} from "react";
 import {Helmet} from "react-helmet";
-import {BackTop, Button, Modal, Card,Menu, Dropdown, Icon, Input, Layout, message, PageHeader, Popover, Tabs, Upload} from 'antd';
+import {
+    BackTop,
+    Button,
+    Card,
+    Dropdown,
+    Icon,
+    Input,
+    Layout,
+    Menu,
+    message,
+    Modal,
+    PageHeader,
+    Popover,
+    Tabs,
+    Upload
+} from 'antd';
 import {LessonEntity} from "../../../common/types/lesson";
 import {ExerciseEntity} from "../../../common/types/exercise";
 import {Loader} from "../../loader/components/loader";
@@ -44,11 +59,11 @@ function handleMenuClick(e) {
 }
 
 const menu = (
-  <Menu onClick={handleMenuClick}>
-    <Menu.Item key="1">10 câu</Menu.Item>
-    <Menu.Item key="2">20 câu</Menu.Item>
-    <Menu.Item key="3">30 câu</Menu.Item>
-  </Menu>
+    <Menu onClick={handleMenuClick}>
+        <Menu.Item key="1">10 câu</Menu.Item>
+        <Menu.Item key="2">20 câu</Menu.Item>
+        <Menu.Item key="3">30 câu</Menu.Item>
+    </Menu>
 );
 
 export interface Props {
@@ -78,9 +93,11 @@ export interface Props {
 export interface State {
     visible: boolean;
     isJustDoExam: boolean;
-    modal1Visible: false,
-    modal2Visible: false,
-    modal3Visible: false,
+    modal1Visible: boolean;
+    modal2Visible: boolean;
+    modal3Visible: boolean;
+    visible_submit_course: boolean;
+    admin: boolean;
 }
 
 export class Exercise implements ExerciseEntity {
@@ -113,13 +130,17 @@ export class Exercise implements ExerciseEntity {
 
 export class LessonDetail extends React.Component<Props, State, {}> {
     public async initLesson(id) {
-        let user, lesson;
+        let user, lesson, userCourse;
         user = await this.props.getProfile({});
         this.props.fetchLesson({id: id})
-            .then(res => {
+            .then(async res => {
                 if (res && res.status == "success") {
                     lesson = res.data;
-                    this.props.getUserCourse({user_id: user.data.id, course_id: lesson.course_id});
+                    userCourse = await this.props.getUserCourse({user_id: user.data.id, course_id: lesson.course_id});
+                    userCourse = userCourse.data;
+                    this.setState({
+                        visible_submit_course: Object.keys(userCourse).length == 0 ? true : false
+                    });
                     this.props.fetchListLesson({course_id: lesson.course_id, parent_id: lesson.parent_id});
                 }
             })
@@ -141,10 +162,18 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     public handleCancel = (e) => {
         this.closeModal();
     };
+    public handleCancelSubmitCourse = (e) => {
+        let {lesson} = this.props;
+        this.props.history.push(`/course/${lesson.course_id}`);
+        //di chuyen ve trang home
+    };
     public handleOk = (e) => {
         this.setState({
             visible: false,
         });
+    };
+    public handleOkSubmitCourse = (e) => {
+        console.log("dang ki khoa hoc");
     };
     private handleClickCreateQuestion = () => {
         this.showModal();
@@ -224,8 +253,16 @@ export class LessonDetail extends React.Component<Props, State, {}> {
             isJustDoExam: false,
             modal1Visible: false,
             modal2Visible: false,
+            visible_submit_course: false,
+            admin: this.props.userCourse[0] && this.props.userCourse[0].role_type == 1 ? true : false,
             modal3Visible: false,
         }
+    }
+
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        this.setState({
+            admin: nextProps.userCourse[0] && nextProps.userCourse[0].role_type == 1 ? true : false,
+        })
     }
 
     async componentDidMount() {
@@ -238,26 +275,25 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         })
     }
 
-    setModal1Visible(modal1Visible) {
-        this.setState({ modal1Visible });
-    }
-    
-    setModal2Visible(modal2Visible) {
-        this.setState({ modal2Visible });
+    public setModal1Visible = (modal1Visible) => {
+        this.setState({modal1Visible: modal1Visible});
     }
 
-    setModal3Visible(modal3Visible) {
-        this.setState({ modal3Visible });
+    public setModal2Visible = (modal2Visible) => {
+        this.setState({modal2Visible: modal2Visible});
+    }
+
+    public setModal3Visible = (modal3Visible) => {
+        this.setState({modal3Visible: modal3Visible});
     }
 
     public render() {
         let {lesson, api, listLesson, props, listCardProgress, userCourse} = this.props;
         let {match: {params}} = this.props;
-        let {visible, isJustDoExam} = this.state;
-        console.log("userCourse", userCourse);
+        let {visible, isJustDoExam, admin} = this.state;
         const content = (
             <div>
-                <Button type="link" className="JLC" onClick={() => this.setModal2Visible(true)}>Setting</Button>
+                <Button type="default" className="JLC" onClick={() => this.setModal2Visible(true)}>Setting</Button>
                 <Modal
                     className="set_text"
                     title="Cài Đặt Game"
@@ -271,15 +307,15 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                             <td className='col-6'>
                                 <Dropdown overlay={menu}>
                                     <Button>
-                                        Tất cả <Icon type="down" />
+                                        Tất cả <Icon type="down"/>
                                     </Button>
                                 </Dropdown>
                             </td>
                         </tr>
                     </div>
-                </Modal> 
+                </Modal>
                 <br></br>
-                <Button type="link" className="JLC" onClick={() => this.setModal3Visible(true)}>Xuất câu hỏi</Button>
+                <Button type="default" className="JLC" onClick={() => this.setModal3Visible(true)}>Xuất câu hỏi</Button>
                 <Modal
                     className="set_text"
                     title="Câu Hỏi"
@@ -293,144 +329,144 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         const question_info = <Fragment><Icon type="question-circle" theme="twoTone" twoToneColor="#eb2f96"/>Câu
             hỏi</Fragment>;
         const question_info_button = <Fragment>
-            <Button type="dashed" shape="circle" icon="question" onClick={() => this.setModal1Visible(true)} ></Button>
+            <Button type="dashed" shape="circle" icon="question" onClick={() => this.setModal1Visible(true)}></Button>
             <Modal
                 className="set_text"
                 title="Các ký hiệu cần nhớ để format."
                 visible={this.state.modal1Visible}
                 onOk={() => this.setModal1Visible(false)}
                 onCancel={() => this.setModal1Visible(false)}
-                >
-                    <div>
-                        <table className="set_hint">
+            >
+                <div>
+                    <table className="set_hint">
                         <tbody>
-                            <tr>
-                                <td className="set_hint_td">
-                                    <div className="gwt-HTML">
-                                        <strong className="set_hint_color">#.</strong>
-                                    </div>
-                                </td>
-                                <td className="set_hint_td_text">
-                                    <div className="gwt-HTML">
-                                        Trước mỗi câu hỏi
-                                    </div>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td className="set_hint_td">
+                                <div className="gwt-HTML">
+                                    <strong className="set_hint_color">#.</strong>
+                                </div>
+                            </td>
+                            <td className="set_hint_td_text">
+                                <div className="gwt-HTML">
+                                    Trước mỗi câu hỏi
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
-                        </table>
-                        <table className="set_hint">
+                    </table>
+                    <table className="set_hint">
                         <tbody>
-                            <tr>
-                                <td className="set_hint_td">
-                                    <div className="gwt-HTML">
-                                        <strong className="set_hint_color">*.</strong>
-                                    </div>
-                                </td>
-                                <td className="set_hint_td_text">
-                                    <div className="gwt-HTML">
+                        <tr>
+                            <td className="set_hint_td">
+                                <div className="gwt-HTML">
+                                    <strong className="set_hint_color">*.</strong>
+                                </div>
+                            </td>
+                            <td className="set_hint_td_text">
+                                <div className="gwt-HTML">
                                     Trước mỗi đáp án đúng
-                                    </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
-                        </table>
-                        <table className="set_hint">
+                    </table>
+                    <table className="set_hint">
                         <tbody>
-                            <tr>
-                                <td className="set_hint_td">
-                                    <div className="gwt-HTML">
-                                        <strong className="set_hint_color">$.</strong>
-                                    </div>
-                                </td>
-                                <td className="set_hint_td_text">
-                                    <div className="gwt-HTML">
+                        <tr>
+                            <td className="set_hint_td">
+                                <div className="gwt-HTML">
+                                    <strong className="set_hint_color">$.</strong>
+                                </div>
+                            </td>
+                            <td className="set_hint_td_text">
+                                <div className="gwt-HTML">
                                     Trước câu ví dụ hoặc giải thích cho câu hỏi
-                                    </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
-                        </table>
-                        <table className="set_hint">
+                    </table>
+                    <table className="set_hint">
                         <tbody>
-                            <tr>
-                                <td className="set_hint_td">
-                                    <div className="gwt-HTML">
-                                        <strong className="set_hint_color">$b.</strong>
-                                    </div>
-                                </td>
-                                <td className="set_hint_td_text">
-                                    <div className="gwt-HTML">
+                        <tr>
+                            <td className="set_hint_td">
+                                <div className="gwt-HTML">
+                                    <strong className="set_hint_color">$b.</strong>
+                                </div>
+                            </td>
+                            <td className="set_hint_td_text">
+                                <div className="gwt-HTML">
                                     Trước giải thích cho đáp án
-                                    </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
-                        </table>
-                        <table className="set_hint">
+                    </table>
+                    <table className="set_hint">
                         <tbody>
-                            <tr>
-                                <td className="set_hint_td">
-                                    <div className="gwt-HTML">
-                                        <strong className="set_hint_color">#p.</strong>
-                                    </div>
-                                </td>
-                                <td className="set_hint_td_text">
-                                    <div className="gwt-HTML">
+                        <tr>
+                            <td className="set_hint_td">
+                                <div className="gwt-HTML">
+                                    <strong className="set_hint_color">#p.</strong>
+                                </div>
+                            </td>
+                            <td className="set_hint_td_text">
+                                <div className="gwt-HTML">
                                     Trước mỗi đoạn paragraph
-                                    </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
-                        </table>
-                        <table className="set_hint">
+                    </table>
+                    <table className="set_hint">
                         <tbody>
-                            <tr>
-                                <td className="set_hint_td">
-                                    <div className="gwt-HTML">
-                                        <strong className="set_hint_color">#</strong>
-                                    </div>
-                                </td>
-                                <td className="set_hint_td_text">
-                                    <div className="gwt-HTML">
-                                        Trước mỗi hình ảnh
-                                    </div>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td className="set_hint_td">
+                                <div className="gwt-HTML">
+                                    <strong className="set_hint_color">#</strong>
+                                </div>
+                            </td>
+                            <td className="set_hint_td_text">
+                                <div className="gwt-HTML">
+                                    Trước mỗi hình ảnh
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
-                        </table>
-                        <table className="set_hint">
+                    </table>
+                    <table className="set_hint">
                         <tbody>
-                            <tr>
-                                <td className="set_hint_td">
-                                    <div className="gwt-HTML">
-                                        <strong className="set_hint_color">#s.</strong>
-                                    </div>
-                                </td>
-                                <td className="set_hint_td_text">
-                                    <div className="gwt-HTML">
+                        <tr>
+                            <td className="set_hint_td">
+                                <div className="gwt-HTML">
+                                    <strong className="set_hint_color">#s.</strong>
+                                </div>
+                            </td>
+                            <td className="set_hint_td_text">
+                                <div className="gwt-HTML">
                                     Trước mỗi file sound
-                                    </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
-                        </table>
-                        <table className="set_hint">
+                    </table>
+                    <table className="set_hint">
                         <tbody>
-                            <tr>
-                                <td className="set_hint_td">
-                                    <div className="gwt-HTML">
-                                        <strong className="set_hint_color"></strong>
-                                    </div>
-                                </td>
-                                <td className="set_hint_td_text">
-                                    <div className="gwt-HTML">
+                        <tr>
+                            <td className="set_hint_td">
+                                <div className="gwt-HTML">
+                                    <strong className="set_hint_color"></strong>
+                                </div>
+                            </td>
+                            <td className="set_hint_td_text">
+                                <div className="gwt-HTML">
                                     Đáp án sai thì ko có ký tự
-                                    </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
-                        </table>
-                    </div>
+                    </table>
+                </div>
             </Modal>
             <Upload
                 className=" p-1 m-1"
@@ -458,6 +494,14 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                     title=""
                     breadcrumb={{routes}}
                 />
+                <Modal
+                    title="Bạn chưa đăng kí tham gia khóa học"
+                    visible={this.state.visible_submit_course}
+                    onOk={this.handleOkSubmitCourse}
+                    onCancel={this.handleCancelSubmitCourse}
+                >
+                    <p>Đăng kí tham gia khóa học?</p>
+                </Modal>
                 <div className="pr-5 pl-5">
                     {/*-------------------------list lesson cùng cấp-------------------------*/}
                     <ListLessonHeader listLesson={listLesson} lesson={lesson} changeLesson={this.changeLesson}
@@ -467,7 +511,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                         <LessonDetailTab lesson={lesson} props={props} listCardProgress={listCardProgress}
                                          isJustDoExam={isJustDoExam}/>
                     </div>
-                    <div className="row">
+                    {admin ? <div className="row">
                         <Card
                             extra={question_info_button}
                             className="w-100 mt-4"
@@ -483,10 +527,10 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                 routes={null}
                             />
                         </Card>
-                    </div>
+                    </div> : ""}
                 </div>
                 {api.loadings > 0 ? <Loader/> : ""}
-                <ExerciseModal
+                {admin ? <ExerciseModal
                     closeModal={this.closeModal}
                     showModal={this.showModal}
                     visible={visible}
@@ -496,7 +540,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                     topic_id={this.props.match.params.id}
                     exercise={null}
                     editExercise={null}
-                />
+                /> : ""}
                 <Footer style={{textAlign: 'center'}}>
                     Easy Japanese Design ©2019 Created by HEDSPI
                 </Footer>

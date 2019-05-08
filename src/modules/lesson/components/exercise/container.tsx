@@ -9,6 +9,7 @@ import {RouteComponentProps} from "react-router";
 const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => ({
     listExercise: state.listExercise,
     props: props,
+    userCourse: state.userCourse
 });
 
 const mapDispatchToProps = (dispatch) => ({
