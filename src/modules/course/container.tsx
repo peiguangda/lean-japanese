@@ -11,7 +11,7 @@ const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => 
     api: state.api,
     props: props,
     course: state.course,
-    userCourse: state.userCourse
+    userCourse: state.userCourse,
 });
 
 const mapDispatchToProps = (dispatch) => ({

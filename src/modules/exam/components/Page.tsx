@@ -40,6 +40,7 @@ export interface Props {
     match: any;
     params: any;
     props: any,
+    history: any,
     api: ApiEntity;
     listExercise: Array<ExerciseEntity>;
     listCardProgress: Array<CardProgressEntity>;
@@ -61,6 +62,7 @@ export interface State {
     listChoose: Array<any>;
     isJustDoExam: boolean;
     isShuffled: boolean;
+    visible_submit_course: boolean;
 }
 
 export class Exam extends React.Component<Props, State, {}> {
@@ -328,10 +330,20 @@ export class Exam extends React.Component<Props, State, {}> {
         setCookie("listExercise", listExercise);
     }
 
+    public handleOkSubmitCourse = (e) => {
+        console.log("dang ki khoa hoc");
+    };
+
+    public handleCancelSubmitCourse = (e) => {
+        this.props.history.push(`/`);
+        //di chuyen ve trang home
+    };
+
     constructor(props) {
         super(props);
         this.state = {
             value: 1,
+            visible_submit_course: false,
             listChoose: (localStorage.getItem("isJustDoExam") == "TRUE") ? convert(JSON.parse(getCookie("listChoose"))) : [],
             isJustDoExam: (localStorage.getItem("isJustDoExam") == "TRUE") ? true : false,
             isShuffled: false
@@ -340,15 +352,18 @@ export class Exam extends React.Component<Props, State, {}> {
 
     async componentWillMount() {
         let {props} = this.props;
-        let user, exList;
+        let user, exList, userCourse;
         user = await this.props.getProfile({});
         exList = await this.props.fetchListExercise({
             topic_id: props.match.params.id,
             setting_number_question_for_exam: localStorage.getItem("setting_number_question_for_exam")
         });
         console.log("exList", exList);
-        this.props.getUserCourse({user_id: user.data.id, course_id: exList.data[0].course_id});
+        userCourse = await this.props.getUserCourse({user_id: user.data.id, course_id: exList.data[0].course_id});
         this.props.fetchListCardProgress({topic_id: props.match.params.id});
+        this.setState({
+            visible_submit_course: Object.keys(userCourse.data).length == 0 ? true : false
+        });
     }
 
     componentDidMount() {
@@ -375,6 +390,14 @@ export class Exam extends React.Component<Props, State, {}> {
                         breadcrumb={{routes}}
                     />
                     {api.loadings > 0 ? <Loader/> : ""}
+                    <Modal
+                        title="Bạn chưa đăng kí tham gia khóa học"
+                        visible={this.state.visible_submit_course}
+                        onOk={this.handleOkSubmitCourse}
+                        onCancel={this.handleCancelSubmitCourse}
+                    >
+                        <p>Đăng kí tham gia khóa học?</p>
+                    </Modal>
                     <div className="row ml-5 mr-1 custom-container">
                         <div className="col-md-9">
                             {this.showListQuestion()}

@@ -6,6 +6,7 @@ import {ApiEntity} from "../../../../../common/types";
 import {RouteComponentProps} from "react-router";
 import {LessonModal} from "../../../../modal/lesson/components/LessonModal";
 import {Loader} from "../../../../loader/components/loader";
+import {UserCourseEntity} from "../../../../../common/types/user_course";
 
 const DirectoryTree = Tree.DirectoryTree;
 const {TreeNode} = Tree;
@@ -16,6 +17,7 @@ export interface Props extends RouteComponentProps<any, any> {
     lessons: LessonEntity[];
     api: ApiEntity;
     props: any;
+    userCourse: UserCourseEntity;
 
     fetchLessons(parameters): Promise<any>;
 
@@ -37,6 +39,7 @@ export interface State {
     parent_id: number;
     listLesson: Array<any>;
     action: string;
+    admin: boolean;
 }
 
 export class ListLesson extends React.Component<Props, State, {}> {
@@ -132,11 +135,12 @@ export class ListLesson extends React.Component<Props, State, {}> {
         event.stopPropagation();
     };
     public showChildren = (item) => {
+        let {admin} = this.state;
         let {childList} = item;
         const customTitle = (name, item) => <Fragment>
             {name}
             <div className="hidden-custom">
-                <Popconfirm
+                {admin ? <Fragment><Popconfirm
                     title="Bạn có chắc chắn muốn xóa?"
                     onConfirm={() => this.confirm({lessonId: item.id, course_id: item.course_id})}
                     onCancel={this.cancel}
@@ -145,10 +149,10 @@ export class ListLesson extends React.Component<Props, State, {}> {
                 >
                     <Button className="float-right btn-delete" icon="close"/>
                 </Popconfirm>
-                <Button className="float-right btn-edit" icon="edit"
-                        onClick={(event) => this.editAction(event, item)}/>
-                <Button className="float-right btn-add" icon="plus"
-                        onClick={(event) => this.addAction(event, item)}/>
+                    <Button className="float-right btn-edit" icon="edit"
+                            onClick={(event) => this.editAction(event, item)}/>
+                    <Button className="float-right btn-add" icon="plus"
+                            onClick={(event) => this.addAction(event, item)}/></Fragment> : ""}
                 <Tooltip placement="topLeft" title={"Chi tiết"}>
                     <Button className="float-right btn-add" icon="link"
                             href={`/lesson/${item.id}`} target="_blank"
@@ -169,7 +173,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
         })
     };
     private showListLesson = () => {
-        var {listLesson} = this.state;
+        var {listLesson, admin} = this.state;
         const extra_edit_delete = (item) => <Fragment>
             <div className="hidden-custom">
                 <Popconfirm
@@ -203,7 +207,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
                     >
                         {/*--------------------------một bài------------------------------*/}
                         <Panel header={item.name} key={item.id} className="customPanelStyle"
-                               extra={extra_edit_delete(item)}>
+                               extra={admin ? extra_edit_delete(item) : ""}>
                             <p>
                                 <DirectoryTree
                                     multiple
@@ -226,6 +230,7 @@ export class ListLesson extends React.Component<Props, State, {}> {
     constructor(props) {
         super(props);
         this.state = {
+            admin: this.props.userCourse[0] && this.props.userCourse[0].role_type == 1 ? true : false,
             action: "create",
             listLesson: [],
             visible: false,
@@ -283,20 +288,26 @@ export class ListLesson extends React.Component<Props, State, {}> {
         this.initData();
     }
 
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        this.setState({
+            admin: nextProps.userCourse[0] && nextProps.userCourse[0].role_type == 1 ? true : false
+        })
+    }
+
     public render() {
-        let {api} = this.props;
-        let {visible, lesson, parent_id, action} = this.state;
+        let {api, userCourse} = this.props;
+        let {visible, lesson, parent_id, action, admin} = this.state;
         return (
             <Fragment>
                 <h5 className="title-list-lesson ml-4">Danh sách bài học</h5>
                 <div className="row m-3 w-100 pt-4 list-topic-content">
                     {api.loadings > 0 ? <Loader/> : this.showListLesson()}
-                    <div className="row w-100">
+                    {admin ? <div className="row w-100">
                         <Button type="primary" className="item_button w-100 ml-5 mr-5 mb-5" icon="plus"
                                 onClick={this.onClickCreate}>
-                            Add a lesson
+                            Thêm bài học
                         </Button>
-                    </div>
+                    </div> : ""}
                     <div className="col">
                         <LessonModal
                             fetchLessons={this.props.fetchLessons}
