@@ -14,7 +14,8 @@ const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => 
     props: props,
     listExercise: state.listExercise,
     listCardProgress: state.listCardProgress,
-    userCourse: state.userCourse
+    userCourse: state.userCourse,
+    currentUser: state.currentUser
 });
 
 const mapDispatchToProps = (dispatch) => ({

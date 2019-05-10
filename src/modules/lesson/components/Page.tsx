@@ -76,6 +76,7 @@ export interface Props {
     listLesson: Array<LessonEntity>;
     listCardProgress: Array<CardProgressEntity>;
     userCourse: UserCourseEntity;
+    currentUser: any;
 
     fetchLesson(parameters): Promise<any>;
 
@@ -211,8 +212,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                         if (row_val[col].startsWith('#.')) {
                             question.front_text = row_val[col].slice(2);
                             is_question = true;
-                        }
-                        else if (row_val[col].startsWith("$."))
+                        } else if (row_val[col].startsWith("$."))
                             question.back_text = row_val[col].slice(2);
                         else if (row_val[col].startsWith("$b."))
                             question.back_hint = row_val[col].slice(3);
@@ -245,6 +245,12 @@ export class LessonDetail extends React.Component<Props, State, {}> {
             reader.readAsBinaryString(info.file.originFileObj);
         }
     };
+
+    public requestLogin = () => {
+        let {lesson} = this.props;
+        message.info("Hãy đăng nhập để được sử dụng tính năng này!");
+        this.props.history.push(`/`);
+    }
 
     constructor(props) {
         super(props);
@@ -288,7 +294,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {lesson, api, listLesson, props, listCardProgress, userCourse} = this.props;
+        let {lesson, api, listLesson, props, listCardProgress, userCourse, currentUser} = this.props;
         let {match: {params}} = this.props;
         let {visible, isJustDoExam, admin} = this.state;
         const content = (
@@ -488,6 +494,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
             <Fragment>
                 <Helmet title={"Lesson"}/>
                 <NavigationBarContainter/>
+                {currentUser && currentUser.responseError ? this.requestLogin() : ""}
                 {/*-------------------------page header-------------------------*/}
                 <PageHeader
                     className="page-header-custom mt-5"

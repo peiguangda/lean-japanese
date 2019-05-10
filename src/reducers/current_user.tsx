@@ -81,7 +81,7 @@ export const currentUserReducer = (state: UserEntity = null, action) => {
         case GET_PROFILE:
             return payload.data;
         case GET_PROFILE_ERROR:
-            return {...state, ...payload, responseError};
+            return {...state, responseError};
         default:
             return state;
     }
