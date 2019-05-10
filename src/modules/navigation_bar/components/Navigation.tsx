@@ -5,6 +5,7 @@ import {Button, Dropdown, Icon, Input, Menu, message} from 'antd';
 import 'antd/dist/antd.css';
 import "../../../public/css/custom.css"
 import {WrappedNormalLoginForm} from "../../modal/user/components/LoginModal";
+import {WrappedNormalSigninForm} from "../../modal/user/components/SigninModal";
 import {UserEntity} from "../../../common/types/user";
 import {ApiEntity} from "../../../common/types";
 import * as Cookie from "../../../helpers/Cookie.js";
@@ -20,11 +21,14 @@ export interface Props {
     logout(parameters): Promise<any>;
 
     getProfile(parameters): Promise<any>;
+
+    signin(parameters): Promise<any>;
 }
 
 export interface State {
     visible: boolean;
     logined: boolean;
+    signinVisible: boolean;
 }
 
 export class NavigationBar extends React.Component<Props, State, {}> {
@@ -50,6 +54,19 @@ export class NavigationBar extends React.Component<Props, State, {}> {
             visible: false
         });
     };
+
+    public showModalSignin = () => {
+        this.setState({
+            signinVisible: true
+        });
+    };
+    public closeModalSignin = () => {
+        this.setState({
+            signinVisible: false
+        });
+    };
+
+
     public getProfile = () => {
         this.props.getProfile({}).then(res => {
             if (res && res.status == "success") {
@@ -63,14 +80,15 @@ export class NavigationBar extends React.Component<Props, State, {}> {
         if (e.key == 1) console.log("thong tin ca nhan");
         if (e.key == 2) this.logout();
         if (e.key == 3) this.showModal();
-        if (e.key == 4) console.log("dang ki");
+        if (e.key == 4) this.showModalSignin();
     };
 
     constructor(props) {
         super(props);
         this.state = {
             visible: false,
-            logined: false
+            logined: false,
+            signinVisible: false
         }
     }
 
@@ -81,7 +99,7 @@ export class NavigationBar extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {visible, logined} = this.state;
+        let {visible, logined, signinVisible} = this.state;
         let {currentUser} = this.props;
         const menu1 = (
             <Menu onClick={this.handleMenuClick}>
@@ -129,6 +147,14 @@ export class NavigationBar extends React.Component<Props, State, {}> {
                     login={this.props.login}
                     api={this.props.api}
                     getProfile={this.getProfile}
+                />
+                <WrappedNormalSigninForm
+                   signinVisible={signinVisible}
+                   showModalSignin={this.showModalSignin}
+                   closeModalSignin={this.closeModalSignin}
+                   signin={this.props.signin}
+                   api={this.props.api}
+                   getProfile={this.getProfile}
                 />
             </Fragment>
         )

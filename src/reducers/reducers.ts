@@ -16,6 +16,7 @@ import {UserCourseEntity} from "../common/types/user_course";
 import {cardProgressReducer} from "./card_progress";
 import {CardProgressEntity} from "../common/types/card_progress";
 import {userCourseReducer} from "./user_course";
+import { userReducer } from './user';
 
 export interface State {
     api: ApiEntity;
@@ -29,6 +30,7 @@ export interface State {
     listMem: UserCourseEntity;
     listCardProgress: CardProgressEntity[];
     userCourse: UserCourseEntity;
+    user: UserEntity;
 };
 
 export const state = combineReducers<State>({
@@ -42,5 +44,7 @@ export const state = combineReducers<State>({
     currentUser: currentUserReducer,
     listMem: memberReducer,
     listCardProgress: cardProgressReducer,
-    userCourse: userCourseReducer
+    userCourse: userCourseReducer,
+    user: userReducer
+
 });
