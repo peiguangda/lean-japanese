@@ -56,6 +56,10 @@ export interface Props {
     getUserCourse(parameters): void;
 
     getProfile(parameters): Promise<any>;
+
+    fetchLesson(parameters): Promise<any>;
+
+    createUserCourse(parameters): Promise<any>;
 }
 
 export interface State {
@@ -328,8 +332,20 @@ export class Exam extends React.Component<Props, State, {}> {
         setCookie("listExercise", listExercise);
     }
 
-    public handleOkSubmitCourse = (e) => {
-        console.log("dang ki khoa hoc");
+    public handleOkSubmitCourse = async (e) => {
+        console.log("dang ki khoa hoc", this.props);
+        let lesson = await this.props.fetchLesson({id: this.props.match.params.id});
+        if (lesson.status != "success") return;
+        lesson = lesson.data;
+        this.props.createUserCourse({course_id: lesson.course_id})
+            .then(res => {
+                if (res && res.status == "success") {
+                    message.success("Tham gia khóa học, chúc bạn có những bài học tuyệt vời!");
+                    this.setState({
+                        visible_submit_course: false
+                    })
+                } else message.error("Xảy ra lỗi khi tham gia khóa học~");
+            })
     };
 
     public handleCancelSubmitCourse = (e) => {
