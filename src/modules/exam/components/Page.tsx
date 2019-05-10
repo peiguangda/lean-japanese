@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Fragment} from "react";
 import {Helmet} from "react-helmet";
-import {Anchor, BackTop, Button, Layout, Modal, PageHeader} from 'antd';
+import {Anchor, BackTop, Button, Layout, message, Modal, PageHeader} from 'antd';
 import {Loader} from "../../loader/components/loader";
 import {ApiEntity} from "../../../common/types";
 import {NavigationBarContainter} from "../../navigation_bar/container";
@@ -45,6 +45,7 @@ export interface Props {
     listExercise: Array<ExerciseEntity>;
     listCardProgress: Array<CardProgressEntity>;
     userCourse: UserCourseEntity;
+    currentUser: any;
 
     fetchListExercise(parameters): void;
 
@@ -268,8 +269,7 @@ export class Exam extends React.Component<Props, State, {}> {
                                         if (element.correct) {
                                             cardProgress.box_num = 1;
                                             cardProgress.progress = 33;
-                                        }
-                                        else {
+                                        } else {
                                             cardProgress.box_num = 3;
                                             cardProgress.progress = 0;
                                         }
@@ -282,8 +282,7 @@ export class Exam extends React.Component<Props, State, {}> {
                                         if (element.correct) {
                                             cardProgress.box_num = 2;
                                             cardProgress.progress = 66;
-                                        }
-                                        else {
+                                        } else {
                                             cardProgress.box_num = 3;
                                             cardProgress.progress = 0;
                                         }
@@ -296,8 +295,7 @@ export class Exam extends React.Component<Props, State, {}> {
                                         if (element.correct) {
                                             cardProgress.box_num = 4;
                                             cardProgress.progress = 100;
-                                        }
-                                        else {
+                                        } else {
                                             cardProgress.box_num = 3;
                                             cardProgress.progress = 0;
                                         }
@@ -339,6 +337,11 @@ export class Exam extends React.Component<Props, State, {}> {
         //di chuyen ve trang home
     };
 
+    public requestLogin = () => {
+        message.info("Hãy đăng nhập để được sử dụng tính năng này!");
+        this.props.history.push(`/`);
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -374,10 +377,10 @@ export class Exam extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {api, props, listExercise, listCardProgress, userCourse} = this.props;
+        let {api, props, listExercise, listCardProgress, userCourse, currentUser} = this.props;
         let {match: {params}} = this.props;
         let {isJustDoExam} = this.state;
-        console.log("userCourse", userCourse);
+        console.log("currentUser", currentUser && currentUser.responseError ? true : false);
         return (
             <Fragment>
                 <Helmet title={"Lesson"}/>
@@ -390,6 +393,7 @@ export class Exam extends React.Component<Props, State, {}> {
                         breadcrumb={{routes}}
                     />
                     {api.loadings > 0 ? <Loader/> : ""}
+                    {currentUser && currentUser.responseError ? this.requestLogin() : ""}
                     <Modal
                         title="Bạn chưa đăng kí tham gia khóa học"
                         visible={this.state.visible_submit_course}
