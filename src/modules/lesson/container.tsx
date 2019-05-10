@@ -6,7 +6,7 @@ import {fetchLessonAction, fetchListLessonAction} from "../../reducers/lesson";
 import {createExerciseAction} from "../../reducers/exercise";
 import {RouteComponentProps} from "react-router";
 import {fetchCardProgressAction} from "../../reducers/card_progress";
-import {getUserCourseAction} from "../../reducers/user_course";
+import {createUserCourseAction, getUserCourseAction} from "../../reducers/user_course";
 import {getProfileAction} from "../../reducers/current_user";
 
 
@@ -27,6 +27,7 @@ const mapDispatchToProps = (dispatch) => ({
     fetchListCardProgress: parameters => dispatch(fetchCardProgressAction(parameters)),
     getUserCourse: (parameters) => dispatch(getUserCourseAction(parameters)),
     getProfile: parameters => dispatch(getProfileAction(parameters)),
+    createUserCourse: parameters => dispatch(createUserCourseAction(parameters)),
 });
 
 export const LessonDetailContainer = connect(

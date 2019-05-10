@@ -133,6 +133,8 @@ export interface Props {
 
     getUserCourse(parameters): void;
 
+    createUserCourse(parameters): Promise<any>;
+
     getProfile(parameters): Promise<any>;
 }
 
@@ -187,6 +189,16 @@ export class CourseDetail extends React.Component<Props, State, {}> {
             visible: false,
         });
     };
+
+    public actionJoinCourse = () => {
+        let {course} = this.props;
+        this.props.createUserCourse({course_id: course.id})
+            .then(res => {
+                if (res && res.status == "success") {
+                    message.success("Tham gia khóa học, chúc bạn có những bài học tuyệt vời!");
+                } else message.error("Xảy ra lỗi khi tham gia khóa học~");
+            })
+    }
 
     constructor(props) {
         super(props);
@@ -274,7 +286,7 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                             <Button>
                                                 <Icon type="upload"/> Click to Upload
                                             </Button>
-                                        </Upload>,
+                                            quangdai2896 </Upload>,
                                     </Modal>
                                 </TabPane>
                                 {/*-------------------members-------------------------*/}
@@ -419,7 +431,8 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                                         <p className="col-md-10">Học phí: {course.cost ? course.cost : 0}</p>
                                     </div>
                                     {Object.keys(userCourse).length === 0 ?
-                                        <Button type="primary" className="row w-100 m-1">Tham gia</Button> : ""}
+                                        <Button type="primary" className="row w-100 m-1"
+                                                onClick={this.actionJoinCourse}>Tham gia</Button> : ""}
                                 </Card>
                             </div>
                             <div className="row mt-5">

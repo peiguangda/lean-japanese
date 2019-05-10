@@ -10,7 +10,6 @@ export const CREATE_USER_ERROR = "user/CREATE_USER_ERROR";
 export const createUserAction = parameters => dispatch => {
     return dispatch(requestAxios(request.createUser(parameters)))
         .then(response => {
-            Cookie.setAccessToken(response.data.auth_token);
             dispatch({
                 type: CREATE_USER,
                 payload: response

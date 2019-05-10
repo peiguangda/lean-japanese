@@ -89,6 +89,8 @@ export interface Props {
     getUserCourse(parameters): void;
 
     getProfile(parameters): Promise<any>;
+
+    createUserCourse(parameters): Promise<any>;
 }
 
 export interface State {
@@ -174,7 +176,17 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         });
     };
     public handleOkSubmitCourse = (e) => {
+        let {lesson} = this.props;
         console.log("dang ki khoa hoc");
+        this.props.createUserCourse({course_id: lesson.course_id})
+            .then(res => {
+                if (res && res.status == "success") {
+                    message.success("Tham gia khóa học, chúc bạn có những bài học tuyệt vời!");
+                    this.setState({
+                        visible_submit_course: false
+                    })
+                } else message.error("Xảy ra lỗi khi tham gia khóa học~");
+            })
     };
     private handleClickCreateQuestion = () => {
         this.showModal();
