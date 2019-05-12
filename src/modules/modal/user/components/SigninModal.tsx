@@ -37,12 +37,11 @@ export class SigninModal extends React.Component<Props & { form: WrappedFormUtil
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.props.signin({user: values})
-                .then(res => {
-                    if (res && res.status == "success")
-                    {
-                        window.location.reload();
-                    }
-                })
+                    .then(res => {
+                        if (res && res.status == "success") {
+                            window.location.reload();
+                        }
+                    })
                 message.success("Đăng ký thành công");
             }
         });
@@ -80,17 +79,17 @@ export class SigninModal extends React.Component<Props & { form: WrappedFormUtil
         super(form);
         this.state = {
             user: new class implements UserEntity {
-            actionType?: string;
-            id: string;
-            account: string
-            email: string
-            full_name: string
-            phone_number: string
-            description: string
-            avatar_url: string
-            gender: string
-            password: string
-            password_confirmation: string
+                actionType?: string;
+                id: string;
+                account: string
+                email: string
+                full_name: string
+                phone_number: string
+                description: string
+                avatar_url: string
+                gender: string
+                password: string
+                password_confirmation: string
             }
         }
     }
@@ -100,7 +99,7 @@ export class SigninModal extends React.Component<Props & { form: WrappedFormUtil
 
     public render() {
         const {getFieldDecorator} = this.props.form;
-        let { user: {account, email, password}} = this.state;
+        let {user: {account, email, password}} = this.state;
         const suffixAccount = account ? <Icon type="close-circle" onClick={this.emitNameEmpty}/> : null;
         const suffixEmail = email ? <Icon type="close-circle" onClick={this.emitEmailEmpty}/> : null;
         const suffixPass = password ? <Icon type="close-circle" onClick={this.emitPasswordEmpty}/> : null;
@@ -123,7 +122,7 @@ export class SigninModal extends React.Component<Props & { form: WrappedFormUtil
                                        placeholder="Tên đăng nhập"
                                        suffix={suffixAccount}
                                        value={account}
-                                       />
+                                />
                             )}
                         </Form.Item>
                         <Form.Item>
@@ -134,7 +133,7 @@ export class SigninModal extends React.Component<Props & { form: WrappedFormUtil
                                        placeholder="Email"
                                        suffix={suffixEmail}
                                        value={email}
-                                       />
+                                />
                             )}
                         </Form.Item>
                         <Form.Item>
@@ -145,7 +144,7 @@ export class SigninModal extends React.Component<Props & { form: WrappedFormUtil
                                        placeholder="Mật khẩu"
                                        suffix={suffixPass}
                                        value={password}
-                                       />
+                                />
                             )}
                         </Form.Item>
                         <Form.Item>

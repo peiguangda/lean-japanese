@@ -3,8 +3,9 @@ import {Fragment} from "react";
 import {Helmet} from "react-helmet";
 import {CategoryCourse} from "./CategoryCourse";
 import {CourseContainer} from "./courses/container";
-import {BackTop, Checkbox, Icon, Layout, Select} from "antd";
+import {BackTop, Button, Checkbox, Icon, Layout, Select} from "antd";
 import {NavigationBarContainter} from "../../navigation_bar/container";
+import {CourseModal} from "../../modal/course/components/CourseModal";
 
 const {
     Footer
@@ -17,6 +18,7 @@ function handleChange(value) {
 }
 
 export interface Props {
+    createCourse(parameters): Promise<any>;
 }
 
 function onChange(e) {
@@ -24,11 +26,26 @@ function onChange(e) {
 }
 
 export interface State {
+    visible: boolean;
 }
 
 export class HomePage extends React.Component<Props, State, {}> {
+    public showModal = () => {
+        this.setState({
+            visible: true
+        })
+    };
+    public closeModal = () => {
+        this.setState({
+            visible: false
+        })
+    };
+
     constructor(props) {
         super(props);
+        this.state = {
+            visible: false
+        }
     }
 
     public componentDidMount() {
@@ -93,6 +110,13 @@ export class HomePage extends React.Component<Props, State, {}> {
                         </div>
                     </div>
                 </div>
+                <CourseModal
+                    visible={this.state.visible}
+                    createCourse={this.props.createCourse}
+                    closeModal={this.closeModal}
+                    showModal={this.showModal}
+                />
+                <Button type="primary" icon="plus" className="right-corder-container" onClick={this.showModal}/>
                 <Footer style={{textAlign: 'center'}}>
                     Easy Japanese Design ©2019 Created by HEDSPI
                 </Footer>

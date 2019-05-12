@@ -3,8 +3,7 @@ import {connect} from 'react-redux';
 import {State} from '../../reducers/reducers';
 import {createSessionAction, getProfileAction, LogoutAction} from "../../reducers/current_user";
 import {NavigationBar} from "./components/Navigation";
-import { createUserAction} from "../../reducers/user";
-
+import {createUserAction} from "../../reducers/user";
 
 
 const mapStateToProps = (state: State) => ({

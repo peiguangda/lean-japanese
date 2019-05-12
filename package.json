@@ -44,6 +44,7 @@
     "react-gateway": "^3.0.0",
     "react-helmet": "^5.2.0",
     "react-native-hide-show-password-input": "^1.0.7",
+    "react-player": "^1.11.0",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
     "redux": "4.0.0",
