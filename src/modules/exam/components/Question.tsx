@@ -2,6 +2,8 @@ import * as React from "react";
 import {Fragment} from "react";
 import {Button, Checkbox, Col, Radio, Row, Tooltip} from 'antd';
 import {ExerciseEntity} from "../../../common/types/exercise";
+import ReactPlayer from 'react-player'
+import {CardProgressEntity} from "../../../common/types/card_progress";
 
 const RadioGroup = Radio.Group;
 
@@ -13,6 +15,7 @@ export interface Props {
     listAnswer: Array<number>;
     isCorrect: boolean;
     isReviewing: boolean;
+    cardProgress: CardProgressEntity;
 
     updateListChoose(parameters): void;
 }
@@ -22,16 +25,6 @@ export interface State {
 }
 
 export class Question extends React.Component<Props, State, {}> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: -2,
-        }
-    }
-
-    componentWillMount() {
-    }
-
     public onChangeCheckBox = (e, index) => {
         this.props.updateListChoose({index: index, listAnswer: e});
     }
@@ -62,16 +55,30 @@ export class Question extends React.Component<Props, State, {}> {
         })
     }
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: -2,
+        }
+    }
+
+    componentWillMount() {
+    }
+
     public render() {
-        let {props, exercise, index, lengthExercise, listAnswer} = this.props;
+        let {props, exercise, index, lengthExercise, listAnswer, cardProgress} = this.props;
+        console.log("cardProgress", cardProgress);
         return (
             <Fragment>
                 <div id={`${index}`}>
-                    <p className="row ml-1 exam-title">{`Câu ${index + 1}/${lengthExercise} - Lần cuối trả lời sai`}</p>
+                    <p className="row ml-1 exam-title">{`Câu ${index + 1}/${lengthExercise} - Lần cuối trả lời${cardProgress && cardProgress.last_result == 0 ? " sai" : " đúng"}`}</p>
                     <div className="row mr-1 mb-5 list-exam">
                         <div className="col w-100 ml-3">
                             {/*-----------------------------Chi tiet cau hoi---------------------------------------*/}
                             <p className="row mt-3">{exercise.front_text}</p>
+                            <ReactPlayer className="row w-100 exam-mp3"
+                                         url='http://www.bsoftnamkam.xyz/japaneselisten/N2Listen/Audio/N2_KIKU_B_43.mp3'
+                                         controls={true}/>
                             <div className="row">
                                 <Checkbox.Group style={{width: '100%'}}
                                                 onChange={(e) => this.onChangeCheckBox(e, index)}

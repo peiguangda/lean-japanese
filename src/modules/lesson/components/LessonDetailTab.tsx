@@ -67,6 +67,15 @@ export interface State {
 }
 
 export class LessonDetailTab extends React.Component<Props, State, {}> {
+    public handleChangeSettingNumQues = (value) => {
+        this.setState({
+            setting_number_question_for_exam: value
+        })
+        localStorage.setItem("setting_number_question_for_exam", value);
+    }
+    public handleChange = (value) => {
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -74,16 +83,6 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             setting_number_question_for_exam: 40
         };
         localStorage.setItem("setting_number_question_for_exam", "40");
-    }
-
-    public handleChangeSettingNumQues = (value) => {
-        this.setState({
-            setting_number_question_for_exam: value
-        })
-        localStorage.setItem("setting_number_question_for_exam", value);
-    }
-
-    public handleChange = (value) => {
     }
 
     componentWillMount() {

@@ -106,8 +106,9 @@ export class Exam extends React.Component<Props, State, {}> {
     };
 
     public showListQuestion = () => {
-        let {listExercise, props} = this.props;
+        let {listExercise, props, listCardProgress} = this.props;
         let {listChoose, isJustDoExam, isShuffled} = this.state;
+        console.log("listExercise", listExercise);
         listExercise = isJustDoExam ? JSON.parse(localStorage.getItem("listExercise")) : listExercise;
         listExercise = convert(listExercise);
         let lengthExercise = listExercise.length;
@@ -122,7 +123,7 @@ export class Exam extends React.Component<Props, State, {}> {
                     console.log("push backtext to list answer");
                 }
                 //review ko dc dao dap an
-                if (!isJustDoExam && !isShuffled) {
+                if (!isJustDoExam && !isShuffled && ex.front_image == "") {
                     console.log("dao dap an");
                     list_answer_prev = [...ex.list_answer]; //copy index trc khi dao dap an
                     this.shuffle(ex.list_answer);      //dao dap an
@@ -148,12 +149,15 @@ export class Exam extends React.Component<Props, State, {}> {
                         isShuffled: true
                     })
                 }
+                console.log("listCardProgress", listCardProgress);
                 //truyen list answer da chon vao de show cau hoi
                 let objectAnswer = listChoose.find(object => object.index === index);
+                let cardProgress = toArray(listCardProgress).find(object => object.card_id.toString() === ex.id);
                 return <Question
                     props={props}
                     exercise={ex}
                     index={index}
+                    cardProgress={cardProgress}
                     isReviewing={isJustDoExam}
                     isCorrect={objectAnswer ? objectAnswer.correct : null}
                     lengthExercise={lengthExercise}
@@ -273,9 +277,11 @@ export class Exam extends React.Component<Props, State, {}> {
                                         if (element.correct) {
                                             cardProgress.box_num = 1;
                                             cardProgress.progress = 33;
+                                            cardProgress.last_result = 1;
                                         } else {
                                             cardProgress.box_num = 3;
                                             cardProgress.progress = 0;
+                                            cardProgress.last_result = 0;
                                         }
                                     }
                                 });
@@ -284,11 +290,13 @@ export class Exam extends React.Component<Props, State, {}> {
                                 listChoose.map((element, key) => {
                                     if (element.id == cardProgress.card_id) {
                                         if (element.correct) {
+                                            cardProgress.last_result = 1;
                                             cardProgress.box_num = 2;
                                             cardProgress.progress = 66;
                                         } else {
                                             cardProgress.box_num = 3;
                                             cardProgress.progress = 0;
+                                            cardProgress.last_result = 0;
                                         }
                                     }
                                 });
@@ -297,11 +305,13 @@ export class Exam extends React.Component<Props, State, {}> {
                                 listChoose.map((element, key) => {
                                     if (element.id == cardProgress.card_id) {
                                         if (element.correct) {
+                                            cardProgress.last_result = 1;
                                             cardProgress.box_num = 4;
                                             cardProgress.progress = 100;
                                         } else {
                                             cardProgress.box_num = 3;
                                             cardProgress.progress = 0;
+                                            cardProgress.last_result = 0;
                                         }
                                     }
                                 });
@@ -377,7 +387,6 @@ export class Exam extends React.Component<Props, State, {}> {
             topic_id: props.match.params.id,
             setting_number_question_for_exam: localStorage.getItem("setting_number_question_for_exam")
         });
-        console.log("exList", exList);
         userCourse = await this.props.getUserCourse({user_id: user.data.id, course_id: exList.data[0].course_id});
         this.props.fetchListCardProgress({topic_id: props.match.params.id});
         this.setState({
@@ -396,7 +405,7 @@ export class Exam extends React.Component<Props, State, {}> {
         let {api, props, listExercise, listCardProgress, userCourse, currentUser} = this.props;
         let {match: {params}} = this.props;
         let {isJustDoExam} = this.state;
-        console.log("currentUser", currentUser && currentUser.responseError ? true : false);
+        console.log("listCardProgress", listCardProgress);
         return (
             <Fragment>
                 <Helmet title={"Lesson"}/>
@@ -423,10 +432,10 @@ export class Exam extends React.Component<Props, State, {}> {
                             {this.showListQuestion()}
                         </div>
                         <div className="col-md-3 mt-3 fill-answer">
-                            <div className="row">
+                            <div className="row justify-content-center">
                                 <img src="https://media.giphy.com/media/2zoCrihrueMUVOZlTx/giphy.gif"
                                      className="col-md-6 float-right clock-gif-size"/>
-                                <div className="col-md-6 float-left mt-3">10:00</div>
+                                {/*<div className="col-md-6 float-left mt-3">10:00</div>*/}
                             </div>
                             <div className="row">
                                 <div className="col">

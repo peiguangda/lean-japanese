@@ -1,7 +1,6 @@
 import {UserEntity} from "../common/types/user";
 import * as request from "../api/request";
 import {requestAxios} from "../redux/api";
-import * as Cookie from "../helpers/Cookie";
 
 export const CREATE_USER = "user/CREATE_USER";
 export const CREATE_USER_ERROR = "user/CREATE_USER_ERROR";

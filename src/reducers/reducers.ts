@@ -16,7 +16,7 @@ import {UserCourseEntity} from "../common/types/user_course";
 import {cardProgressReducer} from "./card_progress";
 import {CardProgressEntity} from "../common/types/card_progress";
 import {userCourseReducer} from "./user_course";
-import { userReducer } from './user';
+import {userReducer} from './user';
 
 export interface State {
     api: ApiEntity;

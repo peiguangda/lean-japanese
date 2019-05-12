@@ -132,23 +132,6 @@ export class Exercise implements ExerciseEntity {
 }
 
 export class LessonDetail extends React.Component<Props, State, {}> {
-    public async initLesson(id) {
-        let user, lesson, userCourse;
-        user = await this.props.getProfile({});
-        this.props.fetchLesson({id: id})
-            .then(async res => {
-                if (res && res.status == "success") {
-                    lesson = res.data;
-                    userCourse = await this.props.getUserCourse({user_id: user.data.id, course_id: lesson.course_id});
-                    userCourse = userCourse.data;
-                    this.setState({
-                        visible_submit_course: Object.keys(userCourse).length == 0 ? true : false
-                    });
-                    this.props.fetchListLesson({course_id: lesson.course_id, parent_id: lesson.parent_id});
-                }
-            })
-    }
-
     public changeLesson = (id) => {
         this.initLesson(id);
     }
@@ -188,19 +171,6 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                 } else message.error("Xảy ra lỗi khi tham gia khóa học~");
             })
     };
-    private handleClickCreateQuestion = () => {
-        this.showModal();
-    };
-
-    public beforeUpload(file) {
-        // console.log(file.type);
-        const isXlsx = (file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        if (!isXlsx) {
-            message.error("You can only upload XLSX file!");
-        }
-        return isXlsx;
-    }
-
     public handleChange = (info) => {
         if (info.file.status === 'error') {
             var list_exercise = [];
@@ -257,12 +227,23 @@ export class LessonDetail extends React.Component<Props, State, {}> {
             reader.readAsBinaryString(info.file.originFileObj);
         }
     };
-
     public requestLogin = () => {
         let {lesson} = this.props;
         message.info("Hãy đăng nhập để được sử dụng tính năng này!");
         this.props.history.push(`/`);
     }
+    public setModal1Visible = (modal1Visible) => {
+        this.setState({modal1Visible: modal1Visible});
+    }
+    public setModal2Visible = (modal2Visible) => {
+        this.setState({modal2Visible: modal2Visible});
+    }
+    public setModal3Visible = (modal3Visible) => {
+        this.setState({modal3Visible: modal3Visible});
+    }
+    private handleClickCreateQuestion = () => {
+        this.showModal();
+    };
 
     constructor(props) {
         super(props);
@@ -275,6 +256,32 @@ export class LessonDetail extends React.Component<Props, State, {}> {
             admin: this.props.userCourse[0] && this.props.userCourse[0].role_type == 1 ? true : false,
             modal3Visible: false,
         }
+    }
+
+    public async initLesson(id) {
+        let user, lesson, userCourse;
+        user = await this.props.getProfile({});
+        this.props.fetchLesson({id: id})
+            .then(async res => {
+                if (res && res.status == "success") {
+                    lesson = res.data;
+                    userCourse = await this.props.getUserCourse({user_id: user.data.id, course_id: lesson.course_id});
+                    userCourse = userCourse.data;
+                    this.setState({
+                        visible_submit_course: Object.keys(userCourse).length == 0 ? true : false
+                    });
+                    this.props.fetchListLesson({course_id: lesson.course_id, parent_id: lesson.parent_id});
+                }
+            })
+    }
+
+    public beforeUpload(file) {
+        // console.log(file.type);
+        const isXlsx = (file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        if (!isXlsx) {
+            message.error("You can only upload XLSX file!");
+        }
+        return isXlsx;
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
@@ -291,18 +298,6 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         if (isJustDoExam) this.setState({
             isJustDoExam: (isJustDoExam == "TRUE")
         })
-    }
-
-    public setModal1Visible = (modal1Visible) => {
-        this.setState({modal1Visible: modal1Visible});
-    }
-
-    public setModal2Visible = (modal2Visible) => {
-        this.setState({modal2Visible: modal2Visible});
-    }
-
-    public setModal3Visible = (modal3Visible) => {
-        this.setState({modal3Visible: modal3Visible});
     }
 
     public render() {

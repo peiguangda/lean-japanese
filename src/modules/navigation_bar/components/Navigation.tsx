@@ -149,12 +149,12 @@ export class NavigationBar extends React.Component<Props, State, {}> {
                     getProfile={this.getProfile}
                 />
                 <WrappedNormalSigninForm
-                   signinVisible={signinVisible}
-                   showModalSignin={this.showModalSignin}
-                   closeModalSignin={this.closeModalSignin}
-                   signin={this.props.signin}
-                   api={this.props.api}
-                   getProfile={this.getProfile}
+                    signinVisible={signinVisible}
+                    showModalSignin={this.showModalSignin}
+                    closeModalSignin={this.closeModalSignin}
+                    signin={this.props.signin}
+                    api={this.props.api}
+                    getProfile={this.getProfile}
                 />
             </Fragment>
         )
