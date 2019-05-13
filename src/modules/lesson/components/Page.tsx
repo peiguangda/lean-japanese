@@ -198,10 +198,10 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                             question.back_text = row_val[col].slice(2);
                         else if (row_val[col].startsWith("$b."))
                             question.back_hint = row_val[col].slice(3);
+                        else if (row_val[col].startsWith("#s."))
+                            question.front_sound = row_val[col].slice(3);    
                         else if (row_val[col].startsWith("#"))
                             question.front_image = row_val[col].slice(1);
-                        else if (row_val[col].startsWith("#s."))
-                            question.front_sound = row_val[col].slice(3);
                         else
                             question.list_answer.push(row_val[col]);
                     }
