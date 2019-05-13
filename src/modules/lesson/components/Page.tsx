@@ -160,7 +160,6 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     };
     public handleOkSubmitCourse = (e) => {
         let {lesson} = this.props;
-        console.log("dang ki khoa hoc");
         this.props.createUserCourse({course_id: lesson.course_id})
             .then(res => {
                 if (res && res.status == "success") {
@@ -276,7 +275,6 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     }
 
     public beforeUpload(file) {
-        // console.log(file.type);
         const isXlsx = (file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         if (!isXlsx) {
             message.error("You can only upload XLSX file!");

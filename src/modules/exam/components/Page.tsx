@@ -108,7 +108,6 @@ export class Exam extends React.Component<Props, State, {}> {
     public showListQuestion = () => {
         let {listExercise, props, listCardProgress} = this.props;
         let {listChoose, isJustDoExam, isShuffled} = this.state;
-        console.log("listExercise", listExercise);
         listExercise = isJustDoExam ? JSON.parse(localStorage.getItem("listExercise")) : listExercise;
         listExercise = convert(listExercise);
         let lengthExercise = listExercise.length;
@@ -123,21 +122,15 @@ export class Exam extends React.Component<Props, State, {}> {
                     console.log("push backtext to list answer");
                 }
                 //review ko dc dao dap an
-                if (!isJustDoExam && !isShuffled && ex.front_image == "") {
+                if (!isJustDoExam && !isShuffled && ex.front_sound == "") {
                     console.log("dao dap an");
                     list_answer_prev = [...ex.list_answer]; //copy index trc khi dao dap an
                     this.shuffle(ex.list_answer);      //dao dap an
                     //so sanh index sau khi dao vs trc khi dao, merge vao index list dap an dung
                     list_answer_prev.map((element_prev, index) => {
                         ex.list_answer.map((element_next, key) => {
-                            // console.log("element_prev", element_prev);
-                            // console.log("element_next", element_next);
-                            // console.log("element_prev == element_next", element_prev == element_next);
                             if (element_prev == element_next) {
                                 let position = ex.list_correct_answer.indexOf(index);
-                                // console.log("position", position);
-                                // console.log("index", index);
-                                // console.log("key", key);
                                 if (position > -1 && key > index) {
                                     //index dap an dung = current_index + index sau khi dao - index trc khi dao
                                     ex.list_correct_answer[position] = ex.list_correct_answer[position] + key - index;
@@ -149,7 +142,6 @@ export class Exam extends React.Component<Props, State, {}> {
                         isShuffled: true
                     })
                 }
-                console.log("listCardProgress", listCardProgress);
                 //truyen list answer da chon vao de show cau hoi
                 let objectAnswer = listChoose.find(object => object.index === index);
                 let cardProgress = toArray(listCardProgress).find(object => object.card_id.toString() === ex.id);
@@ -205,7 +197,6 @@ export class Exam extends React.Component<Props, State, {}> {
         if (selectedAnswer) listAnswer = selectedAnswer.listAnswer;
         let {list_answer, list_correct_answer} = exercise;
         if (list_answer) for (let i = 0; i < list_answer.length; i++) {
-            // console.log("lit anser", listAnswer, listAnswer.indexOf(0), listAnswer.indexOf(1), listAnswer.indexOf(2));
             if (listAnswer && listAnswer.indexOf(i) > -1) {
                 if (selectedAnswer.correct == false) className = 'choose-incorrect';
                 else className = 'choose-correct';

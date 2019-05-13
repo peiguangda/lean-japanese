@@ -11,8 +11,6 @@ export interface Props {
     loadings: number;
 
     fetchCourses(parameters): void
-
-    createCourse(parameters): Promise<any>;
 }
 
 export interface State {
@@ -35,7 +33,6 @@ export class ListCourse extends React.Component<Props, State, {}> {
                 return <Course
                     course={value}
                     key={index}
-                    createCourse={this.props.createCourse}
                 />
             });
     }
