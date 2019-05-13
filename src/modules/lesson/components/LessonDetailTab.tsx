@@ -152,7 +152,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                         >
                             <div className="row w-100 mb-2 justify-content-center">Tiến độ bài tập</div>
                             <div className="row justify-content-center">
-                                <Progress type="circle" percent={progress} width={60} status="active"/>
+                                <Progress type="circle" percent={Number((progress).toFixed(1))} width={60} status="active"/>
                             </div>
                             <div className="row w-100 mt-3 detail-statistic justify-content-center">
                                 Thống kê chi tiết

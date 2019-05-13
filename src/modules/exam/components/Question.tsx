@@ -67,7 +67,6 @@ export class Question extends React.Component<Props, State, {}> {
 
     public render() {
         let {props, exercise, index, lengthExercise, listAnswer, cardProgress} = this.props;
-        console.log("cardProgress", cardProgress);
         return (
             <Fragment>
                 <div id={`${index}`}>
@@ -77,7 +76,7 @@ export class Question extends React.Component<Props, State, {}> {
                             {/*-----------------------------Chi tiet cau hoi---------------------------------------*/}
                             <p className="row mt-3">{exercise.front_text}</p>
                             <ReactPlayer className="row w-100 exam-mp3"
-                                         url='http://www.bsoftnamkam.xyz/japaneselisten/N2Listen/Audio/N2_KIKU_B_43.mp3'
+                                         url={exercise.front_sound}
                                          controls={true}/>
                             <div className="row">
                                 <Checkbox.Group style={{width: '100%'}}
