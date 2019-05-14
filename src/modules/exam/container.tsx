@@ -8,6 +8,7 @@ import {editCardProgressAction, fetchCardProgressAction} from "../../reducers/ca
 import {createUserCourseAction, getUserCourseAction} from "../../reducers/user_course";
 import {getProfileAction} from "../../reducers/current_user";
 import {fetchLessonAction} from "../../reducers/lesson";
+import {createTopicHistoryAction} from "../../reducers/topic_history";
 
 
 const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => ({
@@ -27,6 +28,7 @@ const mapDispatchToProps = (dispatch) => ({
     getProfile: parameters => dispatch(getProfileAction(parameters)),
     createUserCourse: parameters => dispatch(createUserCourseAction(parameters)),
     fetchLesson: parameters => dispatch(fetchLessonAction(parameters)),
+    createTopicHistory: parameters => dispatch(createTopicHistoryAction(parameters)),
 });
 
 export const ExamContainer = connect(

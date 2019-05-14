@@ -30,6 +30,7 @@ import {CardProgressEntity} from "../../../common/types/card_progress";
 // var Excel = require('exceljs');
 import * as xlsx from 'xlsx';
 import {UserCourseEntity} from "../../../common/types/user_course";
+import {TopicHistoryEntity} from "../../../common/types/topic_history";
 
 const TabPane = Tabs.TabPane;
 
@@ -77,6 +78,7 @@ export interface Props {
     listCardProgress: Array<CardProgressEntity>;
     userCourse: UserCourseEntity;
     currentUser: any;
+    listTopicHistory: Array<TopicHistoryEntity>;
 
     fetchLesson(parameters): Promise<any>;
 
@@ -91,6 +93,10 @@ export interface Props {
     getProfile(parameters): Promise<any>;
 
     createUserCourse(parameters): Promise<any>;
+
+    createTopicHistory(parameters): Promise<any>;
+
+    fetchTopicHistory(parameters): void;
 }
 
 export interface State {
@@ -198,7 +204,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                         else if (row_val[col].startsWith("$b."))
                             question.back_hint = row_val[col].slice(3);
                         else if (row_val[col].startsWith("#s."))
-                            question.front_sound = row_val[col].slice(3);    
+                            question.front_sound = row_val[col].slice(3);
                         else if (row_val[col].startsWith("#"))
                             question.front_image = row_val[col].slice(1);
                         else
@@ -291,6 +297,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     async componentDidMount() {
         let {props} = this.props;
         this.initLesson(this.props.match.params.id);
+        this.props.fetchTopicHistory({topic_id: props.match.params.id});
         this.props.fetchListCardProgress({topic_id: props.match.params.id});
         let isJustDoExam = localStorage.getItem("isJustDoExam");
         if (isJustDoExam) this.setState({
@@ -299,7 +306,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {lesson, api, listLesson, props, listCardProgress, userCourse, currentUser} = this.props;
+        let {lesson, api, listLesson, props, listCardProgress, userCourse, currentUser, listTopicHistory} = this.props;
         let {match: {params}} = this.props;
         let {visible, isJustDoExam, admin} = this.state;
         const content = (
@@ -521,7 +528,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                     <div className="row">
                         {/*-------------------------Lesson detail tab pane-------------------------*/}
                         <LessonDetailTab lesson={lesson} props={props} listCardProgress={listCardProgress}
-                                         isJustDoExam={isJustDoExam}/>
+                                         isJustDoExam={isJustDoExam} listTopicHistory={listTopicHistory}/>
                     </div>
                     {admin ? <div className="row">
                         <Card

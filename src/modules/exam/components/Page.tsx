@@ -60,6 +60,8 @@ export interface Props {
     fetchLesson(parameters): Promise<any>;
 
     createUserCourse(parameters): Promise<any>;
+
+    createTopicHistory(parameters): void;
 }
 
 export interface State {
@@ -72,7 +74,6 @@ export interface State {
 
 export class Exam extends React.Component<Props, State, {}> {
     public updateListChoose = (parameters) => {
-        console.log("param", parameters);
         let {listChoose} = this.state;
         let index = parameters.index;
         let listAnswer = parameters.listAnswer;
@@ -236,22 +237,15 @@ export class Exam extends React.Component<Props, State, {}> {
 
     public onSubmitExam = () => {
         let {listChoose} = this.state;
-        let {listExercise, listCardProgress, editCardProgress, props} = this.props;
-        let count = (number) => {
-            let countNum = 0;
-            listCardProgress && listCardProgress.map((cardProgress, index) => {
-                if (cardProgress.box_num == number) countNum++;
-            });
-            return countNum;
-        };
+        let {listExercise, listCardProgress, editCardProgress, props, createTopicHistory} = this.props;
+        let count = 0;
         let checkAnswer = (listChoose, listExercise) => {
             listChoose = listChoose.map((element, index) => {
-                console.log("listExercise[element.index]", listExercise[element.index]);
-                console.log("listExercise[element.index].listAnswer[0]", listExercise[element.index].list_answer[0]);
                 let listCorrectAnswer = {...listExercise[element.index]}.list_correct_answer, isCorrect;
                 if (element.listAnswer) isCorrect = JSON.stringify(element.listAnswer.sort()) == JSON.stringify(listCorrectAnswer.sort());
                 else if (element.backText) isCorrect = element.backText == listExercise[element.index].list_answer[0];
                 element.correct = isCorrect;
+                if (isCorrect) count++;
                 element.id = listExercise[element.index].id;
                 return element;
             })
@@ -331,6 +325,14 @@ export class Exam extends React.Component<Props, State, {}> {
                         localStorage.setItem("isJustDoExam", "TRUE");
                         localStorage.setItem("listExercise", JSON.stringify(listExercise));
                         setCookie("listChoose", listChoose);
+                        createTopicHistory({
+                            topic_id: props.match.params.id,
+                            score: 0,
+                            course_id: listExercise[0].course_id,
+                            correct: count,
+                            total: listChoose.length,
+                            data: listChoose
+                        });
                         props.history.push(`/lesson/${props.match.params.id}`);
                         window.scrollTo(0, 0);
                     });

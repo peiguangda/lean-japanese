@@ -8,6 +8,7 @@ import {RouteComponentProps} from "react-router";
 import {fetchCardProgressAction} from "../../reducers/card_progress";
 import {createUserCourseAction, getUserCourseAction} from "../../reducers/user_course";
 import {getProfileAction} from "../../reducers/current_user";
+import {createTopicHistoryAction, fetchTopicHistoryAction} from "../../reducers/topic_history";
 
 
 const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => ({
@@ -18,6 +19,7 @@ const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => 
     listCardProgress: state.listCardProgress,
     userCourse: state.userCourse,
     currentUser: state.currentUser,
+    listTopicHistory: state.listTopicHistory,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -28,6 +30,8 @@ const mapDispatchToProps = (dispatch) => ({
     getUserCourse: (parameters) => dispatch(getUserCourseAction(parameters)),
     getProfile: parameters => dispatch(getProfileAction(parameters)),
     createUserCourse: parameters => dispatch(createUserCourseAction(parameters)),
+    createTopicHistory: parameters => dispatch(createTopicHistoryAction(parameters)),
+    fetchTopicHistory: parameters => dispatch(fetchTopicHistoryAction(parameters)),
 });
 
 export const LessonDetailContainer = connect(
