@@ -72,13 +72,16 @@ export interface State {
 
 export class Exam extends React.Component<Props, State, {}> {
     public updateListChoose = (parameters) => {
+        console.log("param", parameters);
         let {listChoose} = this.state;
         let index = parameters.index;
         let listAnswer = parameters.listAnswer;
+        let backText = parameters.backText;
         //truong hop answer cua cau hoi da ton tai trong array
         let objectAnswer = listChoose.find(object => object.index === index);
         if (objectAnswer) {
-            objectAnswer.listAnswer = listAnswer;
+            if (listAnswer) objectAnswer.listAnswer = listAnswer;
+            if (backText) objectAnswer.backText = backText;
             //update objectAnswer vao listChoose
             listChoose = listChoose.map((object, num) => {
                 if (object.index === index) return objectAnswer;
@@ -86,7 +89,8 @@ export class Exam extends React.Component<Props, State, {}> {
             })
         } else {
             //answer chua ton tai
-            objectAnswer = {index: index, listAnswer: listAnswer};
+            if (listAnswer) objectAnswer = {index: index, listAnswer: listAnswer};
+            if (backText) objectAnswer = {index: index, backText: backText};
             listChoose.push(objectAnswer);
         }
         this.setState({
@@ -154,6 +158,7 @@ export class Exam extends React.Component<Props, State, {}> {
                     isCorrect={objectAnswer ? objectAnswer.correct : null}
                     lengthExercise={lengthExercise}
                     listAnswer={objectAnswer ? objectAnswer.listAnswer : []}
+                    backText={objectAnswer ? objectAnswer.backText : ""}
                     updateListChoose={this.updateListChoose}
                 />
             })
@@ -196,7 +201,7 @@ export class Exam extends React.Component<Props, State, {}> {
         let result = [], listAnswer, className = "";
         if (selectedAnswer) listAnswer = selectedAnswer.listAnswer;
         let {list_answer, list_correct_answer} = exercise;
-        if (list_answer) for (let i = 0; i < list_answer.length; i++) {
+        if (list_answer && list_answer.length > 1) for (let i = 0; i < list_answer.length; i++) {
             if (listAnswer && listAnswer.indexOf(i) > -1) {
                 if (selectedAnswer.correct == false) className = 'choose-incorrect';
                 else className = 'choose-correct';
@@ -241,8 +246,11 @@ export class Exam extends React.Component<Props, State, {}> {
         };
         let checkAnswer = (listChoose, listExercise) => {
             listChoose = listChoose.map((element, index) => {
-                let listCorrectAnswer = {...listExercise[element.index]}.list_correct_answer;
-                let isCorrect = JSON.stringify(element.listAnswer.sort()) == JSON.stringify(listCorrectAnswer.sort());
+                console.log("listExercise[element.index]", listExercise[element.index]);
+                console.log("listExercise[element.index].listAnswer[0]", listExercise[element.index].list_answer[0]);
+                let listCorrectAnswer = {...listExercise[element.index]}.list_correct_answer, isCorrect;
+                if (element.listAnswer) isCorrect = JSON.stringify(element.listAnswer.sort()) == JSON.stringify(listCorrectAnswer.sort());
+                else if (element.backText) isCorrect = element.backText == listExercise[element.index].list_answer[0];
                 element.correct = isCorrect;
                 element.id = listExercise[element.index].id;
                 return element;
@@ -324,6 +332,7 @@ export class Exam extends React.Component<Props, State, {}> {
                         localStorage.setItem("listExercise", JSON.stringify(listExercise));
                         setCookie("listChoose", listChoose);
                         props.history.push(`/lesson/${props.match.params.id}`);
+                        window.scrollTo(0, 0);
                     });
             },
             onCancel() {
@@ -396,7 +405,6 @@ export class Exam extends React.Component<Props, State, {}> {
         let {api, props, listExercise, listCardProgress, userCourse, currentUser} = this.props;
         let {match: {params}} = this.props;
         let {isJustDoExam} = this.state;
-        console.log("listCardProgress", listCardProgress);
         return (
             <Fragment>
                 <Helmet title={"Lesson"}/>
