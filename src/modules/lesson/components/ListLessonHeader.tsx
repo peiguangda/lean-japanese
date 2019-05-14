@@ -17,7 +17,6 @@ export interface State {
 
 export class ListLessonHeader extends React.Component<Props, State, {}> {
     public changeLesson = (id) => {
-        console.log("change lesson", id);
         this.props.changeLesson(id);
         this.props.history.push(`/lesson/${id}`);
     }

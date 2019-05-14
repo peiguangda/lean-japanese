@@ -36,8 +36,6 @@ export class Question extends React.Component<Props, State, {}> {
         return (list_correct_answer && list_correct_answer.indexOf(index) > -1) ? true : false;
     }
     public onChangeTextFillGame = (e, index) => {
-        console.log("e", e.target.value);
-        console.log("index", index);
         this.setState({
             inputFillText: e.target.value
         })

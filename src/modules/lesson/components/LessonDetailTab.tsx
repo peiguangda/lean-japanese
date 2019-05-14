@@ -16,6 +16,7 @@ import {Link} from "react-router-dom";
 import {LessonEntity} from "../../../common/types/lesson";
 import {CardProgressEntity} from "../../../common/types/card_progress";
 import {toArray} from "../../../helpers/Function";
+import {TopicHistoryEntity} from "../../../common/types/topic_history";
 
 var moment = require('moment');
 const TabPane = Tabs.TabPane;
@@ -59,6 +60,7 @@ export interface Props {
     props: any;
     isJustDoExam: boolean;
     listCardProgress: Array<CardProgressEntity>;
+    listTopicHistory: Array<TopicHistoryEntity>;
 }
 
 export interface State {
@@ -89,7 +91,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {lesson, props, listCardProgress, isJustDoExam} = this.props;
+        let {lesson, props, listCardProgress, isJustDoExam, listTopicHistory} = this.props;
         let {setting_number_question_for_exam} = this.state;
         listCardProgress = toArray(listCardProgress);
         let count = (number) => {
@@ -136,10 +138,10 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             {angle: countBoxNum1, className: 'blue'},
             {angle: countBoxNum2, className: 'dark_red'},
             {angle: countBoxNum4, className: 'yellow'}];
-        const data = [{x: moment(new Date('01/1/2018')).format("MMM Do"), y: 75},
-            {x: moment(new Date('01/2/2018')).format("MMM Do"), y: 60},
-            {x: moment(new Date('01/3/2018')).format("MMM Do"), y: 80},
-            {x: moment(new Date('01/4/2018')).format("MMM Do"), y: 90}];
+        const data = [];
+        listTopicHistory && toArray(listTopicHistory).map((item, index) => {
+            data.push({x: moment(new Date(item.updated_at)).format("LLL"), y: item.correct});
+        });
         return (
             <Tabs defaultActiveKey="1" className="lesson-content w-100">
                 <TabPane tab={question_tab} key="1">
@@ -152,7 +154,8 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                         >
                             <div className="row w-100 mb-2 justify-content-center">Tiến độ bài tập</div>
                             <div className="row justify-content-center">
-                                <Progress type="circle" percent={Number((progress).toFixed(1))} width={60} status="active"/>
+                                <Progress type="circle" percent={Number((progress).toFixed(1))} width={60}
+                                          status="active"/>
                             </div>
                             <div className="row w-100 mt-3 detail-statistic justify-content-center">
                                 Thống kê chi tiết
