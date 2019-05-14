@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Fragment} from "react";
-import {Button, Checkbox, Col, Radio, Row, Tooltip} from 'antd';
+import {Button, Checkbox, Col, Input, Radio, Row, Tooltip} from 'antd';
 import {ExerciseEntity} from "../../../common/types/exercise";
 import ReactPlayer from 'react-player'
 import {CardProgressEntity} from "../../../common/types/card_progress";
@@ -16,12 +16,14 @@ export interface Props {
     isCorrect: boolean;
     isReviewing: boolean;
     cardProgress: CardProgressEntity;
+    backText: string;
 
     updateListChoose(parameters): void;
 }
 
 export interface State {
     value: number;
+    inputFillText: string;
 }
 
 export class Question extends React.Component<Props, State, {}> {
@@ -33,10 +35,19 @@ export class Question extends React.Component<Props, State, {}> {
         let {list_answer, list_correct_answer} = exercise;
         return (list_correct_answer && list_correct_answer.indexOf(index) > -1) ? true : false;
     }
-    public showListAnswer = () => {
-        let {exercise, listAnswer, isReviewing, isCorrect} = this.props;
+    public onChangeTextFillGame = (e, index) => {
+        console.log("e", e.target.value);
+        console.log("index", index);
+        this.setState({
+            inputFillText: e.target.value
+        })
+        this.props.updateListChoose({index: index, backText: e.target.value.toLowerCase()});
+    }
+    public showListAnswer = (index) => {
+        let {exercise, listAnswer, isReviewing, isCorrect, backText} = this.props;
+        let {inputFillText} = this.state;
         let {list_answer, list_correct_answer} = exercise, className = "";
-        if (list_answer && list_answer.length) return list_answer.map((answer, index) => {
+        if (list_answer && list_answer.length && list_answer.length > 1) return list_answer.map((answer, index) => {
             if (listAnswer && listAnswer.indexOf(index) > -1) {
                 if (isCorrect == false) className = 'choose-incorrect';
                 else if (isCorrect == true) className = 'choose-correct';
@@ -53,12 +64,19 @@ export class Question extends React.Component<Props, State, {}> {
                 </Checkbox>
             </Col>
         })
+        else if (list_answer.length == 1) {
+            return <Input className={isReviewing ? (!isCorrect ? 'choose-incorrect' : 'choose-correct') : ""}
+                          value={isReviewing ? backText : inputFillText}
+                          disabled={isReviewing}
+                          onChange={(e) => this.onChangeTextFillGame(e, index)} placeholder="Điền từ..."/>;
+        }
     }
 
     constructor(props) {
         super(props);
         this.state = {
             value: -2,
+            inputFillText: ""
         }
     }
 
@@ -67,6 +85,7 @@ export class Question extends React.Component<Props, State, {}> {
 
     public render() {
         let {props, exercise, index, lengthExercise, listAnswer, cardProgress} = this.props;
+        console.log("cardProgress.last_result", cardProgress && cardProgress.last_result);
         return (
             <Fragment>
                 <div id={`${index}`}>
@@ -83,7 +102,7 @@ export class Question extends React.Component<Props, State, {}> {
                                                 onChange={(e) => this.onChangeCheckBox(e, index)}
                                                 value={listAnswer}>
                                     <Row>
-                                        {this.showListAnswer()}
+                                        {this.showListAnswer(index)}
                                     </Row>
                                 </Checkbox.Group>
                             </div>
