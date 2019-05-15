@@ -708,10 +708,12 @@ body {
   height: 40px;
   color: white;
   padding-top: 3%;
+
   &:hover {
     background-color: #18285f;
     color: white;
   }
+
   &:active, &:focus {
     background-color: #1d8efb;
     color: white;
@@ -765,6 +767,7 @@ body {
 
 .ant-back-top-content {
   background-color: rgb(52, 97, 165) !important;
+
   &:hover {
     background-color: rgb(24, 33, 165) !important;
   }
@@ -797,4 +800,19 @@ body {
 
 .rv-xy-plot__inner {
   overflow: overlay !important;
+}
+
+.video-test {
+  width: 90% !important;
+  height: 100%;
+}
+
+.ant-modal-title {
+  text-align: center !important;
+}
+
+.exam-modal-scroll {
+  @include scroll();
+  min-height: 400px;
+  max-height: 500px;
 }

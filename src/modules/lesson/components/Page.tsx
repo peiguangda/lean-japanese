@@ -306,7 +306,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {lesson, api, listLesson, props, listCardProgress, userCourse, currentUser, listTopicHistory} = this.props;
+        let {lesson, api, listLesson, props, listCardProgress, userCourse, currentUser, listTopicHistory, match} = this.props;
         let {match: {params}} = this.props;
         let {visible, isJustDoExam, admin} = this.state;
         const content = (
@@ -527,8 +527,13 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                       history={this.props.props.history}/>
                     <div className="row">
                         {/*-------------------------Lesson detail tab pane-------------------------*/}
-                        <LessonDetailTab lesson={lesson} props={props} listCardProgress={listCardProgress}
-                                         isJustDoExam={isJustDoExam} listTopicHistory={listTopicHistory}/>
+                        <LessonDetailTab lesson={lesson}
+                                         props={props}
+                                         match={match}
+                                         params={params}
+                                         listCardProgress={listCardProgress}
+                                         isJustDoExam={isJustDoExam}
+                                         listTopicHistory={listTopicHistory}/>
                     </div>
                     {admin ? <div className="row">
                         <Card

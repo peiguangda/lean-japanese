@@ -38,7 +38,6 @@ const routes = [
 
 export interface Props {
     match: any;
-    params: any;
     props: any,
     history: any,
     api: ApiEntity;
@@ -111,7 +110,7 @@ export class Exam extends React.Component<Props, State, {}> {
     };
 
     public showListQuestion = () => {
-        let {listExercise, props, listCardProgress} = this.props;
+        let {listExercise, props, listCardProgress, children} = this.props;
         let {listChoose, isJustDoExam, isShuffled} = this.state;
         listExercise = isJustDoExam ? JSON.parse(localStorage.getItem("listExercise")) : listExercise;
         listExercise = convert(listExercise);
@@ -161,6 +160,7 @@ export class Exam extends React.Component<Props, State, {}> {
                     listAnswer={objectAnswer ? objectAnswer.listAnswer : []}
                     backText={objectAnswer ? objectAnswer.backText : ""}
                     updateListChoose={this.updateListChoose}
+                    children={children}
                 />
             })
         }
@@ -397,42 +397,43 @@ export class Exam extends React.Component<Props, State, {}> {
     }
 
     componentDidMount() {
-        window.onbeforeunload = (event) => {
+        let {children} = this.props;
+        if (children != "EXAM_MODAL") window.onbeforeunload = (event) => {
             event.preventDefault();
             return 'Bạn đang làm bài, có muốn thoát khi chưa nộp bài?';
         };
     }
 
     public render() {
-        let {api, props, listExercise, listCardProgress, userCourse, currentUser} = this.props;
-        let {match: {params}} = this.props;
+        let {api, props, listExercise, listCardProgress, userCourse, currentUser, children} = this.props;
         let {isJustDoExam} = this.state;
         return (
             <Fragment>
-                <Helmet title={"Lesson"}/>
-                <NavigationBarContainter/>
+                {children != "EXAM_MODAL" && <Helmet title={"Lesson"}/>}
+                {children != "EXAM_MODAL" && <NavigationBarContainter/>}
                 {/*-------------------------page header-------------------------*/}
                 <div className="container">
-                    <PageHeader
+                    {children != "EXAM_MODAL" && <PageHeader
                         className="mt-5"
                         title=""
                         breadcrumb={{routes}}
-                    />
+                    />}
                     {api.loadings > 0 ? <Loader/> : ""}
                     {currentUser && currentUser.responseError ? this.requestLogin() : ""}
-                    <Modal
+                    {children != "EXAM_MODAL" && <Modal
                         title="Bạn chưa đăng kí tham gia khóa học"
                         visible={this.state.visible_submit_course}
                         onOk={this.handleOkSubmitCourse}
                         onCancel={this.handleCancelSubmitCourse}
                     >
                         <p>Đăng kí tham gia khóa học?</p>
-                    </Modal>
-                    <div className="row ml-5 mr-1 custom-container">
+                    </Modal>}
+                    <div
+                        className={`row ml-5 mr-1 custom-container ${children != "EXAM_MODAL" ? "" : "exam-modal-scroll"} `}>
                         <div className="col-md-9">
                             {this.showListQuestion()}
                         </div>
-                        <div className="col-md-3 mt-3 fill-answer">
+                        {children != "EXAM_MODAL" && <div className="col-md-3 mt-3 fill-answer">
                             <div className="row justify-content-center">
                                 <img src="https://media.giphy.com/media/2zoCrihrueMUVOZlTx/giphy.gif"
                                      className="col-md-6 float-right clock-gif-size"/>
@@ -459,11 +460,11 @@ export class Exam extends React.Component<Props, State, {}> {
                                     onClick={this.onSubmitExam}>
                                 Nộp bài
                             </Button>
-                        </div>
+                        </div>}
                     </div>
-                    <Footer style={{textAlign: 'center'}}>
+                    {children != "EXAM_MODAL" && <Footer style={{textAlign: 'center'}}>
                         Easy Japanese Design ©2019 Created by HEDSPI
-                    </Footer>
+                    </Footer>}
                 </div>
                 <BackTop/>
             </Fragment>

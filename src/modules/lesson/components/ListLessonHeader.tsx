@@ -2,6 +2,7 @@ import * as React from "react";
 import {Fragment} from "react";
 import {Icon, Tooltip} from "antd";
 import {LessonEntity} from "../../../common/types/lesson";
+import {toArray} from "../../../helpers/Function";
 
 export interface Props {
     listLesson: Array<LessonEntity>;
@@ -22,17 +23,16 @@ export class ListLessonHeader extends React.Component<Props, State, {}> {
     }
     public showListLesson = () => {
         let {lesson, listLesson} = this.props;
-        if (listLesson && listLesson.length) {
-            return listLesson.map((value, index) => {
-                return <div className="col-md-1 mt-2 text-center" onClick={() => this.changeLesson(value.id)}>
-                    <Tooltip placement="top" title={value.name}>
-                        <h2 className={`icon-parent-lesson-detail-header ${lesson.id == value.id ? "lesson-current" : ""}`}>
-                            <Icon type="folder-open" theme="twoTone"/>
-                        </h2>
-                    </Tooltip>
-                </div>
-            })
-        }
+        listLesson = toArray(listLesson);
+        return listLesson && listLesson.length && listLesson.map((value, index) => {
+            return <div className="col-md-1 mt-2 text-center" onClick={() => this.changeLesson(value.id)}>
+                <Tooltip placement="top" title={value.name}>
+                    <h2 className={`icon-parent-lesson-detail-header ${lesson.id == value.id ? "lesson-current" : ""}`}>
+                        <Icon type="folder-open" theme="twoTone"/>
+                    </h2>
+                </Tooltip>
+            </div>
+        })
     }
 
     constructor(props) {
