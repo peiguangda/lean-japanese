@@ -2,7 +2,7 @@ import * as React from "react";
 import {Fragment} from "react";
 import {Button, Checkbox, Col, Input, Radio, Row, Tooltip} from 'antd';
 import {ExerciseEntity} from "../../../common/types/exercise";
-import ReactPlayer from 'react-player'
+import ReactPlayer from 'react-player';
 import {CardProgressEntity} from "../../../common/types/card_progress";
 
 const RadioGroup = Radio.Group;
@@ -42,7 +42,7 @@ export class Question extends React.Component<Props, State, {}> {
         this.props.updateListChoose({index: index, backText: e.target.value.toLowerCase()});
     }
     public showListAnswer = (index) => {
-        let {exercise, listAnswer, isReviewing, isCorrect, backText} = this.props;
+        let {exercise, listAnswer, isReviewing, isCorrect, backText, children} = this.props;
         let {inputFillText} = this.state;
         let {list_answer, list_correct_answer} = exercise, className = "";
         if (list_answer && list_answer.length && list_answer.length > 1) return list_answer.map((answer, index) => {
@@ -82,12 +82,13 @@ export class Question extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {props, exercise, index, lengthExercise, listAnswer, cardProgress} = this.props;
+        let {props, exercise, index, lengthExercise, listAnswer, cardProgress, children} = this.props;
         console.log("cardProgress.last_result", cardProgress && cardProgress.last_result);
         return (
             <Fragment>
                 <div id={`${index}`}>
-                    <p className="row ml-1 exam-title">{`Câu ${index + 1}/${lengthExercise} - Lần cuối trả lời${cardProgress && cardProgress.last_result == 0 ? " sai" : " đúng"}`}</p>
+
+                    <p className="row ml-1 exam-title">{`Câu ${index + 1}/${lengthExercise} ${children != "EXAM_MODAL" ? `- Lần cuối trả lời${cardProgress && cardProgress.last_result == 0 ? " sai" : " đúng"}` : ""}`}</p>
                     <div className="row mr-1 mb-5 list-exam">
                         <div className="col w-100 ml-3">
                             {/*-----------------------------Chi tiet cau hoi---------------------------------------*/}
@@ -105,7 +106,7 @@ export class Question extends React.Component<Props, State, {}> {
                                 </Checkbox.Group>
                             </div>
                             {/*------------------cac nut binh luan bookmark cac kieu---------------------------------*/}
-                            <div className="row float-right m-2 list-support-btn">
+                            {children != "EXAM_MODAL" && <div className="row float-right m-2 list-support-btn">
                                 <Tooltip placement="top" title={"Bình luận"}>
                                     <Button icon="message" className="exam-btn"/>
                                 </Tooltip>
@@ -121,7 +122,7 @@ export class Question extends React.Component<Props, State, {}> {
                                 <Tooltip placement="top" title={"Bỏ qua"}>
                                     <Button icon="eye-invisible" className="exam-btn"/>
                                 </Tooltip>
-                            </div>
+                            </div>}
                         </div>
                     </div>
                 </div>
