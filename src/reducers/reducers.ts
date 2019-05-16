@@ -19,6 +19,10 @@ import {userCourseReducer} from "./user_course";
 import {userReducer} from './user';
 import {topicHistoryReducer} from "./topic_history";
 import {TopicHistoryEntity} from "../common/types/topic_history";
+import {videoScenarioReducer} from "./video_scenario";
+import {VideoScenarioEntity} from "../common/types/video_scenario";
+import {videoTimeItemReducer} from "./video_time_item";
+import {VideoTimeItemEntity} from "../common/types/video_time_item";
 
 export interface State {
     api: ApiEntity;
@@ -34,6 +38,8 @@ export interface State {
     userCourse: UserCourseEntity;
     user: UserEntity;
     listTopicHistory: TopicHistoryEntity[];
+    videoScenario: VideoScenarioEntity;
+    listVideoTimeItem: VideoTimeItemEntity[];
 };
 
 export const state = combineReducers<State>({
@@ -49,5 +55,7 @@ export const state = combineReducers<State>({
     listCardProgress: cardProgressReducer,
     userCourse: userCourseReducer,
     user: userReducer,
-    listTopicHistory: topicHistoryReducer
+    listTopicHistory: topicHistoryReducer,
+    videoScenario: videoScenarioReducer,
+    listVideoTimeItem: videoTimeItemReducer
 });

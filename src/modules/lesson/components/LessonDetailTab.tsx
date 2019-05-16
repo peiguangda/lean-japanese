@@ -185,6 +185,18 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             height={height}/>
     }
 
+    public showListGraph = (myData) => {
+        return <div className="row">
+            <div className={"col-md-6"}>
+                {this.showCicleGraph(myData, 100)}
+            </div>
+            <div className="col-md-5 ml-2 mt-3">
+                <div>Bùi Quang Đại</div>
+                <div>23 tuổi</div>
+            </div>
+        </div>
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -210,7 +222,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
     public render() {
         let {lesson, props, listCardProgress, isJustDoExam, listTopicHistory} = this.props;
         let {setting_number_question_for_exam, isPlaying, visible} = this.state;
-        console.log("isPlaying", isPlaying);
+        // console.log("isPlaying", isPlaying);
         listCardProgress = toArray(listCardProgress);
         listTopicHistory = toArray(listTopicHistory);
         let count = (number) => {
@@ -428,11 +440,12 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                     />
                                 </div>
                                 <div className="col-md-4">
+                                    <h4 className="justify-content-center row">Kết quả</h4>
                                     <div className="row">
                                         <div className={"col-md-6"}>
-                                            {this.showCicleGraph(myData, 200)}
+                                            {this.showCicleGraph(myData, 100)}
                                         </div>
-                                        <div className="col-md-5 ml-2 mt-5">
+                                        <div className="col-md-5 ml-2 mt-3">
                                             <div className="row">
                                                 <div className="mt-1 squares red"></div>
                                                 <div className="col-md-10">Câu hỏi chưa trả lời ({countBoxNum0})</div>
@@ -447,6 +460,10 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                             </div>
                                         </div>
                                     </div>
+                                    {this.showListGraph(myData)}
+                                    {this.showListGraph(myData)}
+                                    {this.showListGraph(myData)}
+                                    {this.showListGraph(myData)}
                                 </div>
                             </div>
                         </Modal>

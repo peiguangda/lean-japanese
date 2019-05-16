@@ -31,6 +31,8 @@ import {CardProgressEntity} from "../../../common/types/card_progress";
 import * as xlsx from 'xlsx';
 import {UserCourseEntity} from "../../../common/types/user_course";
 import {TopicHistoryEntity} from "../../../common/types/topic_history";
+import {VideoScenarioEntity} from "../../../common/types/video_scenario";
+import {VideoTimeItemEntity} from "../../../common/types/video_time_item";
 
 const TabPane = Tabs.TabPane;
 
@@ -79,6 +81,8 @@ export interface Props {
     userCourse: UserCourseEntity;
     currentUser: any;
     listTopicHistory: Array<TopicHistoryEntity>;
+    videoScenario: VideoScenarioEntity;
+    listVideoTimeItem: Array<VideoTimeItemEntity>;
 
     fetchLesson(parameters): Promise<any>;
 
@@ -97,6 +101,14 @@ export interface Props {
     createTopicHistory(parameters): Promise<any>;
 
     fetchTopicHistory(parameters): void;
+
+    fetchVideoScenario(parameters): void;
+
+    createVideoScenario(parameters): void;
+
+    fetchListVideoTimeItem(parameters): void;
+
+    createVideoTimeItem(parameters): void;
 }
 
 export interface State {
@@ -295,7 +307,8 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     }
 
     async componentDidMount() {
-        let {props} = this.props;
+        let {props, fetchVideoScenario, createVideoScenario, fetchListVideoTimeItem, createVideoTimeItem} = this.props;
+        let videoScenario;
         this.initLesson(this.props.match.params.id);
         this.props.fetchTopicHistory({topic_id: props.match.params.id});
         this.props.fetchListCardProgress({topic_id: props.match.params.id});
@@ -303,12 +316,27 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         if (isJustDoExam) this.setState({
             isJustDoExam: (isJustDoExam == "TRUE")
         })
+        console.log("aa");
+        // createVideoScenario({topic_id: props.match.params.id, course_id: 1, video_url: ""});
+        videoScenario = await fetchVideoScenario({topic_id: props.match.params.id});
+        // createVideoTimeItem([{
+        //     video_scenario_id: videoScenario.data.id,
+        //     list_card_id: [1, 23, 3],
+        //     start_time: 10,
+        //     time_practice: 10,
+        //     title: "aaaa",
+        //     data: {}
+        // }]);
+        console.log("videoScenario", videoScenario);
+        fetchListVideoTimeItem({video_scenario_id: videoScenario.data.id});
     }
 
     public render() {
-        let {lesson, api, listLesson, props, listCardProgress, userCourse, currentUser, listTopicHistory, match} = this.props;
+        let {lesson, api, listLesson, props, listCardProgress, userCourse, currentUser, listTopicHistory, match, videoScenario, listVideoTimeItem} = this.props;
         let {match: {params}} = this.props;
         let {visible, isJustDoExam, admin} = this.state;
+        console.log("videoScenario", videoScenario);
+        console.log("listVideoTimeItem", listVideoTimeItem);
         const content = (
             <div>
                 <Button type="default" className="JLC" onClick={() => this.setModal2Visible(true)}>Setting</Button>
