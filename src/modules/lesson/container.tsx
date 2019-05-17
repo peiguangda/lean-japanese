@@ -9,7 +9,11 @@ import {fetchCardProgressAction} from "../../reducers/card_progress";
 import {createUserCourseAction, getUserCourseAction} from "../../reducers/user_course";
 import {getProfileAction} from "../../reducers/current_user";
 import {createTopicHistoryAction, fetchTopicHistoryAction} from "../../reducers/topic_history";
-
+import {createVideoScenarioAction, fetchVideoScenarioAction} from "../../reducers/video_scenario";
+import {
+    createVideoTimeItemAction,
+    fetchListVideoTimeItemAction,
+} from "../../reducers/video_time_item";
 
 const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => ({
     lesson: state.lesson,
@@ -20,6 +24,8 @@ const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => 
     userCourse: state.userCourse,
     currentUser: state.currentUser,
     listTopicHistory: state.listTopicHistory,
+    videoScenario: state.videoScenario,
+    listVideoTimeItem: state.listVideoTimeItem
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -32,6 +38,10 @@ const mapDispatchToProps = (dispatch) => ({
     createUserCourse: parameters => dispatch(createUserCourseAction(parameters)),
     createTopicHistory: parameters => dispatch(createTopicHistoryAction(parameters)),
     fetchTopicHistory: parameters => dispatch(fetchTopicHistoryAction(parameters)),
+    fetchVideoScenario: parameters => dispatch(fetchVideoScenarioAction(parameters)),
+    createVideoScenario: parameters => dispatch(createVideoScenarioAction(parameters)),
+    fetchListVideoTimeItem: parameters => dispatch(fetchListVideoTimeItemAction(parameters)),
+    createVideoTimeItem: parameters => dispatch(createVideoTimeItemAction(parameters)),
 });
 
 export const LessonDetailContainer = connect(
