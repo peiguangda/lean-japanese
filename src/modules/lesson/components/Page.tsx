@@ -83,6 +83,9 @@ export interface Props {
     listTopicHistory: Array<TopicHistoryEntity>;
     videoScenario: VideoScenarioEntity;
     listVideoTimeItem: Array<VideoTimeItemEntity>;
+    listExercise: ExerciseEntity[];
+
+    fetchListExercise(parameters): void;
 
     fetchLesson(parameters): Promise<any>;
 
@@ -316,27 +319,21 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         if (isJustDoExam) this.setState({
             isJustDoExam: (isJustDoExam == "TRUE")
         })
-        console.log("aa");
-        // createVideoScenario({topic_id: props.match.params.id, course_id: 1, video_url: ""});
         videoScenario = await fetchVideoScenario({topic_id: props.match.params.id});
-        // createVideoTimeItem([{
-        //     video_scenario_id: videoScenario.data.id,
-        //     list_card_id: [1, 23, 3],
-        //     start_time: 10,
-        //     time_practice: 10,
-        //     title: "aaaa",
-        //     data: {}
-        // }]);
-        console.log("videoScenario", videoScenario);
+        if (Object.keys(videoScenario.data).length == 0) {
+            await createVideoScenario({topic_id: props.match.params.id, video_url: ""});
+            videoScenario = await fetchVideoScenario({topic_id: props.match.params.id});
+        }
         fetchListVideoTimeItem({video_scenario_id: videoScenario.data.id});
     }
 
     public render() {
-        let {lesson, api, listLesson, props, listCardProgress, userCourse, currentUser, listTopicHistory, match, videoScenario, listVideoTimeItem} = this.props;
+        let {
+            lesson, api, listLesson, props, listCardProgress, userCourse, currentUser, listTopicHistory, match, videoScenario,
+            listVideoTimeItem, fetchListExercise, listExercise, createVideoTimeItem
+        } = this.props;
         let {match: {params}} = this.props;
         let {visible, isJustDoExam, admin} = this.state;
-        console.log("videoScenario", videoScenario);
-        console.log("listVideoTimeItem", listVideoTimeItem);
         const content = (
             <div>
                 <Button type="default" className="JLC" onClick={() => this.setModal2Visible(true)}>Setting</Button>
@@ -559,9 +556,16 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                          props={props}
                                          match={match}
                                          params={params}
+                                         admin={admin}
                                          listCardProgress={listCardProgress}
                                          isJustDoExam={isJustDoExam}
-                                         listTopicHistory={listTopicHistory}/>
+                                         listTopicHistory={listTopicHistory}
+                                         fetchListExercise={fetchListExercise}
+                                         listExercise={listExercise}
+                                         createVideoTimeItem={createVideoTimeItem}
+                                         videoScenario={videoScenario}
+                                         listVideoTimeItem={listVideoTimeItem}
+                        />
                     </div>
                     {admin ? <div className="row">
                         <Card

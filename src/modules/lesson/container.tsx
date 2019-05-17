@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {State} from '../../reducers/reducers';
 import {LessonDetail} from "./components/Page";
 import {fetchLessonAction, fetchListLessonAction} from "../../reducers/lesson";
-import {createExerciseAction} from "../../reducers/exercise";
+import {createExerciseAction, fetchListExerciseAction} from "../../reducers/exercise";
 import {RouteComponentProps} from "react-router";
 import {fetchCardProgressAction} from "../../reducers/card_progress";
 import {createUserCourseAction, getUserCourseAction} from "../../reducers/user_course";
@@ -25,7 +25,8 @@ const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => 
     currentUser: state.currentUser,
     listTopicHistory: state.listTopicHistory,
     videoScenario: state.videoScenario,
-    listVideoTimeItem: state.listVideoTimeItem
+    listVideoTimeItem: state.listVideoTimeItem,
+    listExercise: state.listExercise,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -42,6 +43,7 @@ const mapDispatchToProps = (dispatch) => ({
     createVideoScenario: parameters => dispatch(createVideoScenarioAction(parameters)),
     fetchListVideoTimeItem: parameters => dispatch(fetchListVideoTimeItemAction(parameters)),
     createVideoTimeItem: parameters => dispatch(createVideoTimeItemAction(parameters)),
+    fetchListExercise: parameters => dispatch(fetchListExerciseAction(parameters)),
 });
 
 export const LessonDetailContainer = connect(

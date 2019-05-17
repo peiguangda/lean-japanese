@@ -11,7 +11,7 @@ import {
     YAxis
 } from 'react-vis';
 import '../../../../node_modules/react-vis/dist/style.css';
-import {Button, Card, Icon, Input, Modal, Progress, Select, Table, Tabs, Tooltip} from "antd";
+import {Button, Card, Icon, Input, message, Modal, Progress, Select, Table, Tabs, TimePicker, Tooltip} from "antd";
 import {Link} from "react-router-dom";
 import {LessonEntity} from "../../../common/types/lesson";
 import {CardProgressEntity} from "../../../common/types/card_progress";
@@ -19,10 +19,14 @@ import {toArray} from "../../../helpers/Function";
 import {TopicHistoryEntity} from "../../../common/types/topic_history";
 import ReactPlayer from 'react-player';
 import {ExamContainer} from "../../exam/container";
+import {ExerciseEntity} from "../../../common/types/exercise";
+import {VideoTimeItemEntity} from "../../../common/types/video_time_item";
+import {VideoScenarioEntity} from "../../../common/types/video_scenario";
 
 var moment = require('moment');
 const TabPane = Tabs.TabPane;
-const FlexibleRadialChart = makeVisFlexible(RadialChart)
+const Option = Select.Option;
+const FlexibleRadialChart = makeVisFlexible(RadialChart);
 
 const columns = [
     {
@@ -55,22 +59,30 @@ const dataSource = [{
     type: '40%'
 }];
 
-const Option = Select.Option;
-
 export interface Props {
     lesson: LessonEntity;
     props: any;
     match: any;
     params: any;
     isJustDoExam: boolean;
+    admin: boolean;
+    videoScenario: VideoScenarioEntity;
     listCardProgress: Array<CardProgressEntity>;
     listTopicHistory: Array<TopicHistoryEntity>;
+    listExercise: ExerciseEntity[];
+    listVideoTimeItem: Array<VideoTimeItemEntity>;
+
+    fetchListExercise(parameters): void;
+
+    createVideoTimeItem(parameters): any;
 }
 
 export interface State {
     setting_number_question_for_exam: number;
     isPlaying: boolean;
     visible: boolean;
+    createScriptVisible: boolean;
+    videoTimeItem: VideoTimeItemEntity;
 }
 
 export class LessonDetailTab extends React.Component<Props, State, {}> {
@@ -84,11 +96,16 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
     }
 
     public onProgressVideo = (video) => {
-        console.log("video", video.playedSeconds);
-        if (this.state.isPlaying && video.playedSeconds >= 5 && video.playedSeconds <= 6) {
-            this.pauseVideo();
-            this.showModal();
-        }
+        let {listVideoTimeItem} = this.props;
+        console.log("listVideoTimeItem", listVideoTimeItem);
+        if (!this.state.isPlaying) return;
+        listVideoTimeItem && toArray(listVideoTimeItem).map((videoTimeItem, index) => {
+            let start_time = videoTimeItem.start_time;
+            if (video.playedSeconds >= start_time && video.playedSeconds <= start_time + 1) {
+                this.pauseVideo();
+                this.showModal();
+            }
+        })
     }
 
     public playVideo = () => {
@@ -197,17 +214,121 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
         </div>
     }
 
+    public showModalCreateScript = () => {
+        this.setState({
+            createScriptVisible: true
+        })
+    }
+
+    public handleOkModalCreateScript = async () => {
+        let {videoScenario} = this.props;
+        let {videoTimeItem} = this.state;
+        this.setState({
+            createScriptVisible: false,
+        });
+        let result = await this.props.createVideoTimeItem([{
+            video_scenario_id: videoScenario.id,
+            list_card_id: videoTimeItem.list_card_id,
+            start_time: videoTimeItem.start_time,
+            time_practice: videoTimeItem.time_practice,
+            title: videoTimeItem.title,
+            data: {}
+        }]);
+        if (result.status == "success") message.success("Tạo kịch bản thành công");
+        else message.error("Tạo kịch bản thất bại");
+    };
+
+    public handleCancelModalCreateScript = () => {
+        this.setState({
+            createScriptVisible: false,
+        });
+    };
+
+    public handleChangeType(value) {
+        let {videoTimeItem} = this.state;
+        console.log(`selected ${value}`);
+    }
+
+    private stringToSecond = (timeString) => {
+        var a = timeString.split(':'), seconds; // split it at the colons
+        if (a.length == 3) seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+        if (a.length == 2) seconds = (+a[0]) * 60 + (+a[1]);
+        return seconds;
+    }
+
+    public appearTimeOnChange = (time, timeString) => {
+        let {videoTimeItem} = this.state;
+        var seconds = this.stringToSecond(timeString);
+        videoTimeItem.start_time = seconds;
+        this.setState({
+            videoTimeItem: videoTimeItem
+        })
+    }
+
+    public doExamTimeOnChange = (time, timeString) => {
+        let {videoTimeItem} = this.state;
+        var seconds = this.stringToSecond(timeString);
+        videoTimeItem.time_practice = seconds;
+        this.setState({
+            videoTimeItem: videoTimeItem
+        })
+    }
+
+    public onChangeTitle = (e) => {
+        let {videoTimeItem} = this.state;
+        videoTimeItem.title = e.target.value;
+        this.setState({
+            videoTimeItem: videoTimeItem
+        })
+    }
+
+    public handleChangeSelectQuestion = (value) => {
+        let {videoTimeItem} = this.state;
+        var b = [];
+        videoTimeItem.list_card_id = value.map((a, index) => {
+            return parseInt(a, 10);
+        })
+        this.setState({
+            videoTimeItem: videoTimeItem
+        })
+    }
+
+    public pushOption = () => {
+        let {listExercise} = this.props;
+        listExercise = toArray(listExercise);
+        let children = [];
+        listExercise && listExercise.length && listExercise.map((exercise, index) => {
+            children.push(<Option key={exercise.id}>Câu {index + 1}</Option>);
+        });
+        return children;
+    }
+
     constructor(props) {
         super(props);
         this.state = {
             setting_number_question_for_exam: 40,
             isPlaying: false,
-            visible: true
+            visible: false,
+            createScriptVisible: false,
+            videoTimeItem: new class implements VideoTimeItemEntity {
+                actionType: string;
+                code: "";
+                data: "";
+                id: string;
+                index: number;
+                list_card_id: Array<number>;
+                start_time: number;
+                time_practice: number;
+                title: string;
+                video_scenario_id: number;
+            }
         };
         localStorage.setItem("setting_number_question_for_exam", "40");
     }
 
     componentWillMount() {
+        let {props} = this.props;
+        this.props.fetchListExercise({topic_id: props.match.params.id});
     }
 
     shouldComponentUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>, nextContext: any): boolean {
@@ -220,9 +341,9 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {lesson, props, listCardProgress, isJustDoExam, listTopicHistory} = this.props;
-        let {setting_number_question_for_exam, isPlaying, visible} = this.state;
-        // console.log("isPlaying", isPlaying);
+        let {lesson, props, listCardProgress, isJustDoExam, listTopicHistory, admin, listExercise} = this.props;
+        let {setting_number_question_for_exam, isPlaying, visible, createScriptVisible, videoTimeItem} = this.state;
+        // console.log("videoTimeItem", videoTimeItem);
         listCardProgress = toArray(listCardProgress);
         listTopicHistory = toArray(listTopicHistory);
         let count = (number) => {
@@ -273,6 +394,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             data.push({x: moment(new Date(item.updated_at)).format("LLL"), y: item.correct});
         });
         if (data.length == 0) data = [{x: moment('2018-11-23').format("LLL"), y: 20}];
+
         return (
             <Tabs defaultActiveKey="1" className="lesson-content w-100">
                 <TabPane tab={question_tab} key="1">
@@ -410,6 +532,13 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                 {/*--------------------------video---------------------------*/}
                 <TabPane tab={video_tab} key="2">
                     <div className="container">
+                        {admin && <Button
+                            type="primary"
+                            className="mb-1 create_script_btn"
+                            onClick={this.showModalCreateScript}
+                        >
+                            Tạo kịch bản
+                        </Button>}
                         <ReactPlayer className="set_video"
                                      url={lesson && lesson.description}
                                      playing={isPlaying}
@@ -419,6 +548,52 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                      onPlay={this.playVideo}
                                      onPause={this.pauseVideo}
                         />
+
+                        {/*modal create video script*/}
+                        <Modal
+                            title="Tạo kịch bản"
+                            visible={createScriptVisible}
+                            onOk={this.handleOkModalCreateScript}
+                            onCancel={this.handleCancelModalCreateScript}
+                            className="create_script_modal"
+                            okText="Tạo"
+                        >
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <Input
+                                        className={"row w-80 ml-2 mb-1"}
+                                        placeholder="Tiêu đề"
+                                        type="text"
+                                        // value={}
+                                        onChange={this.onChangeTitle}
+                                    />
+                                    <Select defaultValue="1" className={"ml-2 row w-100"}
+                                            style={{width: '100%'}}
+                                            onChange={this.handleChangeType}>
+                                        <Option value="1">Bài tập</Option>
+                                        <Option value="2">Video</Option>
+                                    </Select>
+                                </div>
+                                <div className="col-md-6">
+                                    <TimePicker className={"row w-100 ml-2 mb-1"} placeholder={"Thời gian xuất hiện"}
+                                                format={"HH:mm:ss"} onChange={this.appearTimeOnChange}/>
+                                    <TimePicker className={"row w-100 ml-2"} placeholder={"Thời gian làm bài"}
+                                                format="mm:ss" onChange={this.doExamTimeOnChange}/>
+                                </div>
+                            </div>
+                            <Select
+                                mode="multiple"
+                                size={'default'}
+                                className="mt-1 ml-2"
+                                placeholder="Chọn câu hỏi sẽ xuất hiện"
+                                onChange={this.handleChangeSelectQuestion}
+                                style={{width: '100%'}}
+                            >
+                                {Object.keys(listExercise).length != 0 ? this.pushOption() : ""}
+                            </Select>
+                        </Modal>
+
+                        {/*modal stop when watch video*/}
                         <Modal
                             title="Kiểm tra độ hiểu bài"
                             visible={visible}
