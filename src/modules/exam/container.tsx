@@ -10,14 +10,13 @@ import {getProfileAction} from "../../reducers/current_user";
 import {fetchLessonAction} from "../../reducers/lesson";
 import {createTopicHistoryAction} from "../../reducers/topic_history";
 
-
 const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => ({
     api: state.api,
     props: props,
     listExercise: state.listExercise,
     listCardProgress: state.listCardProgress,
     userCourse: state.userCourse,
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
