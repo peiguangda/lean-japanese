@@ -320,10 +320,11 @@ export class LessonDetail extends React.Component<Props, State, {}> {
             isJustDoExam: (isJustDoExam == "TRUE")
         })
         videoScenario = await fetchVideoScenario({topic_id: props.match.params.id});
-        if (Object.keys(videoScenario.data).length == 0) {
+        if (!videoScenario.data) {
             await createVideoScenario({topic_id: props.match.params.id, video_url: ""});
             videoScenario = await fetchVideoScenario({topic_id: props.match.params.id});
         }
+        console.log("data.i", videoScenario);
         fetchListVideoTimeItem({video_scenario_id: videoScenario.data.id});
     }
 

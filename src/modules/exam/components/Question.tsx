@@ -4,6 +4,7 @@ import {Button, Checkbox, Col, Input, Radio, Row, Tooltip} from 'antd';
 import {ExerciseEntity} from "../../../common/types/exercise";
 import ReactPlayer from 'react-player';
 import {CardProgressEntity} from "../../../common/types/card_progress";
+import {toArray} from "../../../helpers/Function";
 
 const RadioGroup = Radio.Group;
 
@@ -83,8 +84,9 @@ export class Question extends React.Component<Props, State, {}> {
 
     public render() {
         let {props, exercise, index, lengthExercise, listAnswer, cardProgress, children} = this.props;
-        console.log("cardProgress.last_result", cardProgress && cardProgress.last_result);
-        return (
+        let list_card_id = toArray(props.params.list_card_id);
+        if (children == "EXAM_MODAL" && list_card_id && list_card_id.indexOf(exercise.id.toString()) <= -1) return "";
+        else return (
             <Fragment>
                 <div id={`${index}`}>
 

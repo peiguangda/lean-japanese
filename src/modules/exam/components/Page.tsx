@@ -10,7 +10,7 @@ import {ExerciseEntity} from "../../../common/types/exercise";
 import {convert, toArray} from "../../../helpers/Function";
 import {remove} from 'lodash';
 import {CardProgressEntity} from "../../../common/types/card_progress";
-import {getCookie, setCookie} from "../../../helpers/Cookie.js"
+import {getCookie, setCookie} from "../../../helpers/Cookie.js";
 import {UserCourseEntity} from "../../../common/types/user_course";
 
 const confirm = Modal.confirm;
@@ -407,6 +407,7 @@ export class Exam extends React.Component<Props, State, {}> {
     public render() {
         let {api, props, listExercise, listCardProgress, userCourse, currentUser, children} = this.props;
         let {isJustDoExam} = this.state;
+        console.log("vTI", props);
         return (
             <Fragment>
                 {children != "EXAM_MODAL" && <Helmet title={"Lesson"}/>}

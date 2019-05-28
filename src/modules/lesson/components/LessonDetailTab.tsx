@@ -104,6 +104,9 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             if (video.playedSeconds >= start_time && video.playedSeconds <= start_time + 1) {
                 this.pauseVideo();
                 this.showModal();
+                this.setState({
+                    videoTimeItem: videoTimeItem
+                })
             }
         })
     }
@@ -341,9 +344,9 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {lesson, props, listCardProgress, isJustDoExam, listTopicHistory, admin, listExercise} = this.props;
+        let {lesson, props, listCardProgress, isJustDoExam, listTopicHistory, admin, listExercise, listVideoTimeItem} = this.props;
         let {setting_number_question_for_exam, isPlaying, visible, createScriptVisible, videoTimeItem} = this.state;
-        // console.log("videoTimeItem", videoTimeItem);
+        // console.log("listVideoTimeItem", listVideoTimeItem);
         listCardProgress = toArray(listCardProgress);
         listTopicHistory = toArray(listTopicHistory);
         let count = (number) => {
@@ -605,7 +608,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                             <div className="row">
                                 <div className="col-md-8">
                                     <ExamContainer
-                                        params={props.match.params}
+                                        params={videoTimeItem}
                                         location={props.location}
                                         route={null}
                                         routeParams={null}
