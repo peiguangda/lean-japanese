@@ -5,13 +5,13 @@ import {Anchor, BackTop, Button, Layout, message, Modal, PageHeader} from 'antd'
 import {Loader} from "../../loader/components/loader";
 import {ApiEntity} from "../../../common/types";
 import {NavigationBarContainter} from "../../navigation_bar/container";
-import {Question} from "./Question";
 import {ExerciseEntity} from "../../../common/types/exercise";
 import {convert, toArray} from "../../../helpers/Function";
 import {remove} from 'lodash';
 import {CardProgressEntity} from "../../../common/types/card_progress";
-import {getCookie, setCookie} from "../../../helpers/Cookie.js"
+import {getCookie, setCookie} from "../../../helpers/Cookie.js";
 import {UserCourseEntity} from "../../../common/types/user_course";
+import {ListQuestion} from "./ListQuestion";
 
 const confirm = Modal.confirm;
 
@@ -98,73 +98,6 @@ export class Exam extends React.Component<Props, State, {}> {
         })
     }
 
-    public shuffle = (arr) => {
-        var i, j, temp;
-        for (i = arr.length - 1; i > 0; i--) {
-            j = Math.floor(Math.random() * (i + 1));
-            temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
-        }
-        return arr;
-    };
-
-    public showListQuestion = () => {
-        let {listExercise, props, listCardProgress, children} = this.props;
-        let {listChoose, isJustDoExam, isShuffled} = this.state;
-        listExercise = isJustDoExam ? JSON.parse(localStorage.getItem("listExercise")) : listExercise;
-        listExercise = convert(listExercise);
-        let lengthExercise = listExercise.length;
-        if (listExercise && listExercise.length) {
-            return listExercise.map((ex, index) => {
-                //doi vi tri dap an
-                let list_answer_prev;
-                if (ex.back_text) {
-                    ex.list_answer.push(ex.back_text);
-                    ex.list_correct_answer.push(ex.list_answer.length - 1);
-                    ex.back_text = null;
-                    console.log("push backtext to list answer");
-                }
-                //review ko dc dao dap an
-                if (!isJustDoExam && !isShuffled && ex.front_sound == "") {
-                    console.log("dao dap an");
-                    list_answer_prev = [...ex.list_answer]; //copy index trc khi dao dap an
-                    this.shuffle(ex.list_answer);      //dao dap an
-                    //so sanh index sau khi dao vs trc khi dao, merge vao index list dap an dung
-                    list_answer_prev.map((element_prev, index) => {
-                        ex.list_answer.map((element_next, key) => {
-                            if (element_prev == element_next) {
-                                let position = ex.list_correct_answer.indexOf(index);
-                                if (position > -1 && key > index) {
-                                    //index dap an dung = current_index + index sau khi dao - index trc khi dao
-                                    ex.list_correct_answer[position] = ex.list_correct_answer[position] + key - index;
-                                }
-                            }
-                        })
-                    })
-                    this.setState({
-                        isShuffled: true
-                    })
-                }
-                //truyen list answer da chon vao de show cau hoi
-                let objectAnswer = listChoose.find(object => object.index === index);
-                let cardProgress = toArray(listCardProgress).find(object => object.card_id.toString() === ex.id);
-                return <Question
-                    props={props}
-                    exercise={ex}
-                    index={index}
-                    cardProgress={cardProgress}
-                    isReviewing={isJustDoExam}
-                    isCorrect={objectAnswer ? objectAnswer.correct : null}
-                    lengthExercise={lengthExercise}
-                    listAnswer={objectAnswer ? objectAnswer.listAnswer : []}
-                    backText={objectAnswer ? objectAnswer.backText : ""}
-                    updateListChoose={this.updateListChoose}
-                    children={children}
-                />
-            })
-        }
-    }
     public getValue = (index) => {
         return String.fromCharCode(65 + index);
     }
@@ -406,34 +339,34 @@ export class Exam extends React.Component<Props, State, {}> {
 
     public render() {
         let {api, props, listExercise, listCardProgress, userCourse, currentUser, children} = this.props;
-        let {isJustDoExam} = this.state;
+        let {isJustDoExam, listChoose} = this.state;
         return (
             <Fragment>
-                {children != "EXAM_MODAL" && <Helmet title={"Lesson"}/>}
-                {children != "EXAM_MODAL" && <NavigationBarContainter/>}
+                <Helmet title={"Lesson"}/>
+                <NavigationBarContainter/>
                 {/*-------------------------page header-------------------------*/}
                 <div className="container">
-                    {children != "EXAM_MODAL" && <PageHeader
+                    <PageHeader
                         className="mt-5"
                         title=""
                         breadcrumb={{routes}}
-                    />}
+                    />
                     {api.loadings > 0 ? <Loader/> : ""}
                     {currentUser && currentUser.responseError ? this.requestLogin() : ""}
-                    {children != "EXAM_MODAL" && <Modal
+                    <Modal
                         title="Bạn chưa đăng kí tham gia khóa học"
                         visible={this.state.visible_submit_course}
                         onOk={this.handleOkSubmitCourse}
                         onCancel={this.handleCancelSubmitCourse}
                     >
                         <p>Đăng kí tham gia khóa học?</p>
-                    </Modal>}
+                    </Modal>
                     <div
-                        className={`row ml-5 mr-1 custom-container ${children != "EXAM_MODAL" ? "" : "exam-modal-scroll"} `}>
-                        <div className="col-md-9">
-                            {this.showListQuestion()}
-                        </div>
-                        {children != "EXAM_MODAL" && <div className="col-md-3 mt-3 fill-answer">
+                        className={`row ml-5 mr-1 custom-container`}>
+                        <ListQuestion props={props} listExercise={listExercise} listCardProgress={listCardProgress}
+                                      currentUser={currentUser} listChoose={listChoose}
+                                      updateListChoose={this.updateListChoose}/>
+                        <div className="col-md-3 mt-3 fill-answer">
                             <div className="row justify-content-center">
                                 <img src="https://media.giphy.com/media/2zoCrihrueMUVOZlTx/giphy.gif"
                                      className="col-md-6 float-right clock-gif-size"/>
@@ -460,11 +393,11 @@ export class Exam extends React.Component<Props, State, {}> {
                                     onClick={this.onSubmitExam}>
                                 Nộp bài
                             </Button>
-                        </div>}
+                        </div>
                     </div>
-                    {children != "EXAM_MODAL" && <Footer style={{textAlign: 'center'}}>
+                    <Footer style={{textAlign: 'center'}}>
                         Easy Japanese Design ©2019 Created by HEDSPI
-                    </Footer>}
+                    </Footer>
                 </div>
                 <BackTop/>
             </Fragment>

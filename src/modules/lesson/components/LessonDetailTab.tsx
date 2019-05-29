@@ -18,10 +18,10 @@ import {CardProgressEntity} from "../../../common/types/card_progress";
 import {toArray} from "../../../helpers/Function";
 import {TopicHistoryEntity} from "../../../common/types/topic_history";
 import ReactPlayer from 'react-player';
-import {ExamContainer} from "../../exam/container";
 import {ExerciseEntity} from "../../../common/types/exercise";
 import {VideoTimeItemEntity} from "../../../common/types/video_time_item";
 import {VideoScenarioEntity} from "../../../common/types/video_scenario";
+import {ListQuestion} from "../../exam/components/ListQuestion";
 
 var moment = require('moment');
 const TabPane = Tabs.TabPane;
@@ -83,6 +83,7 @@ export interface State {
     visible: boolean;
     createScriptVisible: boolean;
     videoTimeItem: VideoTimeItemEntity;
+    listChoose: Array<any>;
 }
 
 export class LessonDetailTab extends React.Component<Props, State, {}> {
@@ -104,6 +105,9 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             if (video.playedSeconds >= start_time && video.playedSeconds <= start_time + 1) {
                 this.pauseVideo();
                 this.showModal();
+                this.setState({
+                    videoTimeItem: videoTimeItem
+                })
             }
         })
     }
@@ -303,9 +307,44 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
         return children;
     }
 
+    getListExForVideoScript = () => {
+        let {videoTimeItem} = this.state;
+        let {listExercise} = this.props;
+        if (Object.keys(videoTimeItem).length == 0) return [];
+        return toArray(listExercise).filter(exercise => toArray(videoTimeItem.list_card_id).indexOf(exercise.id.toString()) > -1);
+    }
+
+    public updateListChoose = (parameters) => {
+        console.log("param", parameters);
+        let {listChoose} = this.state;
+        let index = parameters.index;
+        let listAnswer = parameters.listAnswer;
+        let backText = parameters.backText;
+        //truong hop answer cua cau hoi da ton tai trong array
+        let objectAnswer = listChoose.find(object => object.index === index);
+        if (objectAnswer) {
+            if (listAnswer) objectAnswer.listAnswer = listAnswer;
+            if (backText) objectAnswer.backText = backText;
+            //update objectAnswer vao listChoose
+            listChoose = listChoose.map((object, num) => {
+                if (object.index === index) return objectAnswer;
+                return object;
+            })
+        } else {
+            //answer chua ton tai
+            if (listAnswer) objectAnswer = {index: index, listAnswer: listAnswer};
+            if (backText) objectAnswer = {index: index, backText: backText};
+            listChoose.push(objectAnswer);
+        }
+        this.setState({
+            listChoose: listChoose
+        })
+    }
+
     constructor(props) {
         super(props);
         this.state = {
+            listChoose: [],
             setting_number_question_for_exam: 40,
             isPlaying: false,
             visible: false,
@@ -341,9 +380,9 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {lesson, props, listCardProgress, isJustDoExam, listTopicHistory, admin, listExercise} = this.props;
-        let {setting_number_question_for_exam, isPlaying, visible, createScriptVisible, videoTimeItem} = this.state;
-        // console.log("videoTimeItem", videoTimeItem);
+        let {lesson, props, listCardProgress, isJustDoExam, listTopicHistory, admin, listExercise, listVideoTimeItem} = this.props;
+        let {setting_number_question_for_exam, isPlaying, visible, createScriptVisible, videoTimeItem, listChoose} = this.state;
+        // console.log("listVideoTimeItem", listVideoTimeItem);
         listCardProgress = toArray(listCardProgress);
         listTopicHistory = toArray(listTopicHistory);
         let count = (number) => {
@@ -548,7 +587,6 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                      onPlay={this.playVideo}
                                      onPause={this.pauseVideo}
                         />
-
                         {/*modal create video script*/}
                         <Modal
                             title="Tạo kịch bản"
@@ -564,7 +602,6 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                         className={"row w-80 ml-2 mb-1"}
                                         placeholder="Tiêu đề"
                                         type="text"
-                                        // value={}
                                         onChange={this.onChangeTitle}
                                     />
                                     <Select defaultValue="1" className={"ml-2 row w-100"}
@@ -603,17 +640,11 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                             okText="Nộp"
                         >
                             <div className="row">
-                                <div className="col-md-8">
-                                    <ExamContainer
-                                        params={props.match.params}
-                                        location={props.location}
-                                        route={null}
-                                        routeParams={null}
-                                        router={null}
-                                        routes={null}
-                                        children={"EXAM_MODAL"}
-                                    />
-                                </div>
+                                <ListQuestion
+                                    props={props} listExercise={this.getListExForVideoScript()} listCardProgress={null}
+                                    currentUser={null} listChoose={listChoose} updateListChoose={this.updateListChoose}
+                                    children={"EXAM_MODAL"}
+                                />
                                 <div className="col-md-4">
                                     <h4 className="justify-content-center row">Kết quả</h4>
                                     <div className="row">

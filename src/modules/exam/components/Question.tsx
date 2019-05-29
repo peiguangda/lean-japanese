@@ -43,6 +43,7 @@ export class Question extends React.Component<Props, State, {}> {
     }
     public showListAnswer = (index) => {
         let {exercise, listAnswer, isReviewing, isCorrect, backText, children} = this.props;
+        isReviewing = isReviewing && children != "EXAM_MODAL";
         let {inputFillText} = this.state;
         let {list_answer, list_correct_answer} = exercise, className = "";
         if (list_answer && list_answer.length && list_answer.length > 1) return list_answer.map((answer, index) => {
@@ -83,11 +84,9 @@ export class Question extends React.Component<Props, State, {}> {
 
     public render() {
         let {props, exercise, index, lengthExercise, listAnswer, cardProgress, children} = this.props;
-        console.log("cardProgress.last_result", cardProgress && cardProgress.last_result);
         return (
             <Fragment>
                 <div id={`${index}`}>
-
                     <p className="row ml-1 exam-title">{`Câu ${index + 1}/${lengthExercise} ${children != "EXAM_MODAL" ? `- Lần cuối trả lời${cardProgress && cardProgress.last_result == 0 ? " sai" : " đúng"}` : ""}`}</p>
                     <div className="row mr-1 mb-5 list-exam">
                         <div className="col w-100 ml-3">
