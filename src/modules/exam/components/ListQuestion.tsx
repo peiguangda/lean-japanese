@@ -11,7 +11,7 @@ export interface Props {
     listCardProgress: Array<CardProgressEntity>;
     currentUser: any;
     listChoose: Array<any>;
-
+    isSubmitVideoScript: boolean;
     updateListChoose(parameters): void;
 }
 
@@ -40,7 +40,7 @@ export class ListQuestion extends React.Component<Props, State, {}> {
     };
 
     public showListQuestion = () => {
-        let {listExercise, props, listCardProgress, children} = this.props;
+        let {listExercise, props, listCardProgress, children, isSubmitVideoScript} = this.props;
         let {listChoose, isJustDoExam, isShuffled} = this.state;
         listExercise = isJustDoExam ? JSON.parse(localStorage.getItem("listExercise")) : listExercise;
         listExercise = convert(listExercise);
@@ -91,13 +91,13 @@ export class ListQuestion extends React.Component<Props, State, {}> {
                     backText={objectAnswer ? objectAnswer.backText : ""}
                     updateListChoose={this.updateListChoose}
                     children={children}
+                    isSubmitVideoScript={isSubmitVideoScript}
                 />
             })
         }
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        console.log("nextProps.listChoose", nextProps.listChoose);
         if (nextProps.listChoose) this.setState({
             listChoose: nextProps.listChoose
         })
@@ -115,9 +115,7 @@ export class ListQuestion extends React.Component<Props, State, {}> {
     }
 
     public render() {
-        let {props, children} = this.props;
-        console.log("vTI", props);
-        console.log("children", children);
+        let {props, children, listExercise} = this.props;
         return (
             <Fragment>
                 <div className={`${children == "EXAM_MODAL" ? 'col-md-7 offset-1 exam-modal-scroll' : 'col-md-9'}`}>

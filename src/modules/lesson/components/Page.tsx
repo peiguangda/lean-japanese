@@ -112,6 +112,10 @@ export interface Props {
     fetchListVideoTimeItem(parameters): void;
 
     createVideoTimeItem(parameters): void;
+
+    updateVideoTimeItem(parameters): void;
+
+    fetchVideoTimeItem(parameters): void;
 }
 
 export interface State {
@@ -324,14 +328,13 @@ export class LessonDetail extends React.Component<Props, State, {}> {
             await createVideoScenario({topic_id: props.match.params.id, video_url: ""});
             videoScenario = await fetchVideoScenario({topic_id: props.match.params.id});
         }
-        console.log("data.i", videoScenario);
         fetchListVideoTimeItem({video_scenario_id: videoScenario.data.id});
     }
 
     public render() {
         let {
             lesson, api, listLesson, props, listCardProgress, userCourse, currentUser, listTopicHistory, match, videoScenario,
-            listVideoTimeItem, fetchListExercise, listExercise, createVideoTimeItem
+            listVideoTimeItem, fetchListExercise, listExercise, createVideoTimeItem, updateVideoTimeItem, fetchVideoTimeItem
         } = this.props;
         let {match: {params}} = this.props;
         let {visible, isJustDoExam, admin} = this.state;
@@ -566,6 +569,8 @@ export class LessonDetail extends React.Component<Props, State, {}> {
                                          createVideoTimeItem={createVideoTimeItem}
                                          videoScenario={videoScenario}
                                          listVideoTimeItem={listVideoTimeItem}
+                                         updateVideoTimeItem={updateVideoTimeItem}
+                                         fetchVideoTimeItem={fetchVideoTimeItem}
                         />
                     </div>
                     {admin ? <div className="row">

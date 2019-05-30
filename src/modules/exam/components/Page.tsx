@@ -365,7 +365,7 @@ export class Exam extends React.Component<Props, State, {}> {
                         className={`row ml-5 mr-1 custom-container`}>
                         <ListQuestion props={props} listExercise={listExercise} listCardProgress={listCardProgress}
                                       currentUser={currentUser} listChoose={listChoose}
-                                      updateListChoose={this.updateListChoose}/>
+                                      updateListChoose={this.updateListChoose} isSubmitVideoScript={false}/>
                         <div className="col-md-3 mt-3 fill-answer">
                             <div className="row justify-content-center">
                                 <img src="https://media.giphy.com/media/2zoCrihrueMUVOZlTx/giphy.gif"

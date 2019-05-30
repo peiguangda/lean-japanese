@@ -7,6 +7,6 @@ export interface VideoTimeItemEntity {
     time_practice: number;
     title: string;
     code: string;
-    data: string;
+    data: Array<any>;
     start_time: number;
 };
