@@ -14,6 +14,7 @@ export interface Props {
     lengthExercise: number;
     listAnswer: Array<number>;
     isCorrect: boolean;
+    isSubmitVideoScript: boolean;
     isReviewing: boolean;
     cardProgress: CardProgressEntity;
     backText: string;
@@ -42,7 +43,7 @@ export class Question extends React.Component<Props, State, {}> {
         this.props.updateListChoose({index: index, backText: e.target.value.toLowerCase()});
     }
     public showListAnswer = (index) => {
-        let {exercise, listAnswer, isReviewing, isCorrect, backText, children} = this.props;
+        let {exercise, listAnswer, isReviewing, isCorrect, backText, children, isSubmitVideoScript} = this.props;
         isReviewing = isReviewing && children != "EXAM_MODAL";
         let {inputFillText} = this.state;
         let {list_answer, list_correct_answer} = exercise, className = "";
@@ -52,22 +53,23 @@ export class Question extends React.Component<Props, State, {}> {
                 else if (isCorrect == true) className = 'choose-correct';
                 else className = "";
             } else className = "";
-            if (list_correct_answer.indexOf(index) > -1 && isReviewing) className = 'choose-correct';
+            if (list_correct_answer.indexOf(index) > -1 && (isReviewing || isSubmitVideoScript)) className = 'choose-correct';
             return <Col span={24}
                         className={className}>
                 <Checkbox
                     value={index}
-                    disabled={isReviewing}
+                    disabled={isReviewing || isSubmitVideoScript}
                     checked={(listAnswer.indexOf(index) > -1) ? true : false}>
                     {answer}
                 </Checkbox>
             </Col>
         })
         else if (list_answer.length == 1) {
-            return <Input className={isReviewing ? (!isCorrect ? 'choose-incorrect' : 'choose-correct') : ""}
-                          value={isReviewing ? backText : inputFillText}
-                          disabled={isReviewing}
-                          onChange={(e) => this.onChangeTextFillGame(e, index)} placeholder="Điền từ..."/>;
+            return <Input
+                className={isReviewing || isSubmitVideoScript ? (!isCorrect ? 'choose-incorrect' : 'choose-correct') : ""}
+                value={isReviewing || isSubmitVideoScript ? backText : inputFillText}
+                disabled={isReviewing || isSubmitVideoScript}
+                onChange={(e) => this.onChangeTextFillGame(e, index)} placeholder="Điền từ..."/>;
         }
     }
 

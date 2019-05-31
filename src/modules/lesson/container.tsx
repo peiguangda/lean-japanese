@@ -12,7 +12,7 @@ import {createTopicHistoryAction, fetchTopicHistoryAction} from "../../reducers/
 import {createVideoScenarioAction, fetchVideoScenarioAction} from "../../reducers/video_scenario";
 import {
     createVideoTimeItemAction,
-    fetchListVideoTimeItemAction,
+    fetchListVideoTimeItemAction, fetchVideoTimeItemAction, updateVideoTimeItemAction,
 } from "../../reducers/video_time_item";
 
 const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => ({
@@ -44,6 +44,8 @@ const mapDispatchToProps = (dispatch) => ({
     fetchListVideoTimeItem: parameters => dispatch(fetchListVideoTimeItemAction(parameters)),
     createVideoTimeItem: parameters => dispatch(createVideoTimeItemAction(parameters)),
     fetchListExercise: parameters => dispatch(fetchListExerciseAction(parameters)),
+    updateVideoTimeItem: parameters => dispatch(updateVideoTimeItemAction(parameters)),
+    fetchVideoTimeItem: parameters => dispatch(fetchVideoTimeItemAction(parameters)),
 });
 
 export const LessonDetailContainer = connect(

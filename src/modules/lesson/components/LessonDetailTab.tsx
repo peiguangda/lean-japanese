@@ -75,16 +75,24 @@ export interface Props {
     fetchListExercise(parameters): void;
 
     createVideoTimeItem(parameters): any;
+
+    updateVideoTimeItem(parameters): void;
+
+    fetchVideoTimeItem(parameters): void;
 }
 
 export interface State {
     setting_number_question_for_exam: number;
     isPlaying: boolean;
+    isSubmitVideoScript: boolean;
     visible: boolean;
     createScriptVisible: boolean;
     videoTimeItem: VideoTimeItemEntity;
     listChoose: Array<any>;
 }
+
+var listExerciseVideoScript;
+var myExResult = [], correct = 0, inCorrect = 0, not_yet_answer = 0;
 
 export class LessonDetailTab extends React.Component<Props, State, {}> {
     public handleChangeSettingNumQues = (value) => {
@@ -98,15 +106,16 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
 
     public onProgressVideo = (video) => {
         let {listVideoTimeItem} = this.props;
-        console.log("listVideoTimeItem", listVideoTimeItem);
         if (!this.state.isPlaying) return;
         listVideoTimeItem && toArray(listVideoTimeItem).map((videoTimeItem, index) => {
-            let start_time = videoTimeItem.start_time;
+            let start_time = videoTimeItem.start_time ? videoTimeItem.start_time : -2;
             if (video.playedSeconds >= start_time && video.playedSeconds <= start_time + 1) {
+                localStorage.setItem("isJustDoExam", "FALSE");
                 this.pauseVideo();
                 this.showModal();
                 this.setState({
-                    videoTimeItem: videoTimeItem
+                    videoTimeItem: videoTimeItem,
+                    isSubmitVideoScript: false
                 })
             }
         })
@@ -125,11 +134,35 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
     }
 
     public handleOk = () => {
-        //gui request cap nhat bai lam
-        //get cac bai lam khac, cap nhat vao ban do
+        let {listChoose, videoTimeItem} = this.state;
+        let {updateVideoTimeItem} = this.props;
+        let data = toArray(videoTimeItem.data);
+        correct = 0;
+        inCorrect = 0;
         this.setState({
-            visible: true,
-        });
+            isSubmitVideoScript: true
+        })
+        let checkAnswer = (listChoose, listExerciseVideoScript) => {
+            listChoose = listChoose.map((element, index) => {
+                let listCorrectAnswer = {...listExerciseVideoScript[element.index]}.list_correct_answer, isCorrect;
+                if (element.listAnswer) isCorrect = JSON.stringify(element.listAnswer.sort()) == JSON.stringify(listCorrectAnswer.sort());
+                else if (element.backText) isCorrect = element.backText == listExerciseVideoScript[element.index].list_answer[0];
+                element.correct = isCorrect;
+                if (isCorrect) correct++;
+                else inCorrect++;
+                element.id = listExerciseVideoScript[element.index].id;
+                return element;
+            })
+        };
+        checkAnswer(listChoose, listExerciseVideoScript);
+        not_yet_answer = listExerciseVideoScript.length - inCorrect - correct;
+        data.push({correct: correct, not_yet_answer: not_yet_answer, inCorrect: inCorrect});
+        videoTimeItem.data = data;
+        updateVideoTimeItem({id: videoTimeItem.id, video_time_item: videoTimeItem});
+        myExResult = [
+            {angle: not_yet_answer, className: 'red'},
+            {angle: inCorrect, className: 'dark_blue'},
+            {angle: correct, className: 'blue'}]
     };
 
     public showModal = () => {
@@ -206,14 +239,32 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             height={height}/>
     }
 
-    public showListGraph = (myData) => {
+    public showGraphAverageValue = () => {
+        let {videoTimeItem} = this.state;
+        if (!videoTimeItem) return "";
+        let data = videoTimeItem.data ? toArray(videoTimeItem.data) : [];
+        console.log("data", data);
+        if (!data.length) return "";
+        let correctAverage = 0, inCorrectAverage = 0, notYetAnswerAverage = 0, myData = [];
+        let lengthExercise = toArray(videoTimeItem.list_card_id).length;
+        data.length && data.map((element, index) => {
+            correctAverage += parseFloat(element.correct);
+            inCorrectAverage += parseFloat(element.inCorrect);
+            notYetAnswerAverage += parseFloat(element.not_yet_answer);
+        })
+        console.log("videoTimeItem", correctAverage, inCorrectAverage, notYetAnswerAverage, Number((correctAverage * 100.0 / (correctAverage + inCorrectAverage+ notYetAnswerAverage)).toFixed(1)));
+        myData = [
+            {angle: notYetAnswerAverage, className: 'red'},
+            {angle: inCorrectAverage, className: 'dark_blue'},
+            {angle: correctAverage, className: 'blue'}]
         return <div className="row">
-            <div className={"col-md-6"}>
-                {this.showCicleGraph(myData, 100)}
+            <div className={"col-md-5"}>
+                {this.showCicleGraph(myData, 150)}
             </div>
-            <div className="col-md-5 ml-2 mt-3">
-                <div>Bùi Quang Đại</div>
-                <div>23 tuổi</div>
+            <div className="col-md-5 ml-2 mt-4">
+                <div>Tỷ lệ trả lời đúng trung bình
+                    ({Number((correctAverage * 100.0 / (correctAverage + inCorrectAverage+ notYetAnswerAverage)).toFixed(1))})
+                </div>
             </div>
         </div>
     }
@@ -311,11 +362,11 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
         let {videoTimeItem} = this.state;
         let {listExercise} = this.props;
         if (Object.keys(videoTimeItem).length == 0) return [];
-        return toArray(listExercise).filter(exercise => toArray(videoTimeItem.list_card_id).indexOf(exercise.id.toString()) > -1);
+        listExerciseVideoScript = toArray(listExercise).filter(exercise => toArray(videoTimeItem.list_card_id).indexOf(exercise.id.toString()) > -1);
+        return listExerciseVideoScript;
     }
 
     public updateListChoose = (parameters) => {
-        console.log("param", parameters);
         let {listChoose} = this.state;
         let index = parameters.index;
         let listAnswer = parameters.listAnswer;
@@ -339,11 +390,12 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
         this.setState({
             listChoose: listChoose
         })
-    }
+    };
 
     constructor(props) {
         super(props);
         this.state = {
+            isSubmitVideoScript: false,
             listChoose: [],
             setting_number_question_for_exam: 40,
             isPlaying: false,
@@ -352,7 +404,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             videoTimeItem: new class implements VideoTimeItemEntity {
                 actionType: string;
                 code: "";
-                data: "";
+                data: Array<any>;
                 id: string;
                 index: number;
                 list_card_id: Array<number>;
@@ -381,7 +433,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
 
     public render() {
         let {lesson, props, listCardProgress, isJustDoExam, listTopicHistory, admin, listExercise, listVideoTimeItem} = this.props;
-        let {setting_number_question_for_exam, isPlaying, visible, createScriptVisible, videoTimeItem, listChoose} = this.state;
+        let {setting_number_question_for_exam, isPlaying, visible, createScriptVisible, videoTimeItem, listChoose, isSubmitVideoScript} = this.state;
         // console.log("listVideoTimeItem", listVideoTimeItem);
         listCardProgress = toArray(listCardProgress);
         listTopicHistory = toArray(listTopicHistory);
@@ -643,33 +695,32 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                                 <ListQuestion
                                     props={props} listExercise={this.getListExForVideoScript()} listCardProgress={null}
                                     currentUser={null} listChoose={listChoose} updateListChoose={this.updateListChoose}
-                                    children={"EXAM_MODAL"}
+                                    children={"EXAM_MODAL"} isSubmitVideoScript={isSubmitVideoScript}
                                 />
                                 <div className="col-md-4">
                                     <h4 className="justify-content-center row">Kết quả</h4>
                                     <div className="row">
-                                        <div className={"col-md-6"}>
-                                            {this.showCicleGraph(myData, 100)}
+                                        <div className={"col-md-5"}>
+                                            {this.showCicleGraph(myExResult, 150)}
                                         </div>
                                         <div className="col-md-5 ml-2 mt-3">
                                             <div className="row">
                                                 <div className="mt-1 squares red"></div>
-                                                <div className="col-md-10">Câu hỏi chưa trả lời ({countBoxNum0})</div>
+                                                <div className="col-md-10">Câu hỏi chưa trả lời
+                                                    ({not_yet_answer})
+                                                </div>
                                             </div>
                                             <div className="row">
                                                 <div className="mt-1 squares dark_blue"></div>
-                                                <div className="col-md-10">Trả lời sai ({countBoxNum3})</div>
+                                                <div className="col-md-10">Trả lời sai ({inCorrect})</div>
                                             </div>
                                             <div className="row">
                                                 <div className="mt-1 squares blue"></div>
-                                                <div className="col-md-10">Trả lời đúng({countBoxNum1})</div>
+                                                <div className="col-md-10">Trả lời đúng({correct})</div>
                                             </div>
                                         </div>
                                     </div>
-                                    {this.showListGraph(myData)}
-                                    {this.showListGraph(myData)}
-                                    {this.showListGraph(myData)}
-                                    {this.showListGraph(myData)}
+                                    {this.showGraphAverageValue()}
                                 </div>
                             </div>
                         </Modal>
