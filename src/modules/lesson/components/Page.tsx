@@ -331,6 +331,12 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         fetchListVideoTimeItem({video_scenario_id: videoScenario.data.id});
     }
 
+    componentWillMount() {
+        window.onunload = () => {
+            localStorage.clear();
+        };
+    }
+
     public render() {
         let {
             lesson, api, listLesson, props, listCardProgress, userCourse, currentUser, listTopicHistory, match, videoScenario,
