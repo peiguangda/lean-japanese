@@ -44,7 +44,7 @@ export class Course extends React.Component<Props, State, {}> {
                                 <div className="DOC">{course.member_num ? course.member_num : 0}</div>
                             </div>
                             <div className="BOC">
-                                <Rate allowHalf defaultValue={3}/>
+                                <Rate allowHalf defaultValue={3} disabled={true}/>
                             </div>
                         </div>
                         <div className="LOC">

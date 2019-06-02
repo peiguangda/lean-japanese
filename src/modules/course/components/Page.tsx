@@ -411,7 +411,7 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                             <div className="row">
                                 <Card title="Tổng quan khóa học" bordered={false} className="course-card-descript">
                                     <p>{course ? course.name : "Không có dữ liệu để hiện thị"}</p>
-                                    <Rate allowHalf defaultValue={3}/>{(3)}
+                                    <Rate allowHalf defaultValue={3} disabled={true}/>{(3)}
                                     <div className="row w-100">
                                         <Icon type="book" className="col-md-2"/>
                                         <p className="col-md-10">Tổng số
