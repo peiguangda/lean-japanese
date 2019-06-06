@@ -41,7 +41,7 @@ export class SigninModal extends React.Component<Props & { form: WrappedFormUtil
                         if (res && res.status == "success") {
                             window.location.reload();
                         }
-                    })
+                    });
                 message.success("Đăng ký thành công");
             }
         });
@@ -81,14 +81,14 @@ export class SigninModal extends React.Component<Props & { form: WrappedFormUtil
             user: new class implements UserEntity {
                 actionType?: string;
                 id: string;
-                account: string
-                email: string
-                full_name: string
-                phone_number: string
-                description: string
-                avatar_url: string
-                gender: string
-                password: string
+                account: string;
+                email: string;
+                full_name: string;
+                phone_number: string;
+                description: string;
+                avatar_url: string;
+                gender: string;
+                password: string;
                 password_confirmation: string
             }
         }

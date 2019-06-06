@@ -30,18 +30,18 @@ export interface State {
 export class Question extends React.Component<Props, State, {}> {
     public onChangeCheckBox = (e, index) => {
         this.props.updateListChoose({index: index, listAnswer: e});
-    }
+    };
     public isAnswerCorrect = (index) => {
         let {exercise} = this.props;
         let {list_answer, list_correct_answer} = exercise;
         return (list_correct_answer && list_correct_answer.indexOf(index) > -1) ? true : false;
-    }
+    };
     public onChangeTextFillGame = (e, index) => {
         this.setState({
             inputFillText: e.target.value
-        })
+        });
         this.props.updateListChoose({index: index, backText: e.target.value.toLowerCase()});
-    }
+    };
     public showListAnswer = (index) => {
         let {exercise, listAnswer, isReviewing, isCorrect, backText, children, isSubmitVideoScript} = this.props;
         isReviewing = isReviewing && children != "EXAM_MODAL";
@@ -63,7 +63,7 @@ export class Question extends React.Component<Props, State, {}> {
                     {answer}
                 </Checkbox>
             </Col>
-        })
+        });
         else if (list_answer.length == 1) {
             return <Input
                 className={isReviewing || isSubmitVideoScript ? (!isCorrect ? 'choose-incorrect' : 'choose-correct') : ""}
@@ -71,7 +71,7 @@ export class Question extends React.Component<Props, State, {}> {
                 disabled={isReviewing || isSubmitVideoScript}
                 onChange={(e) => this.onChangeTextFillGame(e, index)} placeholder="Điền từ..."/>;
         }
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -94,9 +94,12 @@ export class Question extends React.Component<Props, State, {}> {
                         <div className="col w-100 ml-3">
                             {/*-----------------------------Chi tiet cau hoi---------------------------------------*/}
                             <p className="row mt-3">{exercise.front_text}</p>
-                            <ReactPlayer className="row w-100 exam-mp3"
-                                         url={exercise.front_sound}
-                                         controls={true}/>
+                            {exercise && exercise.front_sound && exercise.front_sound != "" &&
+                            <ReactPlayer
+                                className="row w-100 exam-mp3"
+                                url={exercise.front_sound}
+                                controls={true}
+                            />}
                             <div className="row">
                                 <Checkbox.Group style={{width: '100%'}}
                                                 onChange={(e) => this.onChangeCheckBox(e, index)}

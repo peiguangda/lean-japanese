@@ -9,4 +9,4 @@ export interface VideoTimeItemEntity {
     code: string;
     data: Array<any>;
     start_time: number;
-};
+}

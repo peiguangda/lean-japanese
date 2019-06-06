@@ -8,8 +8,8 @@ const persistConfig = {
     key: 'user-manager',
     storage,
     whitelist: []
-}
-const persistedReducer = persistReducer(persistConfig, state)
+};
+const persistedReducer = persistReducer(persistConfig, state);
 
 export const store: Store<State> = createStore(
     persistedReducer,

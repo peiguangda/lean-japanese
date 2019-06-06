@@ -21,4 +21,4 @@ export interface ExerciseEntity {
     back_hint: string,
     list_answer: Array<string>,
     list_correct_answer: Array<number>,
-};
+}

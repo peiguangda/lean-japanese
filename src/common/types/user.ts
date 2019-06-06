@@ -10,4 +10,4 @@ export interface UserEntity {
     gender: string
     password: string
     password_confirmation: string
-};
+}

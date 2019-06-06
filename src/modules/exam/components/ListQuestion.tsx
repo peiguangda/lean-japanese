@@ -12,6 +12,7 @@ export interface Props {
     currentUser: any;
     listChoose: Array<any>;
     isSubmitVideoScript: boolean;
+
     updateListChoose(parameters): void;
 }
 
@@ -26,7 +27,7 @@ export interface State {
 export class ListQuestion extends React.Component<Props, State, {}> {
     public updateListChoose = (parameters) => {
         this.props.updateListChoose(parameters);
-    }
+    };
 
     public shuffle = (arr) => {
         var i, j, temp;
@@ -53,11 +54,9 @@ export class ListQuestion extends React.Component<Props, State, {}> {
                     ex.list_answer.push(ex.back_text);
                     ex.list_correct_answer.push(ex.list_answer.length - 1);
                     ex.back_text = null;
-                    console.log("push backtext to list answer");
                 }
                 //review ko dc dao dap an
-                if (!isJustDoExam && !isShuffled && ex.front_sound == "") {
-                    console.log("dao dap an");
+                if (!isJustDoExam && !isShuffled) {
                     list_answer_prev = [...ex.list_answer]; //copy index trc khi dao dap an
                     this.shuffle(ex.list_answer);      //dao dap an
                     //so sanh index sau khi dao vs trc khi dao, merge vao index list dap an dung
@@ -71,7 +70,7 @@ export class ListQuestion extends React.Component<Props, State, {}> {
                                 }
                             }
                         })
-                    })
+                    });
                     this.setState({
                         isShuffled: true
                     })
@@ -95,7 +94,7 @@ export class ListQuestion extends React.Component<Props, State, {}> {
                 />
             })
         }
-    }
+    };
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
         if (nextProps.listChoose) this.setState({

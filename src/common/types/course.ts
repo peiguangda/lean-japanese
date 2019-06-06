@@ -21,4 +21,4 @@ export interface CourseEntity {
     updated_at: number;
     cost: string;
     language: string;
-};
+}

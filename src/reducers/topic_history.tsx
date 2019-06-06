@@ -70,10 +70,6 @@ export const topicHistoryReducer = (state: TopicHistoryEntity[], action) => {
             return payload;
         case FETCH_TOPIC_HISTORY_ERROR:
             return {...state, ...payload, responseError};
-        case CREATE_TOPIC_HISTORY:
-            return {...state, ...payload};
-        case CREATE_TOPIC_HISTORY_ERROR:
-            return {...state, ...payload, responseError};
         default:
             return state;
     }

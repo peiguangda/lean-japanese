@@ -198,7 +198,7 @@ export class CourseDetail extends React.Component<Props, State, {}> {
                     message.success("Tham gia khóa học, chúc bạn có những bài học tuyệt vời!");
                 } else message.error("Xảy ra lỗi khi tham gia khóa học~");
             })
-    }
+    };
 
     constructor(props) {
         super(props);

@@ -27,7 +27,7 @@ export class Exercise extends React.Component<Props, State, {}> {
             return <p
                 className={`row ${(list_correct_answer && list_correct_answer.indexOf(index) > -1) ? "color_blue" : ""}`}>・{answer}</p>;
         })
-    }
+    };
 
     constructor(props) {
         super(props);
