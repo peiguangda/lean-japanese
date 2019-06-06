@@ -20,7 +20,7 @@ export class ListLessonHeader extends React.Component<Props, State, {}> {
     public changeLesson = (id) => {
         this.props.changeLesson(id);
         this.props.history.push(`/lesson/${id}`);
-    }
+    };
     public showListLesson = () => {
         let {lesson, listLesson} = this.props;
         listLesson = toArray(listLesson);
@@ -33,7 +33,7 @@ export class ListLessonHeader extends React.Component<Props, State, {}> {
                 </Tooltip>
             </div>
         })
-    }
+    };
 
     constructor(props) {
         super(props);

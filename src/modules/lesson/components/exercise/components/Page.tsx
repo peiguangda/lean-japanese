@@ -43,7 +43,7 @@ export class ListExercise extends React.Component<Props, State, {}> {
                     this.props.fetchListExercise({topic_id: params.topic_id});
                 }
             })
-    }
+    };
     public showModal = (parameters) => {
         this.setState({
             visible: true,

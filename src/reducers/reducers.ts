@@ -40,7 +40,7 @@ export interface State {
     listTopicHistory: TopicHistoryEntity[];
     videoScenario: VideoScenarioEntity;
     listVideoTimeItem: VideoTimeItemEntity[];
-};
+}
 
 export const state = combineReducers<State>({
     api: apiReducer,

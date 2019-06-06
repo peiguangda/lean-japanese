@@ -98,11 +98,11 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
     public handleChangeSettingNumQues = (value) => {
         this.setState({
             setting_number_question_for_exam: value
-        })
+        });
         localStorage.setItem("setting_number_question_for_exam", value);
-    }
+    };
     public handleChange = (value) => {
-    }
+    };
 
     public onProgressVideo = (video) => {
         let {listVideoTimeItem} = this.props;
@@ -115,23 +115,24 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                 this.showModal();
                 this.setState({
                     videoTimeItem: videoTimeItem,
-                    isSubmitVideoScript: false
+                    isSubmitVideoScript: false,
+                    listChoose: []
                 })
             }
         })
-    }
+    };
 
     public playVideo = () => {
         this.setState({
             isPlaying: true
         })
-    }
+    };
 
     public pauseVideo = () => {
         this.setState({
             isPlaying: false
         })
-    }
+    };
 
     public handleOk = () => {
         let {listChoose, videoTimeItem} = this.state;
@@ -141,7 +142,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
         inCorrect = 0;
         this.setState({
             isSubmitVideoScript: true
-        })
+        });
         let checkAnswer = (listChoose, listExerciseVideoScript) => {
             listChoose = listChoose.map((element, index) => {
                 let listCorrectAnswer = {...listExerciseVideoScript[element.index]}.list_correct_answer, isCorrect;
@@ -229,7 +230,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
                 </div>
             </div>
         </Fragment>
-    }
+    };
 
     public showCicleGraph = (data, height) => {
         return <FlexibleRadialChart
@@ -237,13 +238,12 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             showLabels
             // animation={true}
             height={height}/>
-    }
+    };
 
     public showGraphAverageValue = () => {
         let {videoTimeItem} = this.state;
         if (!videoTimeItem) return "";
         let data = videoTimeItem.data ? toArray(videoTimeItem.data) : [];
-        console.log("data", data);
         if (!data.length) return "";
         let correctAverage = 0, inCorrectAverage = 0, notYetAnswerAverage = 0, myData = [];
         let lengthExercise = toArray(videoTimeItem.list_card_id).length;
@@ -251,29 +251,28 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             correctAverage += parseFloat(element.correct);
             inCorrectAverage += parseFloat(element.inCorrect);
             notYetAnswerAverage += parseFloat(element.not_yet_answer);
-        })
-        console.log("videoTimeItem", correctAverage, inCorrectAverage, notYetAnswerAverage, Number((correctAverage * 100.0 / (correctAverage + inCorrectAverage+ notYetAnswerAverage)).toFixed(1)));
+        });
         myData = [
             {angle: notYetAnswerAverage, className: 'red'},
             {angle: inCorrectAverage, className: 'dark_blue'},
-            {angle: correctAverage, className: 'blue'}]
+            {angle: correctAverage, className: 'blue'}];
         return <div className="row">
             <div className={"col-md-5"}>
                 {this.showCicleGraph(myData, 150)}
             </div>
             <div className="col-md-5 ml-2 mt-4">
                 <div>Tỷ lệ trả lời đúng trung bình
-                    ({Number((correctAverage * 100.0 / (correctAverage + inCorrectAverage+ notYetAnswerAverage)).toFixed(1))})
+                    ({Number((correctAverage * 100.0 / (correctAverage + inCorrectAverage + notYetAnswerAverage)).toFixed(1))}%)
                 </div>
             </div>
         </div>
-    }
+    };
 
     public showModalCreateScript = () => {
         this.setState({
             createScriptVisible: true
         })
-    }
+    };
 
     public handleOkModalCreateScript = async () => {
         let {videoScenario} = this.props;
@@ -309,7 +308,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
         if (a.length == 3) seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
         if (a.length == 2) seconds = (+a[0]) * 60 + (+a[1]);
         return seconds;
-    }
+    };
 
     public appearTimeOnChange = (time, timeString) => {
         let {videoTimeItem} = this.state;
@@ -318,7 +317,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
         this.setState({
             videoTimeItem: videoTimeItem
         })
-    }
+    };
 
     public doExamTimeOnChange = (time, timeString) => {
         let {videoTimeItem} = this.state;
@@ -327,7 +326,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
         this.setState({
             videoTimeItem: videoTimeItem
         })
-    }
+    };
 
     public onChangeTitle = (e) => {
         let {videoTimeItem} = this.state;
@@ -335,18 +334,18 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
         this.setState({
             videoTimeItem: videoTimeItem
         })
-    }
+    };
 
     public handleChangeSelectQuestion = (value) => {
         let {videoTimeItem} = this.state;
         var b = [];
         videoTimeItem.list_card_id = value.map((a, index) => {
             return parseInt(a, 10);
-        })
+        });
         this.setState({
             videoTimeItem: videoTimeItem
         })
-    }
+    };
 
     public pushOption = () => {
         let {listExercise} = this.props;
@@ -356,15 +355,16 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             children.push(<Option key={exercise.id}>Câu {index + 1}</Option>);
         });
         return children;
-    }
+    };
 
     getListExForVideoScript = () => {
         let {videoTimeItem} = this.state;
         let {listExercise} = this.props;
         if (Object.keys(videoTimeItem).length == 0) return [];
+        if (!videoTimeItem.list_card_id) return [];
         listExerciseVideoScript = toArray(listExercise).filter(exercise => toArray(videoTimeItem.list_card_id).indexOf(exercise.id.toString()) > -1);
         return listExerciseVideoScript;
-    }
+    };
 
     public updateListChoose = (parameters) => {
         let {listChoose} = this.state;
@@ -434,7 +434,6 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
     public render() {
         let {lesson, props, listCardProgress, isJustDoExam, listTopicHistory, admin, listExercise, listVideoTimeItem} = this.props;
         let {setting_number_question_for_exam, isPlaying, visible, createScriptVisible, videoTimeItem, listChoose, isSubmitVideoScript} = this.state;
-        // console.log("listVideoTimeItem", listVideoTimeItem);
         listCardProgress = toArray(listCardProgress);
         listTopicHistory = toArray(listTopicHistory);
         let count = (number) => {
@@ -450,7 +449,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             listCardProgress && listCardProgress.map((cardProgress, index) => {
                 progress += cardProgress.progress;
             });
-            return progress / listCardProgress.length;
+            return listCardProgress.length ? progress / listCardProgress.length : 0;
         };
         let countBoxNum0 = count(0);
         let countBoxNum1 = count(1);
@@ -481,7 +480,7 @@ export class LessonDetailTab extends React.Component<Props, State, {}> {
             {angle: countBoxNum2, className: 'dark_red'},
             {angle: countBoxNum4, className: 'yellow'}];
         let data = [];
-        listTopicHistory && listTopicHistory.map((item, index) => {
+        listTopicHistory && listTopicHistory.length && listTopicHistory.map((item, index) => {
             data.push({x: moment(new Date(item.updated_at)).format("LLL"), y: item.correct});
         });
         if (data.length == 0) data = [{x: moment('2018-11-23').format("LLL"), y: 20}];

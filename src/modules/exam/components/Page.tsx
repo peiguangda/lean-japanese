@@ -60,7 +60,7 @@ export interface Props {
 
     createUserCourse(parameters): Promise<any>;
 
-    createTopicHistory(parameters): void;
+    createTopicHistory(parameters): Promise<any>;
 }
 
 export interface State {
@@ -96,11 +96,11 @@ export class Exam extends React.Component<Props, State, {}> {
         this.setState({
             listChoose: listChoose
         })
-    }
+    };
 
     public getValue = (index) => {
         return String.fromCharCode(65 + index);
-    }
+    };
     public onChooseAnswer = (answer, index) => {
         let {listChoose, isJustDoExam} = this.state;
         if (isJustDoExam) return;
@@ -112,7 +112,7 @@ export class Exam extends React.Component<Props, State, {}> {
             //neu cau tra loi da ton tai trong ds cau tra loi -> xoa
             if (listAnswer.indexOf(answer) > -1) listAnswer = remove(listAnswer, (value) => {
                 return value != answer;
-            })
+            });
             //neu cau tra loi chua ton tai trong ds cau tra loi -> them vao ds cau tra loi
             else listAnswer.push(answer);
             objectAnswer.listAnswer = listAnswer;
@@ -129,7 +129,7 @@ export class Exam extends React.Component<Props, State, {}> {
         this.setState({
             listChoose: listChoose
         })
-    }
+    };
     public showAnswer = (exercise, index, selectedAnswer) => {
         let {isJustDoExam} = this.state;
         let result = [], listAnswer, className = "";
@@ -147,7 +147,7 @@ export class Exam extends React.Component<Props, State, {}> {
                 onClick={() => this.onChooseAnswer(i, index)}>{this.getValue(i)}</Button>}></Link>);
         }
         return result;
-    }
+    };
     public showListAnswer = () => {
         let {listChoose, isJustDoExam} = this.state;
         let {listExercise, props} = this.props;
@@ -166,7 +166,7 @@ export class Exam extends React.Component<Props, State, {}> {
                 </Fragment>
             })
         }
-    }
+    };
 
     public onSubmitExam = () => {
         let {listChoose} = this.state;
@@ -265,9 +265,10 @@ export class Exam extends React.Component<Props, State, {}> {
                             correct: count,
                             total: listChoose.length,
                             data: listChoose
+                        }).then(result => {
+                            props.history.push(`/lesson/${props.match.params.id}`);
+                            window.scrollTo(0, 0);
                         });
-                        props.history.push(`/lesson/${props.match.params.id}`);
-                        window.scrollTo(0, 0);
                     });
             },
             onCancel() {
@@ -275,10 +276,9 @@ export class Exam extends React.Component<Props, State, {}> {
             },
         });
         setCookie("listExercise", listExercise);
-    }
+    };
 
     public handleOkSubmitCourse = async (e) => {
-        console.log("dang ki khoa hoc", this.props);
         let lesson = await this.props.fetchLesson({id: this.props.match.params.id});
         if (lesson.status != "success") return;
         lesson = lesson.data;
@@ -301,7 +301,7 @@ export class Exam extends React.Component<Props, State, {}> {
     public requestLogin = () => {
         message.info("Hãy đăng nhập để được sử dụng tính năng này!");
         this.props.history.push(`/`);
-    }
+    };
 
     constructor(props) {
         super(props);

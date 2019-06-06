@@ -12,4 +12,4 @@ export interface UserCourseEntity {
     role_name: string;
     comment: string;
     admin_comment: string;
-};
+}

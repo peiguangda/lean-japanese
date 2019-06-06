@@ -15,4 +15,4 @@ export interface VideoScenarioEntity {
     thumbnail: string;
     is_must_answer: boolean;
     is_must_answer_correct: boolean;
-};
+}

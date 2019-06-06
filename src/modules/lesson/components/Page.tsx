@@ -159,7 +159,7 @@ export class Exercise implements ExerciseEntity {
 export class LessonDetail extends React.Component<Props, State, {}> {
     public changeLesson = (id) => {
         this.initLesson(id);
-    }
+    };
     public showModal = () => {
         this.setState({
             visible: true
@@ -255,16 +255,16 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         let {lesson} = this.props;
         message.info("Hãy đăng nhập để được sử dụng tính năng này!");
         this.props.history.push(`/`);
-    }
+    };
     public setModal1Visible = (modal1Visible) => {
         this.setState({modal1Visible: modal1Visible});
-    }
+    };
     public setModal2Visible = (modal2Visible) => {
         this.setState({modal2Visible: modal2Visible});
-    }
+    };
     public setModal3Visible = (modal3Visible) => {
         this.setState({modal3Visible: modal3Visible});
-    }
+    };
     private handleClickCreateQuestion = () => {
         this.showModal();
     };
@@ -317,12 +317,11 @@ export class LessonDetail extends React.Component<Props, State, {}> {
         let {props, fetchVideoScenario, createVideoScenario, fetchListVideoTimeItem, createVideoTimeItem} = this.props;
         let videoScenario;
         this.initLesson(this.props.match.params.id);
-        this.props.fetchTopicHistory({topic_id: props.match.params.id});
         this.props.fetchListCardProgress({topic_id: props.match.params.id});
         let isJustDoExam = localStorage.getItem("isJustDoExam");
         if (isJustDoExam) this.setState({
             isJustDoExam: (isJustDoExam == "TRUE")
-        })
+        });
         videoScenario = await fetchVideoScenario({topic_id: props.match.params.id});
         if (!videoScenario.data) {
             await createVideoScenario({topic_id: props.match.params.id, video_url: ""});
@@ -332,9 +331,8 @@ export class LessonDetail extends React.Component<Props, State, {}> {
     }
 
     componentWillMount() {
-        window.onunload = () => {
-            localStorage.clear();
-        };
+        let {props} = this.props;
+        this.props.fetchTopicHistory({topic_id: props.match.params.id});
     }
 
     public render() {
@@ -536,7 +534,7 @@ export class LessonDetail extends React.Component<Props, State, {}> {
             <Popover placement="bottomRight" content={content} trigger="click">
                 <Button icon="ordered-list" type="dashed"/>
             </Popover>
-        </Fragment>
+        </Fragment>;
         return (
             <Fragment>
                 <Helmet title={"Lesson"}/>

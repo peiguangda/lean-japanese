@@ -11,4 +11,4 @@ export interface CardProgressEntity {
     difficulty_level: number;
     progress: number;
     history: Array<any>,
-};
+}

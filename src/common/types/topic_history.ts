@@ -9,4 +9,4 @@ export interface TopicHistoryEntity {
     correct: number;
     total: number;
     data: Array<any>;
-};
+}

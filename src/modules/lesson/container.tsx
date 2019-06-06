@@ -12,7 +12,9 @@ import {createTopicHistoryAction, fetchTopicHistoryAction} from "../../reducers/
 import {createVideoScenarioAction, fetchVideoScenarioAction} from "../../reducers/video_scenario";
 import {
     createVideoTimeItemAction,
-    fetchListVideoTimeItemAction, fetchVideoTimeItemAction, updateVideoTimeItemAction,
+    fetchListVideoTimeItemAction,
+    fetchVideoTimeItemAction,
+    updateVideoTimeItemAction,
 } from "../../reducers/video_time_item";
 
 const mapStateToProps = (state: State, props: RouteComponentProps<any, any>) => ({
