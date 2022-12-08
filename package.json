@@ -34,7 +34,7 @@
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "exceljs": "^1.9.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "firebase": "^5.9.0",
     "google-images": "^2.1.0",
     "jest": "^23.0.1",
